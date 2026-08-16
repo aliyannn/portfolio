@@ -1,0 +1,258 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Send, CheckCircle2, Loader2, Mail, MapPin, Phone, Github, Linkedin, Sparkles, MessageSquare, FileText, Download } from 'lucide-react';
+import confetti from 'canvas-confetti';
+import { PORTFOLIO_DATA } from '../../data/portfolioData';
+
+export const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setStatus('sending');
+
+    // Simulate server submission
+    setTimeout(() => {
+      setStatus('success');
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.7 },
+        colors: ['#06B6D4', '#8B5CF6', '#6366F1', '#10B981'],
+      });
+
+      setTimeout(() => {
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setStatus('idle');
+      }, 4000);
+    }, 1200);
+  };
+
+  return (
+    <section id="contact" className="relative py-24 px-4 sm:px-8 max-w-7xl mx-auto z-10">
+      {/* Background ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-indigo-500/10 rounded-full blur-[140px] pointer-events-none" />
+
+      {/* Header */}
+      <div className="flex flex-col items-center text-center mb-16 space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-cyan-glow/20"
+        >
+          <Mail className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Let's Connect</span>
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="font-display text-3xl sm:text-5xl font-extrabold text-white"
+        >
+          Have a Project or Role in Mind? <br className="hidden sm:block" />
+          <span className="text-gradient-accent">Let's Build Together</span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-slate-400 max-w-xl text-sm sm:text-base"
+        >
+          Reach out for software engineering opportunities, network infrastructure support, or frontend visualizer projects.
+        </motion.p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
+        {/* Left Column: Direct Contact Details & Links */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <div className="glass-card p-8 rounded-3xl space-y-6 border border-white/10">
+            <h3 className="font-display text-2xl font-bold text-white">Direct Contact</h3>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Based in {PORTFOLIO_DATA.personalInfo.location}. Open for hybrid and full-time remote engineering roles worldwide.
+            </p>
+
+            <div className="space-y-3.5 pt-2">
+              {/* Email */}
+              <a
+                href={`mailto:${PORTFOLIO_DATA.personalInfo.email}`}
+                className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-500/40 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block">Direct Email</span>
+                  <span className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors font-mono">
+                    {PORTFOLIO_DATA.personalInfo.email}
+                  </span>
+                </div>
+              </a>
+
+              {/* Phone */}
+              <a
+                href={`tel:${PORTFOLIO_DATA.personalInfo.phone.replace(/\s+/g, '')}`}
+                className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/40 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block">Phone & WhatsApp</span>
+                  <span className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors font-mono">
+                    {PORTFOLIO_DATA.personalInfo.phone}
+                  </span>
+                </div>
+              </a>
+
+              {/* Location */}
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block">Location</span>
+                  <span className="text-sm font-semibold text-white">{PORTFOLIO_DATA.personalInfo.location}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Buttons & Resume */}
+            <div className="pt-4 border-t border-white/10 space-y-3">
+              <span className="text-xs font-mono uppercase text-slate-400 block">Verified Profiles & Resume</span>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <a
+                  href={PORTFOLIO_DATA.personalInfo.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
+                >
+                  <Github className="w-4 h-4" /> GitHub
+                </a>
+                <a
+                  href={PORTFOLIO_DATA.personalInfo.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
+                >
+                  <Linkedin className="w-4 h-4" /> LinkedIn
+                </a>
+                <a
+                  href={PORTFOLIO_DATA.personalInfo.resumeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  download="Aliyan_Gohar_Resume.pdf"
+                  className="px-4 py-2 rounded-full glass-card border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-cyan-glow/20"
+                >
+                  <FileText className="w-4 h-4 text-cyan-400" /> Resume PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Right Column: Glassmorphic Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-7"
+        >
+          <form onSubmit={handleSubmit} className="glass-card p-8 sm:p-10 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden border border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Name Field */}
+              <div className="space-y-2">
+                <label className="text-xs font-mono uppercase text-slate-300 tracking-wider">Your Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Sarah Jenkins"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+                />
+              </div>
+
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label className="text-xs font-mono uppercase text-slate-300 tracking-wider">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="sarah@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+                />
+              </div>
+            </div>
+
+            {/* Subject Field */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase text-slate-300 tracking-wider">Subject</label>
+              <input
+                type="text"
+                placeholder="Software Engineering Role / Project Inquiry"
+                value={formData.subject}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+              />
+            </div>
+
+            {/* Message Field */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase text-slate-300 tracking-wider">Message</label>
+              <textarea
+                required
+                rows={5}
+                placeholder="Tell me about your project, timeline, or engineering opportunity..."
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm resize-none"
+              />
+            </div>
+
+            {/* Glowing Dynamic Submit Button */}
+            <button
+              type="submit"
+              disabled={status !== 'idle'}
+              className={`w-full py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                status === 'success'
+                  ? 'bg-emerald-500 text-slate-950 shadow-lg'
+                  : 'bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white shadow-cyan-glow hover:shadow-violet-glow hover:scale-[1.01]'
+              }`}
+            >
+              {status === 'sending' && (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" /> Sending Message...
+                </>
+              )}
+              {status === 'success' && (
+                <>
+                  <CheckCircle2 className="w-5 h-5" /> Message Sent Successfully!
+                </>
+              )}
+              {status === 'idle' && (
+                <>
+                  Send Message <Send className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
