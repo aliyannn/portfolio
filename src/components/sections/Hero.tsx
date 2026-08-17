@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, FileDown, Terminal, ShieldCheck, Cpu, Sparkles, Layers, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, FileDown, Terminal as TerminalIcon, ShieldCheck, Cpu, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../../data/portfolioData';
-import { Terminal3D } from '../Terminal3D';
+import { Terminal } from '../Terminal';
 
 export const Hero: React.FC = () => {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -22,19 +22,21 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-8 overflow-hidden bg-[#030712] transform-gpu">
+    <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#030712] transform-gpu">
       {/* 1. Cyber Grid & Dot Matrix Background Pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-25 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      {/* 2. Ambient Radial Purple / Cyan Light Beams behind Terminal & Content */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
+      {/* 2. Ambient Radial Purple / Cyan Light Beams */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[550px] h-[550px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[450px] h-[450px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10">
-        {/* Left Column: IT-Themed Hero Typography & CTAs */}
-        <div className="lg:col-span-6 flex flex-col gap-6 text-left">
+      {/* 3. Hero Responsive 2-Column Grid Container */}
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[90vh] pt-24 pb-12 z-10">
+        
+        {/* Left Column (col-span-7): Headline, Badges, Bio & CTAs */}
+        <div className="lg:col-span-7 flex flex-col items-start gap-5 text-left w-full max-w-2xl mx-auto lg:max-w-none">
           
           {/* Status Pill: Pulsing green dot with "Open for IT / Full Stack roles" */}
           <motion.div
@@ -59,7 +61,7 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]"
           >
-            <span className="block text-zinc-400 text-lg sm:text-xl font-mono font-normal mb-2 flex items-center gap-2">
+            <span className="block text-zinc-400 text-lg sm:text-xl font-mono font-normal mb-1 flex items-center gap-2">
               <span className="text-cyan-400 font-bold">&gt;</span> Hi, I'm{' '}
               <span className="text-white font-semibold underline decoration-cyan-500/50 decoration-2 underline-offset-4">
                 {PORTFOLIO_DATA.personalInfo.name}
@@ -78,11 +80,11 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="h-10 flex items-center gap-2.5 text-base sm:text-lg font-mono text-zinc-300"
+            className="h-9 flex items-center gap-2 text-sm sm:text-base font-mono text-zinc-300"
           >
             <span className="text-purple-400 font-bold">&gt;</span>
             <span className="text-zinc-400">Spec:</span>
-            <div className="relative overflow-hidden h-8 flex items-center">
+            <div className="relative overflow-hidden h-7 flex items-center">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={roleIndex}
@@ -90,7 +92,7 @@ export const Hero: React.FC = () => {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ duration: 0.35 }}
-                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2.5 py-1 rounded border border-cyan-500/30"
+                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2.5 py-0.5 rounded border border-cyan-500/30"
                 >
                   {roles[roleIndex]}
                 </motion.span>
@@ -126,12 +128,12 @@ export const Hero: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons Group */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap items-center gap-4 pt-2"
+            className="flex flex-wrap items-center gap-4 pt-1"
           >
             {/* Primary Glowing Gradient "Explore Projects" Button */}
             <a
@@ -159,14 +161,14 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right Column: Centerpiece 3D Cyber Terminal & Server Node */}
+        {/* Right Column (col-span-5): 3D IT Terminal Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-6 relative w-full"
+          className="lg:col-span-5 w-full max-w-lg mx-auto lg:max-w-none overflow-hidden lg:overflow-visible"
         >
-          <Terminal3D />
+          <Terminal />
         </motion.div>
       </div>
 
@@ -176,10 +178,10 @@ export const Hero: React.FC = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: [0, 8, 0] }}
         transition={{ opacity: { duration: 1, delay: 0.8 }, y: { repeat: Infinity, duration: 2, ease: 'easeInOut' } }}
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-500 hover:text-cyan-400 transition-colors z-20"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-500 hover:text-cyan-400 transition-colors z-20"
       >
         <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-500">Scroll Down</span>
-        <div className="w-5 h-9 rounded-full border border-zinc-700/80 p-1 flex justify-center backdrop-blur-xs">
+        <div className="w-5 h-8 rounded-full border border-zinc-700/80 p-1 flex justify-center backdrop-blur-xs">
           <div className="w-1.5 h-2 bg-cyan-400 rounded-full animate-bounce" />
         </div>
       </motion.a>
