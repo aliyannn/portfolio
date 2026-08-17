@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"components\\\\Hero.tsx -> @/components/3d/DesktopTerminal3D\":{\"id\":\"components\\\\Hero.tsx -> @/components/3d/DesktopTerminal3D\",\"files\":[\"static/chunks/_app-pages-browser_components_3d_DesktopTerminal3D_tsx.js\"]}}"

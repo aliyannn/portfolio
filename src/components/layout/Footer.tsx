@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUp, Github, Linkedin, Mail, Heart, Sparkles, FileText } from 'lucide-react';

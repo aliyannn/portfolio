@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Github, Sparkles, CheckCircle2, Cpu } from 'lucide-react';

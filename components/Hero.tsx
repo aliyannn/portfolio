@@ -7,7 +7,7 @@ import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles } from 'lucide-react';
 import { MobileTerminal } from './MobileTerminal';
 
 // Dynamically import 3D Terminal for desktop viewports ONLY with zero SSR overhead
-const DesktopTerminal3D = dynamic(() => import('./3d/DesktopTerminal3D'), {
+const DesktopTerminal3D = dynamic(() => import('@/components/3d/DesktopTerminal3D'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[320px] rounded-2xl bg-zinc-950/80 border border-white/10 flex items-center justify-center p-6">
