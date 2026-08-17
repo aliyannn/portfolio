@@ -1,24 +1,18 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, FileDown, Terminal, Sparkles, Code2 } from 'lucide-react';
+import { ArrowRight, FileDown, Terminal, ShieldCheck, Cpu, Sparkles, Layers, CheckCircle2 } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../../data/portfolioData';
-
-// Lazy load 3D Hero Canvas for performance optimization
-const HeroCanvas = lazy(() => import('../3d/HeroCanvas'));
-
-function ShimmerPlaceholder() {
-  return (
-    <div className="w-full h-[420px] sm:h-[520px] lg:h-[580px] rounded-3xl bg-neutral-900/30 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center p-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
-      <div className="w-20 h-20 rounded-full border-2 border-indigo-500/30 border-t-indigo-400 animate-spin mb-4" />
-      <span className="text-xs font-mono text-neutral-400">Loading Interactive 3D Canvas...</span>
-    </div>
-  );
-}
+import { Terminal3D } from '../Terminal3D';
 
 export const Hero: React.FC = () => {
   const [roleIndex, setRoleIndex] = useState(0);
-  const roles = PORTFOLIO_DATA.roles;
+  const roles = [
+    'React & Three.js Engineer',
+    'IT Systems & Network Specialist',
+    'Fortinet Firewall Architect',
+    'AI Agent & Vibe Coding Specialist',
+    'Full Stack Cloud Integrator',
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,58 +22,66 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-8 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500/15 via-purple-500/5 to-transparent transform-gpu">
-      {/* Background Aceternity-style Ambient Spotlight Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
+    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-8 overflow-hidden bg-[#030712] transform-gpu">
+      {/* 1. Cyber Grid & Dot Matrix Background Pattern */}
+      <div className="absolute inset-0 pointer-events-none opacity-25 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      {/* Floating Particle Stars Backdrop (Pure CSS) */}
-      <div className="absolute inset-0 pointer-events-none opacity-30 bg-[radial-gradient(#818cf8_1px,transparent_1px)] [background-size:32px_32px]" />
+      {/* 2. Ambient Radial Purple / Cyan Light Beams behind Terminal & Content */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
-        {/* Left Column: Headline, Badge, Bio & CTAs */}
-        <div className="lg:col-span-7 flex flex-col gap-6 text-left">
-          {/* Top Badge: Glowing "Available for opportunities" live pulsing badge */}
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10">
+        {/* Left Column: IT-Themed Hero Typography & CTAs */}
+        <div className="lg:col-span-6 flex flex-col gap-6 text-left">
+          
+          {/* Status Pill: Pulsing green dot with "Open for IT / Full Stack roles" */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-900/60 border border-emerald-500/30 backdrop-blur-md w-max shadow-lg shadow-emerald-950/20"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-xl w-max shadow-lg shadow-emerald-950/20"
           >
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
             </span>
-            <span className="text-xs font-mono font-medium text-emerald-300">
-              Available for opportunities
+            <span className="text-xs font-mono font-medium text-emerald-300 tracking-wide">
+              Open for IT / Full Stack roles
             </span>
           </motion.div>
 
-          {/* Headline: High-impact typography with silver-to-white gradient text */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]"
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]"
           >
-            <span className="block text-slate-300 text-2xl sm:text-3xl font-medium mb-1 font-sans">
-              Hello, I'm
+            <span className="block text-zinc-400 text-lg sm:text-xl font-mono font-normal mb-2 flex items-center gap-2">
+              <span className="text-cyan-400 font-bold">&gt;</span> Hi, I'm{' '}
+              <span className="text-white font-semibold underline decoration-cyan-500/50 decoration-2 underline-offset-4">
+                {PORTFOLIO_DATA.personalInfo.name}
+              </span>
             </span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-200 to-neutral-500 drop-shadow-sm">
-              {PORTFOLIO_DATA.personalInfo.name}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-400 drop-shadow-sm">
+              Engineering Scalable Systems
+            </span>{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 font-extrabold">
+              &amp; High-Performance Web Applications
             </span>
           </motion.h1>
 
-          {/* Dynamic Role Transition */}
+          {/* Dynamic Monospace Role Transition */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="h-10 flex items-center gap-3 text-lg sm:text-xl font-mono text-slate-300"
+            className="h-10 flex items-center gap-2.5 text-base sm:text-lg font-mono text-zinc-300"
           >
-            <span className="text-indigo-400 font-bold">&gt;</span>
-            <span className="text-neutral-400">Specializing in</span>
+            <span className="text-purple-400 font-bold">&gt;</span>
+            <span className="text-zinc-400">Spec:</span>
             <div className="relative overflow-hidden h-8 flex items-center">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -87,8 +89,8 @@ export const Hero: React.FC = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-400"
+                  transition={{ duration: 0.35 }}
+                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2.5 py-1 rounded border border-cyan-500/30"
                 >
                   {roles[roleIndex]}
                 </motion.span>
@@ -96,82 +98,89 @@ export const Hero: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Sub-headline Bio */}
+          {/* Clean Monospace / Sans Subtitle Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-base sm:text-lg text-neutral-300 max-w-2xl leading-relaxed font-sans"
+            className="text-base sm:text-lg text-zinc-300 max-w-xl leading-relaxed font-sans"
           >
-            {PORTFOLIO_DATA.personalInfo.subHeadline}
+            Bridging high-performance <span className="text-cyan-300 font-medium">React &amp; Three.js frontend architectures</span> with robust enterprise <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud automation, and high-velocity AI agent workflows.
           </motion.p>
 
-          {/* CTA Group */}
+          {/* Key Skill Highlights Pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-400"
+          >
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" /> React 18 &amp; R3F
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> FortiGate 40F Security
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Vibe Coding &amp; AI Agents
+            </span>
+          </motion.div>
+
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-wrap items-center gap-4 pt-2"
           >
-            {/* Primary Glowing "Explore Work" Button */}
+            {/* Primary Glowing Gradient "Explore Projects" Button */}
             <a
               href="#projects"
-              className="group relative px-7 py-4 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-semibold text-sm shadow-xl shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 flex items-center gap-3 overflow-hidden"
+              className="group relative px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-3 overflow-hidden"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Explore Work
+              <span className="relative z-10 flex items-center gap-2 text-zinc-950 font-extrabold tracking-wide">
+                Explore Projects
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-400 via-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
 
-            {/* Secondary Glassmorphic "Download CV" Button linking directly to /resume.pdf */}
+            {/* Secondary Glassmorphism "Download CV" Button linking to /resume.pdf */}
             <a
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download="Aliyan_Gohar_Resume.pdf"
-              className="group px-7 py-4 rounded-full bg-neutral-900/40 border border-white/10 hover:border-indigo-500/40 backdrop-blur-xl text-white font-semibold text-sm flex items-center gap-2.5 transition-all duration-300 shadow-2xl hover:bg-neutral-800/50"
+              className="group px-7 py-3.5 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-sm flex items-center gap-2.5 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
             >
-              <FileDown className="w-4.5 h-4.5 text-indigo-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
-              <span>Download CV</span>
-            </a>
-
-            {/* Contact Button */}
-            <a
-              href="#contact"
-              className="px-6 py-4 rounded-full bg-neutral-900/30 border border-white/10 text-neutral-300 hover:text-white hover:border-purple-500/40 font-medium text-sm flex items-center gap-2 backdrop-blur-md transition-all duration-300"
-            >
-              <Terminal className="w-4 h-4 text-purple-400" />
-              Contact Me
+              <FileDown className="w-4.5 h-4.5 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
+              <span className="font-mono">Download CV</span>
             </a>
           </motion.div>
         </div>
 
-        {/* Right Column: 3D Holographic Glass Orb / Cyber Core Canvas */}
+        {/* Right Column: Centerpiece 3D Cyber Terminal & Server Node */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-5 relative"
+          className="lg:col-span-6 relative w-full"
         >
-          <Suspense fallback={<ShimmerPlaceholder />}>
-            <HeroCanvas />
-          </Suspense>
+          <Terminal3D />
         </motion.div>
       </div>
 
-      {/* Floating Animated Scroll Down Prompt */}
+      {/* Floating Animated Scroll Prompt */}
       <motion.a
         href="#about"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: [0, 8, 0] }}
         transition={{ opacity: { duration: 1, delay: 0.8 }, y: { repeat: Infinity, duration: 2, ease: 'easeInOut' } }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-neutral-400 hover:text-indigo-400 transition-colors"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-500 hover:text-cyan-400 transition-colors z-20"
       >
-        <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500">Scroll Down</span>
-        <div className="w-6 h-10 rounded-full border-2 border-neutral-700/80 p-1 flex justify-center backdrop-blur-xs">
-          <div className="w-1.5 h-2 bg-indigo-400 rounded-full animate-bounce" />
+        <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-500">Scroll Down</span>
+        <div className="w-5 h-9 rounded-full border border-zinc-700/80 p-1 flex justify-center backdrop-blur-xs">
+          <div className="w-1.5 h-2 bg-cyan-400 rounded-full animate-bounce" />
         </div>
       </motion.a>
     </section>
