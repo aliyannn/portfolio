@@ -4,6 +4,7 @@ import { Hero } from '@/components/Hero';
 import { BentoGrid as BentoAbout } from '@/components/BentoGrid';
 import { Projects } from '@/components/Projects';
 import { Experience as ExperienceSkills } from '@/components/Experience';
+import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/src/components/sections/Contact';
 import { Footer } from '@/src/components/layout/Footer';
 import { CursorSpotlight } from '@/src/components/layout/CursorSpotlight';
@@ -23,6 +24,7 @@ export default function HomePage() {
         <BentoAbout />
         <Projects />
         <ExperienceSkills />
+        <Testimonials />
         <Contact />
       </main>
 

@@ -23,6 +23,8 @@ web_modules/
 # Output of 'npm run build'
 dist/
 dist-ssr/
+.next/
+out/
 *.local
 
 # Environment variables
