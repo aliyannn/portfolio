@@ -28,7 +28,6 @@ export const Hero: React.FC = () => {
     'Full Stack Cloud Integrator',
   ];
 
-  // Screen size check for 3D vs Mobile rendering
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1024 && !('ontouchstart' in window));
@@ -39,7 +38,6 @@ export const Hero: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Role transition timer
   useEffect(() => {
     const interval = setInterval(() => {
       setRoleIndex((prev) => (prev + 1) % roles.length);
@@ -48,28 +46,28 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-12 overflow-hidden bg-[#030712] transform-gpu">
+    <section className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-12 overflow-hidden bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-25 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
       {/* Ambient Lighting Orbs */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
 
-      {/* Hero Container */}
+      {/* Hero 2-Column Responsive Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[85vh] pt-16 lg:pt-20 pb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center justify-between w-full max-w-7xl mx-auto py-8 lg:py-12">
           
-          {/* Left Column (col-span-7): Headline & Bio */}
-          <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 w-full max-w-2xl mx-auto lg:max-w-none">
+          {/* Left Column (lg:col-span-7): Typography & CTAs */}
+          <div className="lg:col-span-7 flex flex-col items-start justify-center space-y-5 text-left w-full max-w-2xl mx-auto lg:max-w-none">
             
             {/* Status Pill */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-md w-max shadow-lg shadow-emerald-950/20"
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-md shadow-lg shadow-emerald-950/20"
             >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -80,14 +78,14 @@ export const Hero: React.FC = () => {
               </span>
             </motion.div>
 
-            {/* Main Headline */}
+            {/* Main Balanced Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]"
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight leading-[1.15]"
             >
-              <span className="block text-zinc-400 text-base sm:text-xl font-mono font-normal mb-1 flex items-center justify-center lg:justify-start gap-2">
+              <span className="block text-zinc-400 text-base sm:text-xl font-mono font-normal mb-1 flex items-center gap-2">
                 <span className="text-cyan-400 font-bold">&gt;</span> Hi, I'm{' '}
                 <span className="text-white font-semibold underline decoration-cyan-500/50 decoration-2 underline-offset-4">
                   Aliyan Gohar
@@ -101,7 +99,7 @@ export const Hero: React.FC = () => {
               </span>
             </motion.h1>
 
-            {/* Dynamic Role Transition */}
+            {/* Dynamic Monospace Role Transition */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -131,17 +129,17 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm sm:text-lg text-zinc-300 max-w-xl leading-relaxed font-sans"
+              className="text-sm sm:text-base lg:text-lg text-zinc-300 max-w-xl leading-relaxed font-sans"
             >
               Bridging high-performance <span className="text-cyan-300 font-medium">React &amp; Three.js frontend architectures</span> with robust enterprise <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud automation, and high-velocity AI agent workflows.
             </motion.p>
 
-            {/* Key Skill Badges */}
+            {/* Skill Badges */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs font-mono text-zinc-400"
+              className="flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-400"
             >
               <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
                 <Cpu className="w-3.5 h-3.5 text-cyan-400" /> React 18 &amp; R3F
@@ -159,11 +157,11 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
+              className="flex flex-wrap items-center gap-4 pt-1"
             >
               <a
                 href="#projects"
-                className="group relative px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-3 overflow-hidden"
+                className="group relative px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-2.5 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-2 text-zinc-950 font-extrabold tracking-wide">
                   Explore Projects
@@ -177,7 +175,7 @@ export const Hero: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 download="Aliyan_Gohar_Resume.pdf"
-                className="group px-7 py-3.5 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-sm flex items-center gap-2.5 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
+                className="group px-6 py-3 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-sm flex items-center gap-2.5 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
               >
                 <FileDown className="w-4.5 h-4.5 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
                 <span className="font-mono">Download CV</span>
@@ -185,12 +183,12 @@ export const Hero: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Column (col-span-5): Terminal Container (Desktop 3D vs Mobile CSS) */}
+          {/* Right Column (lg:col-span-5): Constrained Terminal Visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 flex justify-center items-center w-full max-w-md sm:max-w-lg mx-auto lg:max-w-none overflow-hidden lg:overflow-visible pt-4 lg:pt-0"
+            className="lg:col-span-5 flex justify-center lg:justify-end items-center w-full max-w-[480px] mx-auto lg:max-w-none pt-4 lg:pt-0"
           >
             {isDesktop ? <DesktopTerminal3D /> : <MobileTerminal />}
           </motion.div>

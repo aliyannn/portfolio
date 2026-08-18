@@ -1,12 +1,12 @@
 import React from 'react';
-import { Navbar } from '@/src/components/layout/Navbar';
+import { Navbar } from '@/components/Navbar';
+import { Hero } from '@/components/Hero';
+import { BentoGrid as BentoAbout } from '@/components/BentoGrid';
+import { Projects } from '@/components/Projects';
+import { Experience as ExperienceSkills } from '@/components/Experience';
+import { Contact } from '@/src/components/sections/Contact';
 import { Footer } from '@/src/components/layout/Footer';
 import { CursorSpotlight } from '@/src/components/layout/CursorSpotlight';
-import { Hero } from '@/components/Hero';
-import { BentoAbout } from '@/src/components/sections/BentoAbout';
-import { Projects } from '@/src/components/sections/Projects';
-import { ExperienceSkills } from '@/src/components/sections/ExperienceSkills';
-import { Contact } from '@/src/components/sections/Contact';
 
 export default function HomePage() {
   return (
