@@ -33,7 +33,7 @@ interface ReviewItem {
   isVisible?: boolean;
 }
 
-const DEFAULT_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || 'admin123';
+const DEFAULT_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || 'aliyannn03785';
 
 export default function AdminReviewsPage() {
   const [pinInput, setPinInput] = useState('');

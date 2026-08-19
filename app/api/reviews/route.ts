@@ -139,7 +139,7 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const pinHeader = request.headers.get('x-admin-pin');
-    const expectedPin = process.env.NEXT_PUBLIC_ADMIN_PIN || 'admin123';
+    const expectedPin = process.env.NEXT_PUBLIC_ADMIN_PIN || 'aliyannn03785';
 
     if (pinHeader !== expectedPin) {
       return NextResponse.json({ error: 'Unauthorized: Invalid Admin PIN' }, { status: 401 });
