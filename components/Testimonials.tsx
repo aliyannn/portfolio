@@ -15,6 +15,8 @@ export interface Review {
   content: string;
   date: string;
   verified: boolean;
+  isApproved?: boolean;
+  isVisible?: boolean;
 }
 
 const SEED_TESTIMONIALS: Review[] = [
@@ -29,6 +31,8 @@ const SEED_TESTIMONIALS: Review[] = [
       'Aliyan revamped our client-facing dashboard using Next.js and Tailwind CSS. The sub-second page loads and seamless GitHub API synchronization cut our internal review times in half. Exceptional frontend talent.',
     date: '2 weeks ago',
     verified: true,
+    isApproved: true,
+    isVisible: true,
   },
   {
     id: 'rev-2',
@@ -41,6 +45,8 @@ const SEED_TESTIMONIALS: Review[] = [
       'The Make.com booking and scheduling workflows Aliyan built with Google Sheets and automated webhook integrations run flawlessly. Zero drop-off rate since deployment. Highly recommended for automation solutions.',
     date: '1 month ago',
     verified: true,
+    isApproved: true,
+    isVisible: true,
   },
   {
     id: 'rev-3',
@@ -53,6 +59,8 @@ const SEED_TESTIMONIALS: Review[] = [
       'Delivered an incredible dark-mode interactive web platform with Three.js graphics and responsive UI components. His ability to balance heavy 3D visuals with zero-lag mobile performance is rare to find.',
     date: '1 month ago',
     verified: true,
+    isApproved: true,
+    isVisible: true,
   },
   {
     id: 'rev-4',
@@ -65,6 +73,8 @@ const SEED_TESTIMONIALS: Review[] = [
       'Aliyan demonstrated top-tier engineering discipline—clean TypeScript code structure, accessible components, and strict adherence to project deadlines. A true full-stack asset.',
     date: '2 months ago',
     verified: true,
+    isApproved: true,
+    isVisible: true,
   },
   {
     id: 'rev-5',
@@ -77,6 +87,8 @@ const SEED_TESTIMONIALS: Review[] = [
       'The custom EmailJS form pipelines and dynamic asset uploads integrated into our client portal work seamlessly. Sleek micro-animations and rock-solid reliability.',
     date: '3 months ago',
     verified: true,
+    isApproved: true,
+    isVisible: true,
   },
 ];
 
@@ -93,19 +105,39 @@ export const Testimonials: React.FC = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [content, setContent] = useState('');
 
-  // Load reviews from localStorage on mount
+  // Load reviews from API / localStorage on mount (filtering for active & visible reviews)
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('ag_portfolio_reviews');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setReviews([...parsed, ...SEED_TESTIMONIALS.filter((r) => !parsed.some((p: Review) => p.id === r.id))]);
+    const loadPublicReviews = async () => {
+      try {
+        const res = await fetch('/api/reviews');
+        const data = await res.json();
+        if (data.reviews && Array.isArray(data.reviews)) {
+          const activeOnly = data.reviews.filter(
+            (r: Review) => r.isVisible !== false && r.isApproved !== false
+          );
+          setReviews(activeOnly);
+          return;
         }
+      } catch (e) {
+        // Fallback to localStorage
       }
-    } catch (e) {
-      console.error('Failed to load reviews from localStorage', e);
-    }
+
+      try {
+        const saved = localStorage.getItem('ag_portfolio_reviews');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            const combined = [...parsed, ...SEED_TESTIMONIALS.filter((r) => !parsed.some((p: Review) => p.id === r.id))];
+            const activeOnly = combined.filter((r: Review) => r.isVisible !== false && r.isApproved !== false);
+            setReviews(activeOnly);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load reviews from localStorage', e);
+      }
+    };
+
+    loadPublicReviews();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
