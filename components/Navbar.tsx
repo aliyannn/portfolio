@@ -139,11 +139,13 @@ export const Navbar: React.FC = () => {
             className="group px-4 py-2 rounded-xl bg-zinc-900/80 border border-white/10 hover:border-cyan-500/40 backdrop-blur-xl text-xs font-mono text-zinc-200 hover:text-white flex items-center gap-2 transition-all shadow-lg hover:shadow-cyan-500/10"
           >
             <FileDown className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-            <span>CV</span>
+            <span>Download CV</span>
           </a>
 
           <a
-            href="#contact"
+            href="https://wa.me/923184321695?text=Hi%20Aliyan,%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-zinc-950 font-bold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-all flex items-center gap-1.5"
           >
             <span>Hire Me</span>
@@ -195,11 +197,14 @@ export const Navbar: React.FC = () => {
                 <FileDown className="w-4 h-4 text-cyan-400" /> Download CV
               </a>
               <a
-                href="#contact"
+                href="https://wa.me/923184321695?text=Hi%20Aliyan,%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-zinc-950 font-bold text-xs font-mono text-center"
+                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-zinc-950 font-bold text-xs font-mono text-center flex items-center justify-center gap-1"
               >
-                Hire Me
+                <span>Hire Me</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </motion.div>

@@ -103,25 +103,43 @@ export const Contact: React.FC = () => {
                 </div>
               </a>
 
-              {/* Phone */}
+              {/* Direct Phone & SIM Call */}
               <a
-                href={`tel:${PORTFOLIO_DATA.personalInfo.phone.replace(/\s+/g, '')}`}
+                href="tel:+923184321695"
                 className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/40 transition-colors group"
               >
                 <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-slate-400 block">Phone & WhatsApp</span>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 block">Direct Call (SIM)</span>
                   <span className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors font-mono">
-                    {PORTFOLIO_DATA.personalInfo.phone}
+                    +92 318 4321695
+                  </span>
+                </div>
+              </a>
+
+              {/* WhatsApp Direct Messaging */}
+              <a
+                href="https://wa.me/923184321695?text=Hi%20Aliyan,%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-400 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                  <MessageSquare className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-emerald-400 block font-semibold">WhatsApp Chat</span>
+                  <span className="text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors font-mono">
+                    +92 318 4321695
                   </span>
                 </div>
               </a>
 
               {/* Location */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
@@ -138,7 +156,7 @@ export const Contact: React.FC = () => {
                 <a
                   href={PORTFOLIO_DATA.personalInfo.github}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
                 >
                   <Github className="w-4 h-4" /> GitHub
@@ -146,19 +164,19 @@ export const Contact: React.FC = () => {
                 <a
                   href={PORTFOLIO_DATA.personalInfo.linkedin}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
                 >
                   <Linkedin className="w-4 h-4" /> LinkedIn
                 </a>
                 <a
-                  href={PORTFOLIO_DATA.personalInfo.resumeUrl}
+                  href="/resume.pdf"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   download="Aliyan_Gohar_Resume.pdf"
                   className="px-4 py-2 rounded-full glass-card border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-cyan-glow/20"
                 >
-                  <FileText className="w-4 h-4 text-cyan-400" /> Resume PDF
+                  <Download className="w-4 h-4 text-cyan-400" /> Download CV
                 </a>
               </div>
             </div>

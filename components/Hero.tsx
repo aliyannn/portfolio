@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles } from 'lucide-react';
+import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 'lucide-react';
 import { MobileTerminal } from './MobileTerminal';
 
 // Dynamically import 3D Terminal for desktop viewports ONLY with zero SSR overhead
@@ -165,11 +165,11 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap items-center gap-4 pt-1"
+            className="flex flex-wrap items-center gap-3.5 pt-1"
           >
             <a
               href="#projects"
-              className="group relative px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-2.5 overflow-hidden"
+              className="group relative px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-2 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2 text-zinc-950 font-extrabold tracking-wide">
                 Explore Projects
@@ -179,13 +179,23 @@ export const Hero: React.FC = () => {
             </a>
 
             <a
+              href="https://wa.me/923184321695?text=Hi%20Aliyan,%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group px-5 py-3 rounded-xl bg-emerald-950/70 border border-emerald-500/40 hover:border-emerald-400/80 backdrop-blur-xl text-emerald-300 hover:text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-xl hover:shadow-emerald-500/20"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span className="font-mono">Let's Connect</span>
+            </a>
+
+            <a
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download="Aliyan_Gohar_Resume.pdf"
-              className="group px-6 py-3 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-sm flex items-center gap-2.5 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
+              className="group px-5 py-3 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
             >
-              <FileDown className="w-4.5 h-4.5 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
+              <FileDown className="w-4 h-4 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
               <span className="font-mono">Download CV</span>
             </a>
           </motion.div>
