@@ -127,6 +127,8 @@ function Server3DCanvas() {
   );
 }
 
+import { MobileTerminal, getDeviceInfo, DeviceInfoResult } from '../MobileTerminal';
+
 export const DesktopTerminal3D: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const terminalBodyRef = useRef<HTMLDivElement>(null);
@@ -159,10 +161,15 @@ export const DesktopTerminal3D: React.FC = () => {
   };
 
   // Real-time Client Telemetry State
-  const [deviceType, setDeviceType] = useState<'Desktop' | 'Tablet' | 'Mobile'>('Desktop');
-  const [osName, setOsName] = useState<string>('Detecting...');
-  const [cpuCores, setCpuCores] = useState<number>(4);
-  const [viewport, setViewport] = useState<string>('1920x1080');
+  const [deviceInfo, setDeviceInfo] = useState<DeviceInfoResult>({
+    deviceType: 'Desktop',
+    exactModel: 'Developer Node',
+    osName: 'Detecting...',
+    gpuName: 'WebGL Graphics',
+    screenSpecs: '1920x1080px',
+  });
+
+  const [cpuCores, setCpuCores] = useState<number>(8);
   const [batteryInfo, setBatteryInfo] = useState<string>('Detecting...');
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [networkType, setNetworkType] = useState<string>('Fast (HTTP/2)');
@@ -174,29 +181,19 @@ export const DesktopTerminal3D: React.FC = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
+    const info = getDeviceInfo();
+    setDeviceInfo(info);
+
     const nav = navigator as CustomNavigator;
-    const ua = nav.userAgent || '';
-
-    let device: 'Desktop' | 'Tablet' | 'Mobile' = 'Desktop';
-    if (/iPad|tablet/i.test(ua)) device = 'Tablet';
-    else if (/Mobile|Android|iPhone|iPod/i.test(ua)) device = 'Mobile';
-    setDeviceType(device);
-
-    let os = 'Unknown OS';
-    if (/Win/i.test(ua)) os = 'Windows';
-    else if (/Mac/i.test(ua)) os = 'macOS';
-    else if (/Linux/i.test(ua)) os = 'Linux';
-    else if (/Android/i.test(ua)) os = 'Android';
-    else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
-    setOsName(os);
-
     if (nav.hardwareConcurrency) {
       setCpuCores(nav.hardwareConcurrency);
     }
-    setViewport(`${window.innerWidth}x${window.innerHeight}px`);
 
     const handleResize = () => {
-      setViewport(`${window.innerWidth}x${window.innerHeight}px`);
+      setDeviceInfo((prev) => ({
+        ...prev,
+        screenSpecs: `${window.innerWidth}x${window.innerHeight}px`,
+      }));
     };
     window.addEventListener('resize', handleResize);
 
@@ -254,14 +251,14 @@ export const DesktopTerminal3D: React.FC = () => {
   useEffect(() => {
     const initialLines = [
       { id: '1', type: 'cmd' as const, text: '$ desktop-diag --init-scan' },
-      { id: '2', type: 'info' as const, text: `[DEVICE] Visitor Node: ${deviceType} (${osName})` },
-      { id: '3', type: 'info' as const, text: `[HARDWARE] CPU Cores: ${cpuCores} Cores | Viewport: ${viewport}` },
-      { id: '4', type: 'info' as const, text: `[POWER] Energy State: ${batteryInfo}` },
+      { id: '2', type: 'info' as const, text: `[DEVICE] Visitor Node: ${deviceInfo.exactModel} (${deviceInfo.osName})` },
+      { id: '3', type: 'info' as const, text: `[HARDWARE] CPU: ${cpuCores} Cores | GPU: ${deviceInfo.gpuName}` },
+      { id: '4', type: 'info' as const, text: `[POWER] Energy State: ${batteryInfo} | Viewport: ${deviceInfo.screenSpecs}` },
       { id: '5', type: 'success' as const, text: `[NETWORK] Status: ${isOnline ? 'Online (TLS 1.3)' : 'Offline'} | Speed: ${networkType}` },
       { id: '6', type: 'success' as const, text: `[STATUS] 200 OK - Connected to Aliyan's Portfolio Cluster` },
     ];
     setTerminalHistory(initialLines);
-  }, [deviceType, osName, cpuCores, viewport, batteryInfo, isOnline, networkType]);
+  }, [deviceInfo, cpuCores, batteryInfo, isOnline, networkType]);
 
   const handleRunDiagnostic = () => {
     const newId = Math.random().toString();
@@ -271,7 +268,7 @@ export const DesktopTerminal3D: React.FC = () => {
       {
         id: newId + '-res',
         type: 'success',
-        text: `✔ Client Diag Updated: Uptime ${formatUptime(sessionSeconds)} | ${viewport} | Latency: < 24ms`,
+        text: `✔ Client Diag Updated: ${deviceInfo.exactModel} | Uptime ${formatUptime(sessionSeconds)}`,
       },
     ]);
   };
@@ -303,8 +300,8 @@ export const DesktopTerminal3D: React.FC = () => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
           </span>
           <span className="font-medium flex items-center gap-1">
-            <Monitor className="w-3.5 h-3.5 text-emerald-400" />
-            Device: {deviceType} ({osName})
+            <Monitor className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            Device: {deviceInfo.exactModel} ({deviceInfo.osName})
           </span>
         </div>
 
@@ -395,7 +392,7 @@ export const DesktopTerminal3D: React.FC = () => {
               <span>{cpuCores} Cores</span>
               <span className="text-zinc-600">|</span>
               <HardDrive className="w-3 h-3 text-purple-400" />
-              <span>{viewport}</span>
+              <span>{deviceInfo.screenSpecs}</span>
             </div>
             <button
               onClick={handleRunDiagnostic}
