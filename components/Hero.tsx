@@ -189,10 +189,10 @@ export const Hero: React.FC = () => {
             </a>
 
             <a
-              href="/resume.pdf"
+              href="/Aliyan_Gohar_Software_Engineer_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              download="Aliyan_Gohar_Resume.pdf"
+              download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
               className="group px-5 py-3 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
             >
               <FileDown className="w-4 h-4 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />

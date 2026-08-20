@@ -132,10 +132,10 @@ export const Navbar: React.FC = () => {
           className="hidden md:flex items-center gap-3"
         >
           <a
-            href="/resume.pdf"
+            href="/Aliyan_Gohar_Software_Engineer_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            download="Aliyan_Gohar_Resume.pdf"
+            download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
             className="group px-4 py-2 rounded-xl bg-zinc-900/80 border border-white/10 hover:border-cyan-500/40 backdrop-blur-xl text-xs font-mono text-zinc-200 hover:text-white flex items-center gap-2 transition-all shadow-lg hover:shadow-cyan-500/10"
           >
             <FileDown className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
@@ -188,10 +188,10 @@ export const Navbar: React.FC = () => {
             ))}
             <div className="pt-2 border-t border-white/10 flex items-center gap-2">
               <a
-                href="/resume.pdf"
+                href="/Aliyan_Gohar_Software_Engineer_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                download="Aliyan_Gohar_Resume.pdf"
+                download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
                 className="flex-1 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs font-mono text-center text-zinc-200 flex items-center justify-center gap-2"
               >
                 <FileDown className="w-4 h-4 text-cyan-400" /> Download CV

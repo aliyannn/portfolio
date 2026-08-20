@@ -67,7 +67,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     linkedin: 'https://www.linkedin.com/in/allygohar/',
     github: 'https://github.com/aliyannn',
     portfolioUrl: 'https://aliyannn.vercel.app',
-    resumeUrl: '/Aliyan_Gohar_Resume.pdf',
+    resumeUrl: '/Aliyan_Gohar_Software_Engineer_Resume.pdf',
     availability: 'Available for New Roles & High-Impact Projects',
     responseTime: '< 2 Hours',
   },

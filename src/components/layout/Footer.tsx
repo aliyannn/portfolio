@@ -61,7 +61,7 @@ export const Footer: React.FC = () => {
               href={PORTFOLIO_DATA.personalInfo.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              download="Aliyan_Gohar_Resume.pdf"
+              download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
               className="w-9 h-9 rounded-full glass-card border border-cyan-500/30 flex items-center justify-center text-cyan-400 hover:text-white hover:border-cyan-400 transition-all duration-300 shadow-cyan-glow/20"
               aria-label="Download Resume"
               title="Download Resume PDF"

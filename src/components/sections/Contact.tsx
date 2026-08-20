@@ -170,10 +170,10 @@ export const Contact: React.FC = () => {
                   <Linkedin className="w-4 h-4" /> LinkedIn
                 </a>
                 <a
-                  href="/resume.pdf"
+                  href="/Aliyan_Gohar_Software_Engineer_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  download="Aliyan_Gohar_Resume.pdf"
+                  download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
                   className="px-4 py-2 rounded-full glass-card border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-cyan-glow/20"
                 >
                   <Download className="w-4 h-4 text-cyan-400" /> Download CV
