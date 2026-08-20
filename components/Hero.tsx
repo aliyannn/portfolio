@@ -77,19 +77,28 @@ export const Hero: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* Headline */}
+          {/* High-Tech Glassmorphic Micro-Badge Intro Line */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-zinc-900/60 border border-cyan-500/20 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)] mb-1 hover:scale-105 hover:border-cyan-400/50 transition-all duration-300 group cursor-default text-lg sm:text-xl md:text-2xl font-mono font-medium tracking-tight"
+          >
+            <span className="text-cyan-400 font-bold animate-pulse">&gt;</span>
+            <span className="text-neutral-300">Hi, I'm</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 font-bold drop-shadow-[0_0_12px_rgba(6,182,212,0.4)]">
+              Aliyan Gohar
+            </span>
+            <span className="inline-block w-2.5 h-5 bg-cyan-400 ml-1 animate-pulse rounded-sm align-middle shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+          </motion.div>
+
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3rem] font-extrabold tracking-tight leading-[1.15]"
           >
-            <span className="block text-zinc-400 text-base sm:text-xl font-mono font-normal mb-1 flex items-center gap-2">
-              <span className="text-cyan-400 font-bold">&gt;</span> Hi, I'm{' '}
-              <span className="text-white font-semibold underline decoration-cyan-500/50 decoration-2 underline-offset-4">
-                Aliyan Gohar
-              </span>
-            </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-400 drop-shadow-sm">
               Engineering Scalable Systems
             </span>{' '}
