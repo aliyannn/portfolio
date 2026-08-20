@@ -60,7 +60,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     headline: 'Engineering Scalable Web Apps & Resilient IT Infrastructure',
     subHeadline:
       'Versatile technology professional specializing in modern React & Three.js frontend engineering, AI agent orchestration, enterprise Fortinet network security, and rapid software prototyping.',
-    bio: "Dynamic and versatile technology professional with a robust background spanning IT infrastructure, enterprise network security, and modern web software development. Demonstrated expertise in deploying and configuring Fortinet FortiGate 40F enterprise firewalls, optimizing multi-site network operations, and pioneering high-velocity 'vibe coding' workflows and AI orchestration tools to radically compress software delivery timelines.",
+    bio: 'Experienced Full-Stack & Systems Engineer with a proven track record in developing high-velocity React/Next.js applications and custom WordPress architectures. Mentored and instructed aspiring developers in CMS engineering, web development best practices, and deployed high-performance client sites worldwide.',
     location: 'Lahore, Pakistan',
     email: 'aliyangohar00@outlook.com',
     phone: '+92 318 4321695',

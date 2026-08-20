@@ -15,6 +15,7 @@ import {
   Activity,
   CheckCircle2,
   Globe,
+  Layout,
 } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../src/data/portfolioData';
 
@@ -118,14 +119,14 @@ export const BentoGrid: React.FC = () => {
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-cyan-300 flex items-center gap-1.5">
                 <Cpu className="w-3.5 h-3.5 text-cyan-400" /> React 18 &amp; Three.js
               </span>
+              <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-blue-300 flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-blue-400" /> WordPress &amp; CMS Architecture
+              </span>
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-purple-300 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> Fortinet FortiGate 40F
               </span>
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-amber-300 flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-400" /> Vibe Coding &amp; AI Agents
-              </span>
-              <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-emerald-300 flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5 text-emerald-400" /> Enterprise Network IT Support
               </span>
             </div>
           </motion.div>
@@ -152,9 +153,9 @@ export const BentoGrid: React.FC = () => {
                 Technology Stack
               </h3>
 
-              <div className="space-y-3.5">
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+              <div className="space-y-3">
+                <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/5">
+                  <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className="text-zinc-200 font-semibold flex items-center gap-1.5">
                       <Code2 className="w-3.5 h-3.5 text-cyan-400" /> React &amp; Next.js
                     </span>
@@ -165,8 +166,20 @@ export const BentoGrid: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/5">
+                  <div className="flex items-center justify-between text-xs font-mono mb-1">
+                    <span className="text-zinc-200 font-semibold flex items-center gap-1.5">
+                      <Globe className="w-3.5 h-3.5 text-blue-400" /> WordPress &amp; CMS
+                    </span>
+                    <span className="text-blue-400">94%</span>
+                  </div>
+                  <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full w-[94%]" />
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/5">
+                  <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className="text-zinc-200 font-semibold flex items-center gap-1.5">
                       <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> Fortinet &amp; Security
                     </span>
@@ -177,8 +190,8 @@ export const BentoGrid: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/5">
+                  <div className="flex items-center justify-between text-xs font-mono mb-1">
                     <span className="text-zinc-200 font-semibold flex items-center gap-1.5">
                       <Zap className="w-3.5 h-3.5 text-amber-400" /> Vibe Coding &amp; AI
                     </span>
@@ -188,22 +201,10 @@ export const BentoGrid: React.FC = () => {
                     <div className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full w-[96%]" />
                   </div>
                 </div>
-
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                    <span className="text-zinc-200 font-semibold flex items-center gap-1.5">
-                      <Server className="w-3.5 h-3.5 text-emerald-400" /> Three.js &amp; 3D WebGL
-                    </span>
-                    <span className="text-emerald-400">86%</span>
-                  </div>
-                  <div className="w-full h-1.5 rounded-full bg-zinc-800 overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full w-[86%]" />
-                  </div>
-                </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-white/5 text-[11px] font-mono text-zinc-400 flex items-center justify-between mt-4">
+            <div className="pt-3 border-t border-white/5 text-[11px] font-mono text-zinc-400 flex items-center justify-between mt-3">
               <span>Verified Skills</span>
               <span className="text-purple-400 font-semibold">100% Tested</span>
             </div>
@@ -294,7 +295,7 @@ export const BentoGrid: React.FC = () => {
 
             <div className="pt-3 border-t border-white/5 text-[11px] font-mono text-emerald-400 flex items-center gap-1.5 font-medium mt-4">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Verified Enterprise Fortinet &amp; React Frontend Deployments</span>
+              <span>Verified React Next.js, WordPress &amp; Fortinet Deployments</span>
             </div>
           </motion.div>
         </div>
