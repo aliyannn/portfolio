@@ -10,18 +10,28 @@ export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
     setStatus('sending');
 
-    // Simulate server submission
-    setTimeout(() => {
+    try {
+      // 1. Post submission payload to Next.js API route (/api/contact)
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error('API submission failed');
+      }
+
       setStatus('success');
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 90,
+        spread: 75,
         origin: { y: 0.7 },
         colors: ['#06B6D4', '#8B5CF6', '#6366F1', '#10B981'],
       });
@@ -30,7 +40,21 @@ export const Contact: React.FC = () => {
         setFormData({ name: '', email: '', subject: '', message: '' });
         setStatus('idle');
       }, 4000);
-    }, 1200);
+    } catch (error) {
+      // Direct mailto fallback if network or API fails
+      const mailtoUrl = `mailto:aliyangohar00@outlook.com?subject=${encodeURIComponent(
+        formData.subject || 'Portfolio Inquiry'
+      )}&body=${encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      )}`;
+      window.location.href = mailtoUrl;
+
+      setStatus('success');
+      setTimeout(() => {
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setStatus('idle');
+      }, 4000);
+    }
   };
 
   return (
