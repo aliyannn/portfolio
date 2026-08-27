@@ -11,13 +11,11 @@ import {
   ShieldCheck,
   Trophy,
   Layers,
-  Server,
-  Activity,
   CheckCircle2,
   Globe,
-  Layout,
 } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../src/data/portfolioData';
+import RubiksCubeCard from './RubiksCubeCard';
 
 export const BentoGrid: React.FC = () => {
   const [pktTime, setPktTime] = useState<string>('');
@@ -81,20 +79,20 @@ export const BentoGrid: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="text-zinc-400 text-sm sm:text-base mt-3"
           >
-            A unified view into my engineering philosophy, core technology stack, geographic availability, and delivery metrics.
+            A unified view into my engineering philosophy, core technology stack, delivery metrics, and global availability.
           </motion.p>
         </div>
 
         {/* Balanced 3-Column Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto w-full">
           
-          {/* Card 1 (Bio): lg:col-span-2 */}
+          {/* ROW 1 LEFT: Card 1 (Bio & Philosophy): md:col-span-2 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-2 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full"
+            className="md:col-span-2 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -131,13 +129,13 @@ export const BentoGrid: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Card 2 (Core Stack): lg:col-span-1 */}
+          {/* ROW 1 RIGHT: Card 2 (Core Tech Stack): md:col-span-1 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-purple-500/30 transition-all duration-300 group h-full"
+            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-purple-500/30 transition-all duration-300 group h-full"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -210,94 +208,160 @@ export const BentoGrid: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Card 3 (Location & Timezone): lg:col-span-1 */}
+          {/* ROW 2 LEFT: Card 3 (Location & Timezone): md:col-span-1 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-emerald-500/30 transition-all duration-300 group h-full"
+          >
+            <div>
+              {/* Header Row */}
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                    <Globe className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                      Location &amp; Timezone
+                    </h3>
+                    <div className="text-[11px] font-mono text-zinc-400 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-emerald-400" />
+                      <span>Lahore, PK • UTC+5</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  AVAILABLE FOR HIRE
+                </span>
+              </div>
+
+              {/* Digital Clock Block */}
+              <div className="bg-zinc-950/70 border border-white/[0.08] p-3 rounded-xl text-center mb-3 shadow-inner">
+                <span className="text-[9px] font-mono text-zinc-400 block mb-0.5 uppercase tracking-widest font-semibold">
+                  CURRENT LOCAL TIME (PKT)
+                </span>
+                <span className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tracking-wider block drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+                  {pktTime || '00:00:00 PM'}
+                </span>
+              </div>
+
+              {/* Compact Overlap Matrix Micro-Grid */}
+              <div className="mb-3">
+                <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 font-semibold">
+                  GLOBAL TIMEZONE OVERLAP
+                </span>
+                <div className="space-y-1.5">
+                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
+                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
+                      🇬🇧 UK / EU
+                    </span>
+                    <span className="text-cyan-300 font-medium">11AM — 8PM</span>
+                  </div>
+
+                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
+                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
+                      🇺🇸 US (EST)
+                    </span>
+                    <span className="text-indigo-300 font-medium">7AM — 2PM</span>
+                  </div>
+
+                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
+                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
+                      🇦🇪 Gulf
+                    </span>
+                    <span className="text-emerald-300 font-medium">Full Alignment</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="pt-2 text-[10px] font-mono text-zinc-400 border-t border-white/5 flex items-center gap-1">
+              <Zap className="w-3 h-3 text-amber-400 flex-shrink-0" />
+              <span>⚡ SLA: &lt; 2h Response • Remote Ready</span>
+            </div>
+          </motion.div>
+
+          {/* ROW 2 RIGHT: Card 4 (Engineering Delivery Track Record): md:col-span-2 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-emerald-500/30 transition-all duration-300 group h-full"
+            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-amber-500/20 backdrop-blur-md flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-xl group h-full"
           >
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                  <Globe className="w-5 h-5" />
+              {/* Header Row */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-amber-300 transition-colors">
+                    Engineering Delivery Track Record
+                  </h3>
                 </div>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  AVAILABLE
-                </span>
-              </div>
-
-              <h3 className="text-base font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">
-                Location &amp; Timezone
-              </h3>
-
-              <div className="text-xs font-mono text-zinc-400 flex items-center gap-1.5 mb-3">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Lahore, Pakistan (PKT)</span>
-              </div>
-
-              <div className="p-3 rounded-xl bg-zinc-900/70 border border-white/5 text-center">
-                <span className="text-[10px] font-mono text-zinc-500 block mb-1">CURRENT LOCAL TIME</span>
-                <span className="text-lg font-mono font-bold text-emerald-400 tracking-wider">
-                  {pktTime || '00:00:00 PM'}
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-3 text-[11px] font-mono text-zinc-400 border-t border-white/5 mt-4">
-              <span>Remote &amp; On-Site Support Ready</span>
-            </div>
-          </motion.div>
-
-          {/* Card 4 (Impact & Metrics): lg:col-span-2 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="lg:col-span-2 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-amber-500/30 transition-all duration-300 group h-full"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                  <Trophy className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest font-semibold">
+                <span className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase font-semibold">
                   IMPACT METRICS
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-white mb-3 group-hover:text-amber-300 transition-colors">
-                Engineering Delivery Track Record
-              </h3>
+              {/* Vertically Centered Metrics Grid (4 Stat Blocks) */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-auto py-3">
+                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                  <span className="text-2xl sm:text-3xl font-bold font-mono text-amber-400 block mb-1">
+                    4+ Yrs
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                    Tech Experience
+                  </span>
+                </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <span className="text-xl font-extrabold text-amber-400 font-mono block">4+ Yrs</span>
-                  <span className="text-[10px] font-mono text-zinc-400">Tech Experience</span>
+                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                  <span className="text-2xl sm:text-3xl font-bold font-mono text-cyan-400 block mb-1">
+                    99.9%
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                    System Uptime
+                  </span>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <span className="text-xl font-extrabold text-cyan-400 font-mono block">99.9%</span>
-                  <span className="text-[10px] font-mono text-zinc-400">System Uptime</span>
+
+                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                  <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400 block mb-1">
+                    100%
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                    Delivery Rate
+                  </span>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <span className="text-xl font-extrabold text-emerald-400 font-mono block">100%</span>
-                  <span className="text-[10px] font-mono text-zinc-400">Delivery Rate</span>
-                </div>
-                <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
-                  <span className="text-xl font-extrabold text-purple-400 font-mono block">&lt; 2h</span>
-                  <span className="text-[10px] font-mono text-zinc-400">Avg Response</span>
+
+                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                  <span className="text-2xl sm:text-3xl font-bold font-mono text-purple-400 block mb-1">
+                    &lt; 2h
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                    Avg Response
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/5 text-[11px] font-mono text-emerald-400 flex items-center gap-1.5 font-medium mt-4">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Verified React Next.js, WordPress &amp; Fortinet Deployments</span>
+            {/* Verified Deployments Footer */}
+            <div className="text-xs font-mono text-emerald-400/90 flex items-center gap-1.5 pt-3 border-t border-white/[0.06]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+              <span>Verified React, Next.js, WordPress &amp; Fortinet Deployments</span>
             </div>
           </motion.div>
+
+          {/* ROW 3: Interactive 3D Rubik's Cube Bento Feature Card: md:col-span-3 */}
+          <div className="md:col-span-3">
+            <RubiksCubeCard />
+          </div>
         </div>
       </div>
     </section>

@@ -55,12 +55,12 @@ export const Hero: React.FC = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
 
-      {/* Hero 2-Column Responsive Inner Grid */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10">
-        
-        {/* Left Column (lg:col-span-7): Text */}
+      {/* Hero 12-Column Responsive Inner Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10">
+
+        {/* Left Column (lg:col-span-7): Text & Intro */}
         <div className="lg:col-span-7 flex flex-col items-start text-left space-y-5 w-full">
-          
+
           {/* Status Pill */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -97,7 +97,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3rem] font-extrabold tracking-tight leading-[1.15]"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight leading-[1.15]"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-400 drop-shadow-sm">
               Engineering Scalable Systems
@@ -201,7 +201,7 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right Column (lg:col-span-5): Terminal Container Clamped to max-w-[460px] */}
+        {/* Right Column (lg:col-span-5): Live Client Diagnostic Terminal Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
