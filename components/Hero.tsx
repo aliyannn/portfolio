@@ -4,21 +4,22 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 'lucide-react';
-import { MobileTerminal } from './MobileTerminal';
 
-// Dynamically import 3D Terminal for desktop viewports ONLY with zero SSR overhead
-const DesktopTerminal3D = dynamic(() => import('@/components/3d/DesktopTerminal3D'), {
+// Dynamically import the upgraded Live Telemetry Terminal with zero SSR hydration mismatch
+const Terminal = dynamic(() => import('@/components/Terminal'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[320px] rounded-2xl bg-zinc-950/80 border border-white/10 flex items-center justify-center p-6">
-      <div className="w-8 h-8 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
+    <div className="w-full h-[380px] rounded-2xl bg-zinc-950/80 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3">
+      <div className="w-9 h-9 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
+      <span className="text-xs font-mono text-cyan-300 animate-pulse">
+        Initializing Client Telemetry Node...
+      </span>
     </div>
   ),
 });
 
 export const Hero: React.FC = () => {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [isDesktop, setIsDesktop] = useState<boolean>(false);
 
   const roles = [
     'React & Three.js Engineer',
@@ -27,16 +28,6 @@ export const Hero: React.FC = () => {
     'AI Agent & Vibe Coding Specialist',
     'Full Stack Cloud Integrator',
   ];
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024 && !('ontouchstart' in window));
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,10 +48,8 @@ export const Hero: React.FC = () => {
 
       {/* Hero 12-Column Responsive Inner Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10">
-
         {/* Left Column (lg:col-span-7): Text & Intro */}
         <div className="lg:col-span-7 flex flex-col items-start text-left space-y-5 w-full">
-
           {/* Status Pill */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -139,7 +128,13 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-sm sm:text-base lg:text-lg text-zinc-300 max-w-xl leading-relaxed font-sans"
           >
-            Bridging high-performance <span className="text-cyan-300 font-medium">React &amp; Three.js frontend architectures</span> with robust enterprise <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud automation, and high-velocity AI agent workflows.
+            Bridging high-performance{' '}
+            <span className="text-cyan-300 font-medium">
+              React &amp; Three.js frontend architectures
+            </span>{' '}
+            with robust enterprise{' '}
+            <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud
+            automation, and high-velocity AI agent workflows.
           </motion.p>
 
           {/* Skill Badges */}
@@ -201,14 +196,14 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right Column (lg:col-span-5): Live Client Diagnostic Terminal Card */}
+        {/* Right Column (lg:col-span-5): Upgraded Live Client Diagnostic Terminal Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-5 flex justify-center lg:justify-end items-center w-full max-w-[460px] mx-auto lg:max-w-none pt-4 lg:pt-0"
+          className="lg:col-span-5 flex justify-center lg:justify-end items-center w-full max-w-[560px] mx-auto lg:max-w-none pt-4 lg:pt-0"
         >
-          {isDesktop ? <DesktopTerminal3D /> : <MobileTerminal />}
+          <Terminal />
         </motion.div>
       </div>
     </section>

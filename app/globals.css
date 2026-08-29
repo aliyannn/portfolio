@@ -116,3 +116,20 @@
   animation: marquee 35s linear infinite;
 }
 
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(400%);
+    opacity: 0;
+  }
+}
+

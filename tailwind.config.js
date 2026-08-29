@@ -44,11 +44,18 @@ export default {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 6s ease-in-out infinite',
         'spin-slow': 'spin 20s linear infinite',
+        'scan': 'scan 4.5s ease-in-out infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-15px)' },
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '15%': { opacity: '0.9' },
+          '85%': { opacity: '0.9' },
+          '100%': { transform: 'translateY(400%)', opacity: '0' },
         },
       },
     },
