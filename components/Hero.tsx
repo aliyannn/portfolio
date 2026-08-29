@@ -9,8 +9,8 @@ import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 
 const CyberHologram = dynamic(() => import('@/components/CyberHologram'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[480px] sm:h-[600px] lg:h-[750px] rounded-3xl bg-zinc-950/40 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3 backdrop-blur-xl">
-      <div className="w-10 h-10 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
+    <div className="w-full h-[380px] sm:h-[420px] lg:h-[450px] rounded-2xl bg-zinc-950/40 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3 backdrop-blur-xl">
+      <div className="w-8 h-8 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
       <span className="text-xs font-mono text-cyan-300 animate-pulse tracking-wide">
         Initializing 3D Cyber Hologram...
       </span>
@@ -37,91 +37,79 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative w-full min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
+    <section className="relative w-full min-h-[75vh] flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
       {/* Ambient Lighting Orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
 
-      {/* ====================================================================== */}
-      {/* Single Unified Container Stage (No Column Boundary Clipping) */}
-      {/* ====================================================================== */}
-      <div className="relative max-w-7xl mx-auto w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex items-center overflow-visible">
+      {/* Balanced 50/50 Grid Container */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-visible z-10">
         
-        {/* 🌟 Full-Stage 3D Canvas Layer (Center-Right Unconstrained Stage) */}
-        <div className="relative lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 w-full lg:w-[68%] h-[480px] sm:h-[600px] lg:h-[750px] pointer-events-auto z-0 overflow-visible flex items-center justify-center">
-          <CyberHologram />
-        </div>
-
-        {/* 🌟 Foreground Content Layer (Left Aligned & High Z-Index) */}
-        <div className="relative z-10 max-w-2xl pointer-events-auto flex flex-col items-start text-left space-y-5 w-full pt-4 lg:pt-0">
-          {/* Status Pill */}
+        {/* Left Column (50%): Text & Intro */}
+        <div className="flex flex-col items-start text-left space-y-4 w-full">
+          {/* Status & Intro Badges */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/85 border border-emerald-500/40 backdrop-blur-md shadow-lg shadow-emerald-950/20"
+            transition={{ duration: 0.5 }}
+            className="flex flex-wrap items-center gap-2"
           >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
-            </span>
-            <span className="text-xs font-mono font-medium text-emerald-300 tracking-wide">
-              Open for IT / Full Stack roles
-            </span>
+            {/* Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-md shadow-md shadow-emerald-950/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-[11px] font-mono font-medium text-emerald-300 tracking-wide">
+                Open for IT / Full Stack roles
+              </span>
+            </div>
+
+            {/* Intro Micro-Badge */}
+            <div className="text-xs font-mono py-1 px-3 bg-zinc-900/80 border border-cyan-500/20 text-cyan-400 rounded-full inline-flex items-center gap-1.5 shadow-sm">
+              <span className="font-bold text-cyan-400">&gt;</span>
+              <span className="text-zinc-300">Hi, I'm</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-300 font-bold">
+                Aliyan Gohar
+              </span>
+            </div>
           </motion.div>
 
-          {/* High-Tech Glassmorphic Micro-Badge Intro Line */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-zinc-900/70 border border-cyan-500/20 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)] mb-1 hover:scale-105 hover:border-cyan-400/50 transition-all duration-300 group cursor-default text-lg sm:text-xl md:text-2xl font-mono font-medium tracking-tight"
-          >
-            <span className="text-cyan-400 font-bold animate-pulse">&gt;</span>
-            <span className="text-neutral-300">Hi, I'm</span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 font-bold drop-shadow-[0_0_12px_rgba(6,182,212,0.4)]">
-              Aliyan Gohar
-            </span>
-            <span className="inline-block w-2.5 h-5 bg-cyan-400 ml-1 animate-pulse rounded-sm align-middle shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-          </motion.div>
-
-          {/* Main Headline */}
+          {/* Main Headline (2rem / 32px scaled) */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-tight leading-[1.15]"
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="text-2xl sm:text-[2rem] font-bold tracking-tight text-white leading-tight"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-400 drop-shadow-sm">
-              Engineering Scalable Systems
-            </span>{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 font-extrabold">
+            Engineering Scalable Systems{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
               &amp; High-Performance Web Applications
             </span>
           </motion.h1>
 
           {/* Dynamic Role Transition */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="h-8 flex items-center gap-2 text-xs sm:text-base font-mono text-zinc-300"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="h-7 flex items-center gap-2 text-xs sm:text-sm font-mono text-zinc-300"
           >
             <span className="text-purple-400 font-bold">&gt;</span>
             <span className="text-zinc-400">Spec:</span>
-            <div className="relative overflow-hidden h-7 flex items-center">
+            <div className="relative overflow-hidden h-6 flex items-center">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={roleIndex}
-                  initial={{ y: 20, opacity: 0 }}
+                  initial={{ y: 15, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2.5 py-0.5 rounded border border-cyan-500/30"
+                  exit={{ y: -15, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-500/30 text-xs"
                 >
                   {roles[roleIndex]}
                 </motion.span>
@@ -131,10 +119,10 @@ export const Hero: React.FC = () => {
 
           {/* Subtitle Description */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-sm sm:text-base lg:text-lg text-zinc-300 max-w-xl leading-relaxed font-sans"
+            transition={{ duration: 0.5, delay: 0.22 }}
+            className="text-sm sm:text-base text-neutral-400 leading-relaxed max-w-lg font-sans"
           >
             Bridging high-performance{' '}
             <span className="text-cyan-300 font-medium">
@@ -142,39 +130,39 @@ export const Hero: React.FC = () => {
             </span>{' '}
             with robust enterprise{' '}
             <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud
-            automation, and high-velocity AI agent workflows.
+            automation, and AI agent workflows.
           </motion.p>
 
           {/* Skill Badges */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="flex flex-wrap items-center gap-2 text-xs font-mono text-zinc-400"
+            transition={{ duration: 0.5, delay: 0.28 }}
+            className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-zinc-400"
           >
             <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <Cpu className="w-3.5 h-3.5 text-cyan-400" /> React 18 &amp; R3F
+              <Cpu className="w-3 h-3 text-cyan-400" /> React 18 &amp; R3F
             </span>
             <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> FortiGate 40F Security
+              <ShieldCheck className="w-3 h-3 text-purple-400" /> FortiGate 40F Security
             </span>
             <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Vibe Coding &amp; AI Agents
+              <Sparkles className="w-3 h-3 text-amber-400" /> Vibe Coding &amp; AI
             </span>
           </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap items-center gap-3.5 pt-1"
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex flex-wrap items-center gap-3 pt-1"
           >
             <a
               href="#projects"
-              className="group relative px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-2 overflow-hidden"
+              className="group relative px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 flex items-center gap-2 overflow-hidden"
             >
-              <span className="relative z-10 flex items-center gap-2 text-zinc-950 font-extrabold tracking-wide">
+              <span className="relative z-10 flex items-center gap-1.5 text-zinc-950 font-bold tracking-wide">
                 Explore Projects
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
@@ -185,7 +173,7 @@ export const Hero: React.FC = () => {
               href="https://wa.me/923184321695?text=Hi%20Aliyan,%20I%20viewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity."
               target="_blank"
               rel="noopener noreferrer"
-              className="group px-5 py-3 rounded-xl bg-emerald-950/70 border border-emerald-500/40 hover:border-emerald-400/80 backdrop-blur-xl text-emerald-300 hover:text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-xl hover:shadow-emerald-500/20"
+              className="group px-4 py-2.5 rounded-xl bg-emerald-950/70 border border-emerald-500/40 hover:border-emerald-400/80 backdrop-blur-xl text-emerald-300 hover:text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-emerald-500/20"
             >
               <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
               <span className="font-mono">Let's Connect</span>
@@ -196,13 +184,23 @@ export const Hero: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
-              className="group px-5 py-3 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-xl hover:bg-zinc-800/80"
+              className="group px-4 py-2.5 rounded-xl bg-zinc-900/80 border border-white/15 hover:border-cyan-500/50 backdrop-blur-xl text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-md hover:bg-zinc-800/80"
             >
               <FileDown className="w-4 h-4 text-cyan-400 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform" />
               <span className="font-mono">Download CV</span>
             </a>
           </motion.div>
         </div>
+
+        {/* Right Column (50%): 3D Hologram Restrained Sizing */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="relative w-full h-[380px] sm:h-[420px] lg:h-[450px] flex items-center justify-center overflow-visible"
+        >
+          <CyberHologram />
+        </motion.div>
       </div>
     </section>
   );

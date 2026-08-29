@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
@@ -127,10 +127,9 @@ function parseClientTelemetry(): ClientTelemetry {
 // ======================================================================
 interface HologramSceneProps {
   hoveredNode: string | null;
-  isMobile: boolean;
 }
 
-function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
+function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   const coreGroupRef = useRef<THREE.Group>(null);
   const outerSphereRef = useRef<THREE.Mesh>(null);
   const innerOctaRef = useRef<THREE.Mesh>(null);
@@ -138,12 +137,12 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
   const ring2Ref = useRef<THREE.Mesh>(null);
   const pointsRef = useRef<THREE.Points>(null);
 
-  // Dynamic particle cloud orbiting core
-  const particleCount = 95;
+  // Particle cloud orbiting core
+  const particleCount = 75;
   const positions = useMemo(() => {
     const arr = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.4 + Math.random() * 1.8;
+      const radius = 1.3 + Math.random() * 1.4;
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
       arr[i] = radius * Math.cos(theta) * Math.cos(phi);
@@ -169,7 +168,7 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
     if (innerOctaRef.current) {
       innerOctaRef.current.rotation.x += delta * 0.6;
       innerOctaRef.current.rotation.y += delta * 0.8;
-      const scale = 0.95 + Math.sin(t * 2.5) * 0.09;
+      const scale = 0.9 + Math.sin(t * 2.5) * 0.08;
       innerOctaRef.current.scale.set(scale, scale, scale);
     }
 
@@ -189,17 +188,16 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
   });
 
   const isBoosted = Boolean(hoveredNode);
-  const targetScale = isMobile ? 0.95 : 1.22;
 
   return (
-    <group ref={coreGroupRef} scale={targetScale}>
+    <group ref={coreGroupRef} scale={0.9}>
       {/* Central Inner Pulsing Crystal Core */}
       <mesh ref={innerOctaRef}>
-        <octahedronGeometry args={[0.72, 0]} />
+        <octahedronGeometry args={[0.65, 0]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive={isBoosted ? '#38bdf8' : '#0284c7'}
-          emissiveIntensity={isBoosted ? 1.8 : 1.25}
+          emissiveIntensity={isBoosted ? 1.6 : 1.15}
           roughness={0.1}
           metalness={0.9}
           wireframe={false}
@@ -208,50 +206,50 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
 
       {/* Geodesic Neon Obsidian Wireframe Outer Sphere */}
       <mesh ref={outerSphereRef}>
-        <icosahedronGeometry args={[1.35, 1]} />
+        <icosahedronGeometry args={[1.25, 1]} />
         <meshStandardMaterial
           color="#06b6d4"
           wireframe
           transparent
-          opacity={isBoosted ? 0.8 : 0.5}
+          opacity={isBoosted ? 0.8 : 0.45}
           emissive="#06b6d4"
-          emissiveIntensity={isBoosted ? 1.0 : 0.45}
+          emissiveIntensity={isBoosted ? 0.9 : 0.4}
         />
       </mesh>
 
       {/* Geodesic Vertices Glowing Nodes */}
       <points>
-        <icosahedronGeometry args={[1.36, 1]} />
+        <icosahedronGeometry args={[1.26, 1]} />
         <pointsMaterial
-          size={0.075}
+          size={0.07}
           color="#38bdf8"
           transparent
-          opacity={0.9}
+          opacity={0.85}
           sizeAttenuation
         />
       </points>
 
       {/* Orbital Holographic Cyber Ring 1 (Cyan) */}
       <mesh ref={ring1Ref}>
-        <torusGeometry args={[1.95, 0.022, 16, 80]} />
+        <torusGeometry args={[1.75, 0.02, 16, 80]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive="#06b6d4"
-          emissiveIntensity={1.3}
+          emissiveIntensity={1.2}
           transparent
-          opacity={0.75}
+          opacity={0.7}
         />
       </mesh>
 
       {/* Orbital Holographic Cyber Ring 2 (Indigo/Violet) */}
       <mesh ref={ring2Ref}>
-        <torusGeometry args={[2.32, 0.02, 16, 90]} />
+        <torusGeometry args={[2.08, 0.018, 16, 90]} />
         <meshStandardMaterial
           color="#8b5cf6"
           emissive="#8b5cf6"
-          emissiveIntensity={1.5}
+          emissiveIntensity={1.4}
           transparent
-          opacity={0.65}
+          opacity={0.6}
         />
       </mesh>
 
@@ -264,10 +262,10 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.05}
+          size={0.045}
           color="#a855f7"
           transparent
-          opacity={0.7}
+          opacity={0.65}
           sizeAttenuation
         />
       </points>
@@ -276,28 +274,11 @@ function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
 }
 
 // ======================================================================
-// 3. Responsive Camera Controller
-// ======================================================================
-function CameraController({ isMobile }: { isMobile: boolean }) {
-  const { camera } = useThree();
-  useEffect(() => {
-    if (isMobile) {
-      camera.position.set(0, 0, 8.5);
-    } else {
-      camera.position.set(1.2, 0, 8.5);
-    }
-    camera.updateProjectionMatrix();
-  }, [isMobile, camera]);
-  return null;
-}
-
-// ======================================================================
-// 4. Main CyberHologram Interactive Assembly
+// 3. Main CyberHologram Interactive Assembly
 // ======================================================================
 export const CyberHologram: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Client telemetry
   const [telemetry, setTelemetry] = useState<ClientTelemetry>({
@@ -315,22 +296,13 @@ export const CyberHologram: React.FC = () => {
   useEffect(() => {
     setTelemetry(parseClientTelemetry());
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
     const interval = setInterval(() => {
       setPingMs(Math.floor(22 + Math.random() * 12));
       setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
       setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
     }, 1400);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   // Framer Motion 3D Tilt Spring Physics
@@ -361,20 +333,16 @@ export const CyberHologram: React.FC = () => {
     setHoveredNode(null);
   };
 
-  // Center anchor point inside the visual core
-  const coreCenterX = isMobile ? 270 : 340;
-  const coreCenterY = 250;
-
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full h-full min-h-[480px] sm:min-h-[580px] lg:min-h-[700px] flex items-center justify-center perspective-1000 select-none overflow-visible"
+      className="relative w-full h-[380px] sm:h-[420px] lg:h-[450px] flex items-center justify-center perspective-1000 select-none overflow-visible"
     >
       {/* Ambient Horizon Glow Beams Behind Hologram */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] sm:w-[540px] sm:h-[540px] bg-cyan-500/18 rounded-full blur-[110px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] bg-purple-600/18 rounded-full blur-[120px] pointer-events-none animate-pulse-slow [animation-delay:2s]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] bg-cyan-500/16 rounded-full blur-[80px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] bg-purple-600/16 rounded-full blur-[90px] pointer-events-none animate-pulse-slow [animation-delay:2s]" />
 
       {/* 3D Parallax Assembly Container */}
       <motion.div
@@ -383,7 +351,7 @@ export const CyberHologram: React.FC = () => {
           rotateY,
           transformStyle: 'preserve-3d',
         }}
-        className="relative w-full h-full min-h-[480px] sm:min-h-[580px] lg:min-h-[700px] flex items-center justify-center transform-gpu overflow-visible"
+        className="relative w-full max-w-[480px] h-full flex items-center justify-center transform-gpu overflow-visible"
       >
         {/* ========================================================= */}
         {/* A. Central Three.js WebGL Hologram Canvas */}
@@ -394,7 +362,7 @@ export const CyberHologram: React.FC = () => {
         >
           <WebGLErrorBoundary fallbackTitle="Holographic Core Offline">
             <Canvas
-              camera={{ position: [1.2, 0, 8.5], fov: 46 }}
+              camera={{ position: [0, 0, 7.2], fov: 44 }}
               dpr={[1, 1.5]}
               gl={{
                 antialias: true,
@@ -403,12 +371,11 @@ export const CyberHologram: React.FC = () => {
               }}
               className="w-full h-full overflow-visible"
             >
-              <CameraController isMobile={isMobile} />
-              <ambientLight intensity={0.9} />
-              <pointLight position={[6, 6, 6]} intensity={1.6} color="#38bdf8" />
-              <pointLight position={[-6, -6, -3]} intensity={1.3} color="#a855f7" />
+              <ambientLight intensity={0.85} />
+              <pointLight position={[5, 5, 5]} intensity={1.5} color="#38bdf8" />
+              <pointLight position={[-5, -5, -3]} intensity={1.2} color="#a855f7" />
               <Float speed={1.8} rotationIntensity={0.35} floatIntensity={0.5}>
-                <HolographicCoreMesh hoveredNode={hoveredNode} isMobile={isMobile} />
+                <HolographicCoreMesh hoveredNode={hoveredNode} />
               </Float>
             </Canvas>
           </WebGLErrorBoundary>
@@ -420,8 +387,7 @@ export const CyberHologram: React.FC = () => {
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"
           style={{ transform: 'translateZ(15px)' }}
-          viewBox="0 0 600 500"
-          preserveAspectRatio="none"
+          viewBox="0 0 480 420"
           fill="none"
         >
           <defs>
@@ -449,55 +415,55 @@ export const CyberHologram: React.FC = () => {
             </filter>
           </defs>
 
-          {/* Laser Trace 1: Core -> Node 1 (Top-Right) */}
+          {/* Laser Trace 1: Core (240, 210) -> Node 1 (Top-Right: 370, 50) */}
           <path
-            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 180, ${coreCenterX + 100} 110, 480 65`}
+            d="M 240 210 C 290 160, 330 100, 370 50"
             stroke="url(#laser-grad-node1)"
-            strokeWidth={hoveredNode === 'node1' ? 2.5 : 1.4}
-            strokeDasharray="6 4"
+            strokeWidth={hoveredNode === 'node1' ? 2.2 : 1.3}
+            strokeDasharray="5 4"
             className="transition-all duration-300"
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node1' ? 0.95 : 0.45}
           />
-          <circle r="3" fill="#38bdf8" filter="url(#laser-glow)">
+          <circle r="2.8" fill="#38bdf8" filter="url(#laser-glow)">
             <animateMotion
-              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 180, ${coreCenterX + 100} 110, 480 65`}
+              path="M 240 210 C 290 160, 330 100, 370 50"
               dur={hoveredNode === 'node1' ? '1.2s' : '2.4s'}
               repeatCount="indefinite"
             />
           </circle>
 
-          {/* Laser Trace 2: Core -> Node 2 (Left) */}
+          {/* Laser Trace 2: Core (240, 210) -> Node 2 (Left: 90, 190) */}
           <path
-            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX - 90} 260, 150 240, 75 230`}
+            d="M 240 210 C 180 220, 130 200, 90 190"
             stroke="url(#laser-grad-node2)"
-            strokeWidth={hoveredNode === 'node2' ? 2.5 : 1.4}
+            strokeWidth={hoveredNode === 'node2' ? 2.2 : 1.3}
             strokeDasharray="5 4"
             className="transition-all duration-300"
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node2' ? 0.95 : 0.45}
           />
-          <circle r="3" fill="#818cf8" filter="url(#laser-glow)">
+          <circle r="2.8" fill="#818cf8" filter="url(#laser-glow)">
             <animateMotion
-              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX - 90} 260, 150 240, 75 230`}
+              path="M 240 210 C 180 220, 130 200, 90 190"
               dur={hoveredNode === 'node2' ? '1.1s' : '2.6s'}
               repeatCount="indefinite"
             />
           </circle>
 
-          {/* Laser Trace 3: Core -> Node 3 (Bottom-Right) */}
+          {/* Laser Trace 3: Core (240, 210) -> Node 3 (Bottom-Right: 375, 365) */}
           <path
-            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 320, ${coreCenterX + 110} 390, 485 430`}
+            d="M 240 210 C 285 260, 330 320, 375 365"
             stroke="url(#laser-grad-node3)"
-            strokeWidth={hoveredNode === 'node3' ? 2.5 : 1.4}
-            strokeDasharray="6 4"
+            strokeWidth={hoveredNode === 'node3' ? 2.2 : 1.3}
+            strokeDasharray="5 4"
             className="transition-all duration-300"
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node3' ? 0.95 : 0.45}
           />
-          <circle r="3" fill="#34d399" filter="url(#laser-glow)">
+          <circle r="2.8" fill="#34d399" filter="url(#laser-glow)">
             <animateMotion
-              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 320, ${coreCenterX + 110} 390, 485 430`}
+              path="M 240 210 C 285 260, 330 320, 375 365"
               dur={hoveredNode === 'node3' ? '1.0s' : '2.2s'}
               repeatCount="indefinite"
             />
@@ -514,33 +480,33 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node1')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-2 sm:top-6 right-2 sm:right-6 z-20 transition-all duration-300 ${
+          className={`absolute top-2 right-1 sm:right-3 z-20 transition-all duration-300 ${
             hoveredNode === 'node1' ? 'scale-105' : 'scale-100'
           }`}
-          style={{ transform: 'translateZ(38px)' }}
+          style={{ transform: 'translateZ(36px)' }}
         >
-          <div className="relative group p-[1px] rounded-2xl bg-gradient-to-r from-cyan-500/40 via-white/10 to-teal-500/30 backdrop-blur-xl shadow-[0_12px_32px_-8px_rgba(6,182,212,0.3)] hover:shadow-[0_16px_40px_-5px_rgba(6,182,212,0.5)]">
-            <div className="px-3.5 py-2.5 rounded-2xl bg-zinc-950/85 border border-white/10 flex flex-col gap-1 font-mono text-xs">
-              <div className="flex items-center justify-between gap-3 text-[10px] text-zinc-400">
-                <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-cyan-300">
-                  <Radio className="w-3 h-3 text-cyan-400 animate-pulse" />
+          <div className="relative group p-[1px] rounded-xl bg-gradient-to-r from-cyan-500/40 via-white/10 to-teal-500/30 backdrop-blur-xl shadow-[0_8px_24px_-6px_rgba(6,182,212,0.3)] hover:shadow-[0_12px_32px_-4px_rgba(6,182,212,0.45)]">
+            <div className="px-3 py-2 rounded-xl bg-zinc-950/85 border border-white/10 flex flex-col gap-0.5 font-mono text-xs">
+              <div className="flex items-center justify-between gap-2.5 text-[9.5px] text-zinc-400">
+                <span className="flex items-center gap-1 font-bold uppercase tracking-wider text-cyan-300">
+                  <Radio className="w-2.5 h-2.5 text-cyan-400 animate-pulse" />
                   Live Network Node
                 </span>
-                <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-[9.5px]">
-                  <ShieldCheck className="w-2.5 h-2.5" /> FORTINET ACTIVE
+                <span className="flex items-center gap-1 px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-[8.5px]">
+                  <ShieldCheck className="w-2 h-2" /> FORTINET ACTIVE
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-3 pt-0.5">
-                <div className="flex items-center gap-1.5 text-emerald-300 font-bold text-xs sm:text-sm">
-                  <span className="relative flex h-2 w-2">
+              <div className="flex items-center justify-between gap-2.5 pt-0.5">
+                <div className="flex items-center gap-1 text-emerald-300 font-bold text-[11px] sm:text-xs">
+                  <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
                   </span>
                   <span>{pingMs}ms Latency</span>
                 </div>
 
-                <div className="text-[10.5px] text-zinc-400 flex items-center gap-1">
+                <div className="text-[9.5px] text-zinc-400 flex items-center gap-1">
                   <span className="text-cyan-300">{rxSpeed}</span>
                   <span className="text-zinc-500">⇄</span>
                   <span className="text-emerald-300">{txSpeed}</span>
@@ -556,30 +522,30 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node2')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-[44%] left-0 sm:left-2 z-20 transition-all duration-300 ${
+          className={`absolute top-[42%] left-0 sm:left-1 z-20 transition-all duration-300 ${
             hoveredNode === 'node2' ? 'scale-105' : 'scale-100'
           }`}
-          style={{ transform: 'translateZ(42px)' }}
+          style={{ transform: 'translateZ(40px)' }}
         >
-          <div className="relative group p-[1px] rounded-2xl bg-gradient-to-r from-purple-500/40 via-white/10 to-indigo-500/30 backdrop-blur-xl shadow-[0_12px_32px_-8px_rgba(139,92,246,0.3)] hover:shadow-[0_16px_40px_-5px_rgba(139,92,246,0.5)]">
-            <div className="px-3.5 py-2.5 rounded-2xl bg-zinc-950/85 border border-white/10 flex flex-col gap-1 font-mono text-xs max-w-[210px] sm:max-w-[230px]">
-              <div className="flex items-center justify-between gap-2 text-[10px] text-zinc-400">
-                <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-purple-300">
+          <div className="relative group p-[1px] rounded-xl bg-gradient-to-r from-purple-500/40 via-white/10 to-indigo-500/30 backdrop-blur-xl shadow-[0_8px_24px_-6px_rgba(139,92,246,0.3)] hover:shadow-[0_12px_32px_-4px_rgba(139,92,246,0.45)]">
+            <div className="px-3 py-2 rounded-xl bg-zinc-950/85 border border-white/10 flex flex-col gap-0.5 font-mono text-xs max-w-[190px] sm:max-w-[210px]">
+              <div className="flex items-center justify-between gap-2 text-[9.5px] text-zinc-400">
+                <span className="flex items-center gap-1 font-bold uppercase tracking-wider text-purple-300">
                   {telemetry.deviceType === 'Mobile' ? (
-                    <Smartphone className="w-3 h-3 text-purple-400" />
+                    <Smartphone className="w-2.5 h-2.5 text-purple-400" />
                   ) : (
-                    <Laptop className="w-3 h-3 text-purple-400" />
+                    <Laptop className="w-2.5 h-2.5 text-purple-400" />
                   )}
                   Device Telemetry
                 </span>
-                <span className="text-emerald-400 font-bold text-[10px]">99.9% UPTIME</span>
+                <span className="text-emerald-400 font-bold text-[9px]">99.9% UPTIME</span>
               </div>
 
-              <div className="font-semibold text-white truncate text-xs sm:text-[12.5px] pt-0.5">
+              <div className="font-semibold text-white truncate text-[11px] sm:text-xs pt-0.5">
                 {telemetry.deviceModel}
               </div>
 
-              <div className="text-[10px] text-zinc-400 truncate flex items-center gap-1 pt-0.5">
+              <div className="text-[9px] text-zinc-400 truncate flex items-center gap-1">
                 <span className="text-purple-300">{telemetry.osName}</span>
                 <span className="text-zinc-600">•</span>
                 <span className="text-zinc-400 truncate">{telemetry.gpuName}</span>
@@ -594,34 +560,34 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node3')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute bottom-2 sm:bottom-6 right-2 sm:right-6 z-20 transition-all duration-300 ${
+          className={`absolute bottom-2 right-1 sm:right-3 z-20 transition-all duration-300 ${
             hoveredNode === 'node3' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(34px)' }}
         >
-          <div className="relative group p-[1px] rounded-2xl bg-gradient-to-r from-emerald-500/40 via-cyan-500/20 to-indigo-500/30 backdrop-blur-xl shadow-[0_12px_32px_-8px_rgba(16,185,129,0.3)] hover:shadow-[0_16px_40px_-5px_rgba(16,185,129,0.5)]">
-            <div className="px-3.5 py-2.5 rounded-2xl bg-zinc-950/85 border border-white/10 flex flex-col gap-1.5 font-mono text-xs">
-              <div className="flex items-center justify-between gap-3 text-[10px] text-zinc-400">
-                <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-emerald-300">
-                  <Layers className="w-3 h-3 text-emerald-400" />
+          <div className="relative group p-[1px] rounded-xl bg-gradient-to-r from-emerald-500/40 via-cyan-500/20 to-indigo-500/30 backdrop-blur-xl shadow-[0_8px_24px_-6px_rgba(16,185,129,0.3)] hover:shadow-[0_12px_32px_-4px_rgba(16,185,129,0.45)]">
+            <div className="px-3 py-2 rounded-xl bg-zinc-950/85 border border-white/10 flex flex-col gap-1 font-mono text-xs">
+              <div className="flex items-center justify-between gap-2.5 text-[9.5px] text-zinc-400">
+                <span className="flex items-center gap-1 font-bold uppercase tracking-wider text-emerald-300">
+                  <Layers className="w-2.5 h-2.5 text-emerald-400" />
                   Core Architecture
                 </span>
-                <span className="flex items-center gap-1 text-emerald-400 font-semibold text-[9.5px]">
-                  <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400 animate-pulse" />
+                <span className="flex items-center gap-1 text-emerald-400 font-semibold text-[8.5px]">
+                  <CheckCircle2 className="w-2 h-2 text-emerald-400 animate-pulse" />
                   ONLINE
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-semibold text-zinc-200">
-                <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-[10.5px]">
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold text-zinc-200">
+                <span className="px-1.5 py-0.2 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">
                   React 18
                 </span>
                 <span className="text-zinc-600">•</span>
-                <span className="px-1.5 py-0.5 rounded bg-purple-950/60 border border-purple-500/30 text-purple-300 text-[10.5px]">
-                  Three.js R3F
+                <span className="px-1.5 py-0.2 rounded bg-purple-950/60 border border-purple-500/30 text-purple-300">
+                  Three.js
                 </span>
                 <span className="text-zinc-600">•</span>
-                <span className="px-1.5 py-0.5 rounded bg-zinc-900 border border-white/15 text-white text-[10.5px]">
+                <span className="px-1.5 py-0.2 rounded bg-zinc-900 border border-white/15 text-white">
                   Next.js 14
                 </span>
               </div>
