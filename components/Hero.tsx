@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative w-full min-h-[88vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#030712] transform-gpu">
+    <section className="relative w-full min-h-[88vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -47,7 +47,7 @@ export const Hero: React.FC = () => {
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
 
       {/* Hero 12-Column Responsive Inner Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10 overflow-visible">
         {/* Left Column (lg:col-span-7): Text & Intro */}
         <div className="lg:col-span-7 flex flex-col items-start text-left space-y-5 w-full">
           {/* Status Pill */}
@@ -198,10 +198,10 @@ export const Hero: React.FC = () => {
 
         {/* Right Column (lg:col-span-5): 3D Cyber Node Hologram & Live System Matrix */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-5 flex justify-center lg:justify-end items-center w-full max-w-[560px] mx-auto lg:max-w-none pt-4 lg:pt-0"
+          className="lg:col-span-5 relative w-full h-[450px] sm:h-[500px] lg:h-[550px] flex items-center justify-center lg:justify-end overflow-visible pt-4 lg:pt-0"
         >
           <CyberHologram />
         </motion.div>

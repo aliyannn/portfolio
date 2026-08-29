@@ -7,17 +7,11 @@ import * as THREE from 'three';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   ShieldCheck,
-  Cpu,
   Radio,
-  Sparkles,
-  Zap,
-  Activity,
   CheckCircle2,
-  Server,
   Layers,
   Laptop,
   Smartphone,
-  Maximize2,
 } from 'lucide-react';
 import { WebGLErrorBoundary } from '@/components/3d/3DErrorBoundary';
 
@@ -148,7 +142,7 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   const positions = useMemo(() => {
     const arr = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.4 + Math.random() * 1.5;
+      const radius = 1.3 + Math.random() * 1.3;
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
       arr[i] = radius * Math.cos(theta) * Math.cos(phi);
@@ -198,7 +192,8 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   const isBoosted = Boolean(hoveredNode);
 
   return (
-    <group ref={coreGroupRef} scale={1.15}>
+    // Scaled down by ~18-20% (scale={0.82}) to ensure zero boundary clipping
+    <group ref={coreGroupRef} scale={0.82}>
       {/* Central Inner Pulsing Crystal Core */}
       <mesh ref={innerOctaRef}>
         <octahedronGeometry args={[0.65, 0]} />
@@ -300,13 +295,11 @@ export const CyberHologram: React.FC = () => {
   const [pingMs, setPingMs] = useState<number>(24);
   const [rxSpeed, setRxSpeed] = useState<string>('1.4 MB/s');
   const [txSpeed, setTxSpeed] = useState<string>('840 KB/s');
-  const [packetTick, setPacketTick] = useState<boolean>(false);
 
   useEffect(() => {
     setTelemetry(parseClientTelemetry());
 
     const interval = setInterval(() => {
-      setPacketTick((p) => !p);
       setPingMs(Math.floor(22 + Math.random() * 12));
       setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
       setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
@@ -348,7 +341,7 @@ export const CyberHologram: React.FC = () => {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-center justify-center perspective-1000 select-none py-6"
+      className="relative w-full h-full min-h-[460px] sm:min-h-[500px] lg:min-h-[550px] flex items-center justify-center perspective-1000 select-none py-4 overflow-visible"
     >
       {/* Ambient Horizon Glow Beams Behind Hologram */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] bg-cyan-500/15 rounded-full blur-[90px] pointer-events-none animate-pulse-slow" />
@@ -361,25 +354,25 @@ export const CyberHologram: React.FC = () => {
           rotateY,
           transformStyle: 'preserve-3d',
         }}
-        className="relative w-full max-w-[540px] h-[460px] sm:h-[500px] flex items-center justify-center transform-gpu"
+        className="relative w-full max-w-[560px] h-full min-h-[460px] sm:min-h-[500px] flex items-center justify-center transform-gpu overflow-visible"
       >
         {/* ========================================================= */}
         {/* A. Central Three.js WebGL Hologram Canvas */}
         {/* ========================================================= */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-auto z-10"
+          className="absolute inset-0 flex items-center justify-center pointer-events-auto z-10 overflow-visible"
           style={{ transform: 'translateZ(0px)' }}
         >
           <WebGLErrorBoundary fallbackTitle="Holographic Core Offline">
             <Canvas
-              camera={{ position: [0, 0, 5.2], fov: 48 }}
+              camera={{ position: [0, 0, 9.5], fov: 45 }}
               dpr={[1, 1.5]}
               gl={{
                 antialias: true,
                 alpha: true,
                 powerPreference: 'high-performance',
               }}
-              className="w-full h-full"
+              className="w-full h-full overflow-visible"
             >
               <ambientLight intensity={0.8} />
               <pointLight position={[6, 6, 6]} intensity={1.5} color="#38bdf8" />
