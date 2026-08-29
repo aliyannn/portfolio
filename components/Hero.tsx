@@ -48,7 +48,7 @@ export const Hero: React.FC = () => {
 
       {/* Standardized Max-Width Container (Aligned with Bento Grid and other sections) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center overflow-visible z-10">
-        
+
         {/* Left Column (Aligned precisely with Bento Grid left axis) */}
         <div className="lg:col-span-6 xl:col-span-7 space-y-5 text-left flex flex-col items-start w-full">
           {/* Status & Intro Badges */}

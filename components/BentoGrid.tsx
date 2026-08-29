@@ -13,6 +13,7 @@ import {
   Layers,
   CheckCircle2,
   Globe,
+  Bot,
 } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../src/data/portfolioData';
 import RubiksCubeCard from './RubiksCubeCard';
@@ -86,16 +87,18 @@ export const BentoGrid: React.FC = () => {
         {/* Balanced 3-Column Bento Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto w-full">
           
+          {/* ====================================================================== */}
           {/* ROW 1 LEFT: Card 1 (Bio & Philosophy): md:col-span-2 */}
+          {/* ====================================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="md:col-span-2 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full"
+            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full"
           >
             <div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                   <Code2 className="w-5 h-5" />
                 </div>
@@ -108,28 +111,64 @@ export const BentoGrid: React.FC = () => {
                 Full-Spectrum Engineering Philosophy
               </h3>
 
-              <p className="text-zinc-300 text-sm leading-relaxed mb-6">
+              <p className="text-zinc-300 text-sm leading-relaxed mb-4">
                 {PORTFOLIO_DATA.personalInfo.bio}
               </p>
+
+              {/* 🌟 Active Engineering Focus / Core Pillars Micro-Grid (Fills Row 1 Void) */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 my-4">
+                <div className="p-3 rounded-xl bg-zinc-950/50 border border-white/[0.06] hover:border-cyan-500/30 transition-all flex flex-col justify-center">
+                  <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-300 mb-1">
+                    <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>High-Velocity Web</span>
+                  </div>
+                  <span className="text-[11px] text-zinc-400 leading-snug">
+                    Next.js 14, SSR/ISR, Edge Middleware &amp; Three.js
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-zinc-950/50 border border-white/[0.06] hover:border-purple-500/30 transition-all flex flex-col justify-center">
+                  <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-purple-300 mb-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Infrastructure &amp; Sec</span>
+                  </div>
+                  <span className="text-[11px] text-zinc-400 leading-snug">
+                    Enterprise Fortinet Networks &amp; Automated CI/CD
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-zinc-950/50 border border-white/[0.06] hover:border-amber-500/30 transition-all flex flex-col justify-center">
+                  <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-amber-300 mb-1">
+                    <Bot className="w-3.5 h-3.5 text-amber-400" />
+                    <span>AI Agents &amp; Vibe</span>
+                  </div>
+                  <span className="text-[11px] text-zinc-400 leading-snug">
+                    Autonomous Dev Agents &amp; Prompt Automation
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5 text-xs font-mono">
+            {/* Bottom Tech Pills Anchored at Bottom Edge */}
+            <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5 text-xs font-mono mt-2">
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-cyan-300 flex items-center gap-1.5">
                 <Cpu className="w-3.5 h-3.5 text-cyan-400" /> React 18 &amp; Three.js
               </span>
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-blue-300 flex items-center gap-1.5">
-                <Globe className="w-3.5 h-3.5 text-blue-400" /> WordPress &amp; CMS Architecture
+                <Globe className="w-3.5 h-3.5 text-blue-400" /> WordPress &amp; CMS
               </span>
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-purple-300 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> Fortinet FortiGate 40F
+                <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> FortiGate 40F
               </span>
               <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-white/10 text-amber-300 flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-amber-400" /> Vibe Coding &amp; AI Agents
+                <Zap className="w-3.5 h-3.5 text-amber-400" /> AI Agent Workflows
               </span>
             </div>
           </motion.div>
 
+          {/* ====================================================================== */}
           {/* ROW 1 RIGHT: Card 2 (Core Tech Stack): md:col-span-1 */}
+          {/* ====================================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -208,7 +247,9 @@ export const BentoGrid: React.FC = () => {
             </div>
           </motion.div>
 
+          {/* ====================================================================== */}
           {/* ROW 2 LEFT: Card 3 (Location & Timezone): md:col-span-1 */}
+          {/* ====================================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -236,7 +277,7 @@ export const BentoGrid: React.FC = () => {
 
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  AVAILABLE FOR HIRE
+                  AVAILABLE
                 </span>
               </div>
 
@@ -250,44 +291,38 @@ export const BentoGrid: React.FC = () => {
                 </span>
               </div>
 
-              {/* Compact Overlap Matrix Micro-Grid */}
-              <div className="mb-3">
-                <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 font-semibold">
+              {/* 🌟 Compact 3-Column Overlap Grid */}
+              <div className="mb-2">
+                <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 font-semibold text-center sm:text-left">
                   GLOBAL TIMEZONE OVERLAP
                 </span>
-                <div className="space-y-1.5">
-                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
-                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
-                      🇬🇧 UK / EU
-                    </span>
-                    <span className="text-cyan-300 font-medium">11AM — 8PM</span>
+                <div className="grid grid-cols-3 gap-1.5 text-center my-2">
+                  <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-cyan-500/30 transition-colors">
+                    <span className="text-[10px] text-neutral-400 block">🇬🇧 UK/EU</span>
+                    <span className="text-[11px] font-mono text-cyan-400 font-semibold">11A-8P</span>
                   </div>
-
-                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
-                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
-                      🇺🇸 US (EST)
-                    </span>
-                    <span className="text-indigo-300 font-medium">7AM — 2PM</span>
+                  <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-indigo-500/30 transition-colors">
+                    <span className="text-[10px] text-neutral-400 block">🇺🇸 US EST</span>
+                    <span className="text-[11px] font-mono text-indigo-300 font-semibold">7A-2P</span>
                   </div>
-
-                  <div className="bg-white/[0.03] border border-white/[0.06] py-1.5 px-2.5 rounded-lg text-[11px] font-mono flex items-center justify-between">
-                    <span className="text-zinc-300 font-semibold flex items-center gap-1.5">
-                      🇦🇪 Gulf
-                    </span>
-                    <span className="text-emerald-300 font-medium">Full Alignment</span>
+                  <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-emerald-500/30 transition-colors">
+                    <span className="text-[10px] text-neutral-400 block">🇦🇪 Gulf</span>
+                    <span className="text-[11px] font-mono text-emerald-400 font-semibold">Full Day</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="pt-2 text-[10px] font-mono text-zinc-400 border-t border-white/5 flex items-center gap-1">
+            <div className="pt-2 text-[10px] font-mono text-zinc-400 border-t border-white/5 flex items-center gap-1 mt-2">
               <Zap className="w-3 h-3 text-amber-400 flex-shrink-0" />
               <span>⚡ SLA: &lt; 2h Response • Remote Ready</span>
             </div>
           </motion.div>
 
+          {/* ====================================================================== */}
           {/* ROW 2 RIGHT: Card 4 (Engineering Delivery Track Record): md:col-span-2 */}
+          {/* ====================================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -297,23 +332,28 @@ export const BentoGrid: React.FC = () => {
           >
             <div>
               {/* Header Row */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
                     <Trophy className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-amber-300 transition-colors">
-                    Engineering Delivery Track Record
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-amber-300 transition-colors">
+                      Engineering Delivery Track Record
+                    </h3>
+                    <p className="text-xs text-neutral-400 mt-0.5">
+                      Key engineering benchmarks across multi-stack production systems.
+                    </p>
+                  </div>
                 </div>
                 <span className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase font-semibold">
                   IMPACT METRICS
                 </span>
               </div>
 
-              {/* Vertically Centered Metrics Grid (4 Stat Blocks) */}
+              {/* 🌟 Vertically Centered Tall Metric Boxes */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-auto py-3">
-                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                <div className="py-6 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
                   <span className="text-2xl sm:text-3xl font-bold font-mono text-amber-400 block mb-1">
                     4+ Yrs
                   </span>
@@ -322,7 +362,7 @@ export const BentoGrid: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                <div className="py-6 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
                   <span className="text-2xl sm:text-3xl font-bold font-mono text-cyan-400 block mb-1">
                     99.9%
                   </span>
@@ -331,7 +371,7 @@ export const BentoGrid: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                <div className="py-6 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
                   <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400 block mb-1">
                     100%
                   </span>
@@ -340,7 +380,7 @@ export const BentoGrid: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="py-5 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
+                <div className="py-6 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
                   <span className="text-2xl sm:text-3xl font-bold font-mono text-purple-400 block mb-1">
                     &lt; 2h
                   </span>
@@ -358,7 +398,9 @@ export const BentoGrid: React.FC = () => {
             </div>
           </motion.div>
 
+          {/* ====================================================================== */}
           {/* ROW 3: Interactive 3D Rubik's Cube Bento Feature Card: md:col-span-3 */}
+          {/* ====================================================================== */}
           <div className="md:col-span-3">
             <RubiksCubeCard />
           </div>
