@@ -9,7 +9,7 @@ import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 
 const CyberHologram = dynamic(() => import('@/components/CyberHologram'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[460px] sm:h-[500px] rounded-3xl bg-zinc-950/40 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3 backdrop-blur-xl">
+    <div className="w-full h-[480px] sm:h-[600px] lg:h-[750px] rounded-3xl bg-zinc-950/40 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3 backdrop-blur-xl">
       <div className="w-10 h-10 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
       <span className="text-xs font-mono text-cyan-300 animate-pulse tracking-wide">
         Initializing 3D Cyber Hologram...
@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative w-full min-h-[88vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
+    <section className="relative w-full min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -46,16 +46,24 @@ export const Hero: React.FC = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-600/12 rounded-full blur-[180px] pointer-events-none" />
 
-      {/* Hero 12-Column Responsive Inner Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-10 overflow-visible">
-        {/* Left Column (lg:col-span-7): Text & Intro */}
-        <div className="lg:col-span-7 flex flex-col items-start text-left space-y-5 w-full">
+      {/* ====================================================================== */}
+      {/* Single Unified Container Stage (No Column Boundary Clipping) */}
+      {/* ====================================================================== */}
+      <div className="relative max-w-7xl mx-auto w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex items-center overflow-visible">
+        
+        {/* 🌟 Full-Stage 3D Canvas Layer (Center-Right Unconstrained Stage) */}
+        <div className="relative lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 w-full lg:w-[68%] h-[480px] sm:h-[600px] lg:h-[750px] pointer-events-auto z-0 overflow-visible flex items-center justify-center">
+          <CyberHologram />
+        </div>
+
+        {/* 🌟 Foreground Content Layer (Left Aligned & High Z-Index) */}
+        <div className="relative z-10 max-w-2xl pointer-events-auto flex flex-col items-start text-left space-y-5 w-full pt-4 lg:pt-0">
           {/* Status Pill */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-md shadow-lg shadow-emerald-950/20"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/85 border border-emerald-500/40 backdrop-blur-md shadow-lg shadow-emerald-950/20"
           >
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -71,7 +79,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-zinc-900/60 border border-cyan-500/20 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)] mb-1 hover:scale-105 hover:border-cyan-400/50 transition-all duration-300 group cursor-default text-lg sm:text-xl md:text-2xl font-mono font-medium tracking-tight"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-zinc-900/70 border border-cyan-500/20 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(6,182,212,0.3)] mb-1 hover:scale-105 hover:border-cyan-400/50 transition-all duration-300 group cursor-default text-lg sm:text-xl md:text-2xl font-mono font-medium tracking-tight"
           >
             <span className="text-cyan-400 font-bold animate-pulse">&gt;</span>
             <span className="text-neutral-300">Hi, I'm</span>
@@ -195,16 +203,6 @@ export const Hero: React.FC = () => {
             </a>
           </motion.div>
         </div>
-
-        {/* Right Column (lg:col-span-5): 3D Cyber Node Hologram & Live System Matrix */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-5 relative w-full h-[450px] sm:h-[500px] lg:h-[550px] flex items-center justify-center lg:justify-end overflow-visible pt-4 lg:pt-0"
-        >
-          <CyberHologram />
-        </motion.div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
@@ -127,9 +127,10 @@ function parseClientTelemetry(): ClientTelemetry {
 // ======================================================================
 interface HologramSceneProps {
   hoveredNode: string | null;
+  isMobile: boolean;
 }
 
-function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
+function HolographicCoreMesh({ hoveredNode, isMobile }: HologramSceneProps) {
   const coreGroupRef = useRef<THREE.Group>(null);
   const outerSphereRef = useRef<THREE.Mesh>(null);
   const innerOctaRef = useRef<THREE.Mesh>(null);
@@ -138,11 +139,11 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   const pointsRef = useRef<THREE.Points>(null);
 
   // Dynamic particle cloud orbiting core
-  const particleCount = 70;
+  const particleCount = 95;
   const positions = useMemo(() => {
     const arr = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.3 + Math.random() * 1.3;
+      const radius = 1.4 + Math.random() * 1.8;
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
       arr[i] = radius * Math.cos(theta) * Math.cos(phi);
@@ -156,21 +157,19 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
     const t = state.clock.getElapsedTime();
 
     if (coreGroupRef.current) {
-      // Gentle core float and rotation
       coreGroupRef.current.rotation.y = t * 0.25;
       coreGroupRef.current.rotation.x = Math.sin(t * 0.3) * 0.1;
     }
 
     if (outerSphereRef.current) {
-      outerSphereRef.current.rotation.y -= delta * 0.35;
-      outerSphereRef.current.rotation.z += delta * 0.15;
+      outerSphereRef.current.rotation.y -= delta * 0.32;
+      outerSphereRef.current.rotation.z += delta * 0.14;
     }
 
     if (innerOctaRef.current) {
       innerOctaRef.current.rotation.x += delta * 0.6;
       innerOctaRef.current.rotation.y += delta * 0.8;
-      // Pulse inner core scale
-      const scale = 0.85 + Math.sin(t * 2.5) * 0.08;
+      const scale = 0.95 + Math.sin(t * 2.5) * 0.09;
       innerOctaRef.current.scale.set(scale, scale, scale);
     }
 
@@ -190,17 +189,17 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   });
 
   const isBoosted = Boolean(hoveredNode);
+  const targetScale = isMobile ? 0.95 : 1.22;
 
   return (
-    // Scaled down by ~18-20% (scale={0.82}) to ensure zero boundary clipping
-    <group ref={coreGroupRef} scale={0.82}>
+    <group ref={coreGroupRef} scale={targetScale}>
       {/* Central Inner Pulsing Crystal Core */}
       <mesh ref={innerOctaRef}>
-        <octahedronGeometry args={[0.65, 0]} />
+        <octahedronGeometry args={[0.72, 0]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive={isBoosted ? '#38bdf8' : '#0284c7'}
-          emissiveIntensity={isBoosted ? 1.6 : 1.1}
+          emissiveIntensity={isBoosted ? 1.8 : 1.25}
           roughness={0.1}
           metalness={0.9}
           wireframe={false}
@@ -209,50 +208,50 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
 
       {/* Geodesic Neon Obsidian Wireframe Outer Sphere */}
       <mesh ref={outerSphereRef}>
-        <icosahedronGeometry args={[1.25, 1]} />
+        <icosahedronGeometry args={[1.35, 1]} />
         <meshStandardMaterial
           color="#06b6d4"
           wireframe
           transparent
-          opacity={isBoosted ? 0.75 : 0.45}
+          opacity={isBoosted ? 0.8 : 0.5}
           emissive="#06b6d4"
-          emissiveIntensity={isBoosted ? 0.9 : 0.4}
+          emissiveIntensity={isBoosted ? 1.0 : 0.45}
         />
       </mesh>
 
       {/* Geodesic Vertices Glowing Nodes */}
       <points>
-        <icosahedronGeometry args={[1.26, 1]} />
+        <icosahedronGeometry args={[1.36, 1]} />
         <pointsMaterial
-          size={0.07}
+          size={0.075}
           color="#38bdf8"
           transparent
-          opacity={0.85}
+          opacity={0.9}
           sizeAttenuation
         />
       </points>
 
       {/* Orbital Holographic Cyber Ring 1 (Cyan) */}
       <mesh ref={ring1Ref}>
-        <torusGeometry args={[1.75, 0.02, 16, 80]} />
+        <torusGeometry args={[1.95, 0.022, 16, 80]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive="#06b6d4"
-          emissiveIntensity={1.2}
+          emissiveIntensity={1.3}
           transparent
-          opacity={0.7}
+          opacity={0.75}
         />
       </mesh>
 
       {/* Orbital Holographic Cyber Ring 2 (Indigo/Violet) */}
       <mesh ref={ring2Ref}>
-        <torusGeometry args={[2.05, 0.018, 16, 90]} />
+        <torusGeometry args={[2.32, 0.02, 16, 90]} />
         <meshStandardMaterial
           color="#8b5cf6"
           emissive="#8b5cf6"
-          emissiveIntensity={1.4}
+          emissiveIntensity={1.5}
           transparent
-          opacity={0.6}
+          opacity={0.65}
         />
       </mesh>
 
@@ -265,10 +264,10 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.045}
+          size={0.05}
           color="#a855f7"
           transparent
-          opacity={0.65}
+          opacity={0.7}
           sizeAttenuation
         />
       </points>
@@ -277,11 +276,28 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
 }
 
 // ======================================================================
-// 3. Main CyberHologram Interactive Assembly
+// 3. Responsive Camera Controller
+// ======================================================================
+function CameraController({ isMobile }: { isMobile: boolean }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    if (isMobile) {
+      camera.position.set(0, 0, 8.5);
+    } else {
+      camera.position.set(1.2, 0, 8.5);
+    }
+    camera.updateProjectionMatrix();
+  }, [isMobile, camera]);
+  return null;
+}
+
+// ======================================================================
+// 4. Main CyberHologram Interactive Assembly
 // ======================================================================
 export const CyberHologram: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Client telemetry
   const [telemetry, setTelemetry] = useState<ClientTelemetry>({
@@ -299,24 +315,33 @@ export const CyberHologram: React.FC = () => {
   useEffect(() => {
     setTelemetry(parseClientTelemetry());
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const interval = setInterval(() => {
       setPingMs(Math.floor(22 + Math.random() * 12));
       setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
       setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
     }, 1400);
 
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearInterval(interval);
+    };
   }, []);
 
   // Framer Motion 3D Tilt Spring Physics
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
     stiffness: 160,
     damping: 22,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), {
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
     stiffness: 160,
     damping: 22,
   });
@@ -336,16 +361,20 @@ export const CyberHologram: React.FC = () => {
     setHoveredNode(null);
   };
 
+  // Center anchor point inside the visual core
+  const coreCenterX = isMobile ? 270 : 340;
+  const coreCenterY = 250;
+
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full h-full min-h-[460px] sm:min-h-[500px] lg:min-h-[550px] flex items-center justify-center perspective-1000 select-none py-4 overflow-visible"
+      className="relative w-full h-full min-h-[480px] sm:min-h-[580px] lg:min-h-[700px] flex items-center justify-center perspective-1000 select-none overflow-visible"
     >
       {/* Ambient Horizon Glow Beams Behind Hologram */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] bg-cyan-500/15 rounded-full blur-[90px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] bg-purple-600/15 rounded-full blur-[100px] pointer-events-none animate-pulse-slow [animation-delay:2s]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] sm:w-[540px] sm:h-[540px] bg-cyan-500/18 rounded-full blur-[110px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] bg-purple-600/18 rounded-full blur-[120px] pointer-events-none animate-pulse-slow [animation-delay:2s]" />
 
       {/* 3D Parallax Assembly Container */}
       <motion.div
@@ -354,18 +383,18 @@ export const CyberHologram: React.FC = () => {
           rotateY,
           transformStyle: 'preserve-3d',
         }}
-        className="relative w-full max-w-[560px] h-full min-h-[460px] sm:min-h-[500px] flex items-center justify-center transform-gpu overflow-visible"
+        className="relative w-full h-full min-h-[480px] sm:min-h-[580px] lg:min-h-[700px] flex items-center justify-center transform-gpu overflow-visible"
       >
         {/* ========================================================= */}
         {/* A. Central Three.js WebGL Hologram Canvas */}
         {/* ========================================================= */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-auto z-10 overflow-visible"
+          className="absolute inset-0 flex items-center justify-center pointer-events-auto z-0 overflow-visible"
           style={{ transform: 'translateZ(0px)' }}
         >
           <WebGLErrorBoundary fallbackTitle="Holographic Core Offline">
             <Canvas
-              camera={{ position: [0, 0, 9.5], fov: 45 }}
+              camera={{ position: [1.2, 0, 8.5], fov: 46 }}
               dpr={[1, 1.5]}
               gl={{
                 antialias: true,
@@ -374,11 +403,12 @@ export const CyberHologram: React.FC = () => {
               }}
               className="w-full h-full overflow-visible"
             >
-              <ambientLight intensity={0.8} />
-              <pointLight position={[6, 6, 6]} intensity={1.5} color="#38bdf8" />
-              <pointLight position={[-6, -6, -3]} intensity={1.2} color="#a855f7" />
-              <Float speed={1.8} rotationIntensity={0.4} floatIntensity={0.6}>
-                <HolographicCoreMesh hoveredNode={hoveredNode} />
+              <CameraController isMobile={isMobile} />
+              <ambientLight intensity={0.9} />
+              <pointLight position={[6, 6, 6]} intensity={1.6} color="#38bdf8" />
+              <pointLight position={[-6, -6, -3]} intensity={1.3} color="#a855f7" />
+              <Float speed={1.8} rotationIntensity={0.35} floatIntensity={0.5}>
+                <HolographicCoreMesh hoveredNode={hoveredNode} isMobile={isMobile} />
               </Float>
             </Canvas>
           </WebGLErrorBoundary>
@@ -388,9 +418,10 @@ export const CyberHologram: React.FC = () => {
         {/* B. SVG Dynamic Laser Connecting Circuit Traces */}
         {/* ========================================================= */}
         <svg
-          className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible"
+          className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"
           style={{ transform: 'translateZ(15px)' }}
-          viewBox="0 0 540 500"
+          viewBox="0 0 600 500"
+          preserveAspectRatio="none"
           fill="none"
         >
           <defs>
@@ -418,9 +449,9 @@ export const CyberHologram: React.FC = () => {
             </filter>
           </defs>
 
-          {/* Laser Trace 1: Core (270, 250) -> Node 1 (Top-Right: 400, 75) */}
+          {/* Laser Trace 1: Core -> Node 1 (Top-Right) */}
           <path
-            d="M 270 250 C 330 200, 360 130, 400 75"
+            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 180, ${coreCenterX + 100} 110, 480 65`}
             stroke="url(#laser-grad-node1)"
             strokeWidth={hoveredNode === 'node1' ? 2.5 : 1.4}
             strokeDasharray="6 4"
@@ -428,18 +459,17 @@ export const CyberHologram: React.FC = () => {
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node1' ? 0.95 : 0.45}
           />
-          {/* Animated Data Pulse on Trace 1 */}
           <circle r="3" fill="#38bdf8" filter="url(#laser-glow)">
             <animateMotion
-              path="M 270 250 C 330 200, 360 130, 400 75"
+              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 180, ${coreCenterX + 100} 110, 480 65`}
               dur={hoveredNode === 'node1' ? '1.2s' : '2.4s'}
               repeatCount="indefinite"
             />
           </circle>
 
-          {/* Laser Trace 2: Core (270, 250) -> Node 2 (Left: 105, 230) */}
+          {/* Laser Trace 2: Core -> Node 2 (Left) */}
           <path
-            d="M 270 250 C 200 260, 150 240, 105 230"
+            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX - 90} 260, 150 240, 75 230`}
             stroke="url(#laser-grad-node2)"
             strokeWidth={hoveredNode === 'node2' ? 2.5 : 1.4}
             strokeDasharray="5 4"
@@ -447,18 +477,17 @@ export const CyberHologram: React.FC = () => {
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node2' ? 0.95 : 0.45}
           />
-          {/* Animated Data Pulse on Trace 2 */}
           <circle r="3" fill="#818cf8" filter="url(#laser-glow)">
             <animateMotion
-              path="M 270 250 C 200 260, 150 240, 105 230"
+              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX - 90} 260, 150 240, 75 230`}
               dur={hoveredNode === 'node2' ? '1.1s' : '2.6s'}
               repeatCount="indefinite"
             />
           </circle>
 
-          {/* Laser Trace 3: Core (270, 250) -> Node 3 (Bottom-Right: 410, 420) */}
+          {/* Laser Trace 3: Core -> Node 3 (Bottom-Right) */}
           <path
-            d="M 270 250 C 320 300, 370 370, 410 420"
+            d={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 320, ${coreCenterX + 110} 390, 485 430`}
             stroke="url(#laser-grad-node3)"
             strokeWidth={hoveredNode === 'node3' ? 2.5 : 1.4}
             strokeDasharray="6 4"
@@ -466,10 +495,9 @@ export const CyberHologram: React.FC = () => {
             filter="url(#laser-glow)"
             opacity={hoveredNode === 'node3' ? 0.95 : 0.45}
           />
-          {/* Animated Data Pulse on Trace 3 */}
           <circle r="3" fill="#34d399" filter="url(#laser-glow)">
             <animateMotion
-              path="M 270 250 C 320 300, 370 370, 410 420"
+              path={`M ${coreCenterX} ${coreCenterY} C ${coreCenterX + 70} 320, ${coreCenterX + 110} 390, 485 430`}
               dur={hoveredNode === 'node3' ? '1.0s' : '2.2s'}
               repeatCount="indefinite"
             />
@@ -486,7 +514,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node1')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-3 sm:top-5 right-2 sm:right-4 z-30 transition-all duration-300 ${
+          className={`absolute top-2 sm:top-6 right-2 sm:right-6 z-20 transition-all duration-300 ${
             hoveredNode === 'node1' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(38px)' }}
@@ -528,7 +556,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node2')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-[40%] left-0 sm:left-2 z-30 transition-all duration-300 ${
+          className={`absolute top-[44%] left-0 sm:left-2 z-20 transition-all duration-300 ${
             hoveredNode === 'node2' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(42px)' }}
@@ -566,7 +594,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node3')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute bottom-3 sm:bottom-5 right-2 sm:right-4 z-30 transition-all duration-300 ${
+          className={`absolute bottom-2 sm:bottom-6 right-2 sm:right-6 z-20 transition-all duration-300 ${
             hoveredNode === 'node3' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(34px)' }}
