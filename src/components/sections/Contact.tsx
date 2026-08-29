@@ -1,16 +1,32 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Send, CheckCircle2, Loader2, Mail, MapPin, Phone, Github, Linkedin, Sparkles, MessageSquare, FileText, Download } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Send,
+  CheckCircle2,
+  Loader2,
+  Mail,
+  MapPin,
+  Phone,
+  Github,
+  Linkedin,
+  MessageSquare,
+  Download,
+  AlertCircle,
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PORTFOLIO_DATA } from '../../data/portfolioData';
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
-
-  const [errorMessage, setErrorMessage] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,8 +36,8 @@ export const Contact: React.FC = () => {
     setErrorMessage('');
 
     try {
-      // Direct POST to Next.js Server Route (/api/contact) powered by Resend
-      const response = await fetch('/api/contact', {
+      // Direct POST to Next.js API Route (/api/send) powered by Resend
+      const response = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -29,40 +45,29 @@ export const Contact: React.FC = () => {
 
       const data = await response.json();
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Failed to dispatch email');
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Failed to send message. Please try again.');
       }
 
       setStatus('success');
       try {
         confetti({
-          particleCount: 90,
-          spread: 75,
+          particleCount: 80,
+          spread: 70,
           origin: { y: 0.7 },
-          colors: ['#06B6D4', '#8B5CF6', '#6366F1', '#10B981'],
+          colors: ['#06B6D4', '#8B5CF6', '#10B981', '#38BDF8'],
         });
       } catch {}
 
+      // Reset form after success
       setTimeout(() => {
         setFormData({ name: '', email: '', subject: '', message: '' });
         setStatus('idle');
-      }, 4000);
+      }, 5000);
     } catch (error: any) {
       console.error('Contact submission error:', error);
-      
-      // Automatic mailto trigger if API route fails
-      const mailtoUrl = `mailto:aliyangohar00@outlook.com?subject=${encodeURIComponent(
-        formData.subject || 'Portfolio Inquiry'
-      )}&body=${encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-      )}`;
-      window.location.href = mailtoUrl;
-
-      setStatus('success');
-      setTimeout(() => {
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setStatus('idle');
-      }, 4000);
+      setStatus('error');
+      setErrorMessage(error?.message || 'Something went wrong. Please try again or email directly.');
     }
   };
 
@@ -77,10 +82,10 @@ export const Contact: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-cyan-glow/20"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-sm"
         >
           <Mail className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Let's Connect</span>
+          <span>LET'S CONNECT</span>
         </motion.div>
 
         <motion.h2
@@ -88,10 +93,12 @@ export const Contact: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="font-display text-3xl sm:text-5xl font-extrabold text-white"
+          className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight"
         >
           Have a Project or Role in Mind? <br className="hidden sm:block" />
-          <span className="text-gradient-accent">Let's Build Together</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
+            Let's Build Together
+          </span>
         </motion.h2>
 
         <motion.p
@@ -101,7 +108,7 @@ export const Contact: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="text-slate-400 max-w-xl text-sm sm:text-base"
         >
-          Reach out for software engineering opportunities, network infrastructure support, or frontend visualizer projects.
+          Reach out for software engineering opportunities, network infrastructure support, or custom web applications.
         </motion.p>
       </div>
 
@@ -113,7 +120,7 @@ export const Contact: React.FC = () => {
           viewport={{ once: true }}
           className="lg:col-span-5 space-y-8"
         >
-          <div className="glass-card p-8 rounded-3xl space-y-6 border border-white/10">
+          <div className="p-7 sm:p-8 rounded-3xl space-y-6 bg-zinc-900/40 border border-white/10 backdrop-blur-xl shadow-xl">
             <h3 className="font-display text-2xl font-bold text-white">Direct Contact</h3>
             <p className="text-slate-300 text-sm leading-relaxed">
               Based in {PORTFOLIO_DATA.personalInfo.location}. Open for hybrid and full-time remote engineering roles worldwide.
@@ -136,7 +143,7 @@ export const Contact: React.FC = () => {
                 </div>
               </a>
 
-              {/* Direct Phone & SIM Call */}
+              {/* Direct Phone */}
               <a
                 href="tel:+923184321695"
                 className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/40 transition-colors group"
@@ -184,13 +191,13 @@ export const Contact: React.FC = () => {
 
             {/* Social Buttons & Resume */}
             <div className="pt-4 border-t border-white/10 space-y-3">
-              <span className="text-xs font-mono uppercase text-slate-400 block">Verified Profiles & Resume</span>
+              <span className="text-xs font-mono uppercase text-slate-400 block">Profiles &amp; Resume</span>
               <div className="flex flex-wrap items-center gap-2.5">
                 <a
                   href={PORTFOLIO_DATA.personalInfo.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
+                  className="px-4 py-2 rounded-full bg-zinc-900/80 border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
                 >
                   <Github className="w-4 h-4" /> GitHub
                 </a>
@@ -198,7 +205,7 @@ export const Contact: React.FC = () => {
                   href={PORTFOLIO_DATA.personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-full glass-card border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
+                  className="px-4 py-2 rounded-full bg-zinc-900/80 border border-white/10 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105"
                 >
                   <Linkedin className="w-4 h-4" /> LinkedIn
                 </a>
@@ -207,7 +214,7 @@ export const Contact: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   download="Aliyan_Gohar_Software_Engineer_Resume.pdf"
-                  className="px-4 py-2 rounded-full glass-card border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-cyan-glow/20"
+                  className="px-4 py-2 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-sm"
                 >
                   <Download className="w-4 h-4 text-cyan-400" /> Download CV
                 </a>
@@ -223,7 +230,10 @@ export const Contact: React.FC = () => {
           viewport={{ once: true }}
           className="lg:col-span-7"
         >
-          <form onSubmit={handleSubmit} className="glass-card p-8 sm:p-10 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden border border-white/10">
+          <form
+            onSubmit={handleSubmit}
+            className="p-8 sm:p-10 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden bg-zinc-900/40 border border-white/10 backdrop-blur-xl"
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Name Field */}
               <div className="space-y-2">
@@ -234,7 +244,7 @@ export const Contact: React.FC = () => {
                   placeholder="e.g. Sarah Jenkins"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm font-sans"
                 />
               </div>
 
@@ -247,7 +257,7 @@ export const Contact: React.FC = () => {
                   placeholder="sarah@company.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm font-sans"
                 />
               </div>
             </div>
@@ -260,7 +270,7 @@ export const Contact: React.FC = () => {
                 placeholder="Software Engineering Role / Project Inquiry"
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm"
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm font-sans"
               />
             </div>
 
@@ -273,33 +283,59 @@ export const Contact: React.FC = () => {
                 placeholder="Tell me about your project, timeline, or engineering opportunity..."
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm resize-none"
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-950/60 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-sm resize-none font-sans"
               />
             </div>
+
+            {/* Error Notification Banner */}
+            <AnimatePresence>
+              {status === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="p-3.5 rounded-xl bg-red-950/50 border border-red-500/40 text-red-300 text-xs font-mono flex items-center gap-2"
+                >
+                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  <span>{errorMessage}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Glowing Dynamic Submit Button */}
             <button
               type="submit"
-              disabled={status !== 'idle'}
+              disabled={status === 'sending' || status === 'success'}
               className={`w-full py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
                 status === 'success'
-                  ? 'bg-emerald-500 text-slate-950 shadow-lg'
-                  : 'bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white shadow-cyan-glow hover:shadow-violet-glow hover:scale-[1.01]'
+                  ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25'
+                  : status === 'sending'
+                  ? 'bg-zinc-800 text-zinc-400 cursor-not-allowed border border-white/10'
+                  : 'bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:scale-[1.01]'
               }`}
             >
               {status === 'sending' && (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" /> Sending Message...
+                  <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
+                  <span>Sending Message...</span>
                 </>
               )}
               {status === 'success' && (
                 <>
-                  <CheckCircle2 className="w-5 h-5" /> Message Sent Successfully!
+                  <CheckCircle2 className="w-5 h-5 text-zinc-950" />
+                  <span className="font-bold">✓ Message Sent Successfully!</span>
                 </>
               )}
               {status === 'idle' && (
                 <>
-                  Send Message <Send className="w-4 h-4" />
+                  <span>Send Message</span>
+                  <Send className="w-4 h-4" />
+                </>
+              )}
+              {status === 'error' && (
+                <>
+                  <span>Try Again</span>
+                  <Send className="w-4 h-4" />
                 </>
               )}
             </button>
@@ -309,3 +345,5 @@ export const Contact: React.FC = () => {
     </section>
   );
 };
+
+export default Contact;

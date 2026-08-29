@@ -1,0 +1,107 @@
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function POST(req: Request) {
+  try {
+    const { name, email, subject, message } = await req.json();
+
+    // 1. Validate required fields
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: 'Name, email, and message are required fields.' },
+        { status: 400 }
+      );
+    }
+
+    // 2. Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Please provide a valid email address.' },
+        { status: 400 }
+      );
+    }
+
+    const emailSubject = subject?.trim()
+      ? `New Portfolio Message: ${subject} (from ${name})`
+      : `New Portfolio Message from ${name}`;
+
+    const timestamp = new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Karachi',
+      dateStyle: 'full',
+      timeStyle: 'medium',
+    });
+
+    // 3. Send email using Resend SDK
+    const { data, error } = await resend.emails.send({
+      from: 'Portfolio Visitor <onboarding@resend.dev>', // Resend verified/onboarding sender
+      to: ['aliyangohar00@outlook.com'],                 // Destination inbox
+      replyTo: email,                                     // Direct reply to visitor
+      subject: emailSubject,
+      text: `Sender Name: ${name}\nSender Email: ${email}\nTimestamp: ${timestamp} (PKT)\n\nMessage:\n${message}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #030712; color: #f3f4f6; margin: 0; padding: 24px; }
+              .container { max-width: 580px; margin: 0 auto; background-color: #090d16; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+              .badge { display: inline-block; padding: 4px 12px; background-color: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); color: #22d3ee; font-size: 11px; font-family: monospace; border-radius: 9999px; margin-bottom: 16px; text-transform: uppercase; font-weight: 600; }
+              h1 { font-size: 20px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+              .meta-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+              .meta-table td { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+              .meta-label { color: #9ca3af; font-family: monospace; width: 100px; }
+              .meta-value { color: #f3f4f6; font-weight: 600; }
+              .message-box { background-color: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid #06b6d4; padding: 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #e5e7eb; white-space: pre-wrap; margin-top: 14px; }
+              .footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 11px; font-family: monospace; color: #6b7280; text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="badge">★ Portfolio Direct Message</div>
+              <h1>Inquiry from ${name}</h1>
+              
+              <table class="meta-table">
+                <tr>
+                  <td class="meta-label">FROM:</td>
+                  <td class="meta-value">${name}</td>
+                </tr>
+                <tr>
+                  <td class="meta-label">EMAIL:</td>
+                  <td class="meta-value"><a href="mailto:${email}" style="color:#38bdf8; text-decoration:none;">${email}</a></td>
+                </tr>
+                <tr>
+                  <td class="meta-label">TIME:</td>
+                  <td class="meta-value">${timestamp}</td>
+                </tr>
+              </table>
+
+              <div style="font-size: 12px; font-family: monospace; color: #9ca3af;">MESSAGE:</div>
+              <div class="message-box">${message}</div>
+
+              <div class="footer">
+                Delivered automatically via Resend • Aliyan Gohar Portfolio
+              </div>
+            </div>
+          </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Resend delivery error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, data }, { status: 200 });
+  } catch (err: any) {
+    console.error('API /api/send error:', err);
+    return NextResponse.json(
+      { error: err?.message || 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}
