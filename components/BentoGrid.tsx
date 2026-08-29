@@ -47,7 +47,7 @@ export const BentoGrid: React.FC = () => {
 
       {/* Main Outer Responsive Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <motion.div
@@ -86,7 +86,7 @@ export const BentoGrid: React.FC = () => {
 
         {/* Balanced 3-Column Bento Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto w-full">
-          
+
           {/* ====================================================================== */}
           {/* ROW 1 LEFT: Card 1 (Bio & Philosophy): md:col-span-2 */}
           {/* ====================================================================== */}
@@ -299,11 +299,11 @@ export const BentoGrid: React.FC = () => {
                 <div className="grid grid-cols-3 gap-1.5 text-center my-2">
                   <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-cyan-500/30 transition-colors">
                     <span className="text-[10px] text-neutral-400 block">🇬🇧 UK/EU</span>
-                    <span className="text-[11px] font-mono text-cyan-400 font-semibold">11A-8P</span>
+                    <span className="text-[11px] font-mono text-cyan-400 font-semibold">11AM-8PM</span>
                   </div>
                   <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-indigo-500/30 transition-colors">
                     <span className="text-[10px] text-neutral-400 block">🇺🇸 US EST</span>
-                    <span className="text-[11px] font-mono text-indigo-300 font-semibold">7A-2P</span>
+                    <span className="text-[11px] font-mono text-indigo-300 font-semibold">7AM-2PM</span>
                   </div>
                   <div className="p-2 rounded-lg bg-zinc-950/60 border border-white/[0.06] hover:border-emerald-500/30 transition-colors">
                     <span className="text-[10px] text-neutral-400 block">🇦🇪 Gulf</span>
