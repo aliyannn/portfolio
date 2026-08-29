@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative w-full min-h-[75vh] flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-visible bg-[#030712] transform-gpu">
+    <section className="relative w-full min-h-[85vh] flex items-center pt-28 pb-16 overflow-visible bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -46,11 +46,11 @@ export const Hero: React.FC = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
 
-      {/* Balanced 50/50 Grid Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-visible z-10">
+      {/* Standardized Max-Width Container (Aligned with Bento Grid and other sections) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center overflow-visible z-10">
         
-        {/* Left Column (50%): Text & Intro */}
-        <div className="flex flex-col items-start text-left space-y-4 w-full">
+        {/* Left Column (Aligned precisely with Bento Grid left axis) */}
+        <div className="lg:col-span-6 xl:col-span-7 space-y-5 text-left flex flex-col items-start w-full">
           {/* Status & Intro Badges */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -79,7 +79,7 @@ export const Hero: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Main Headline (2rem / 32px scaled) */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -192,12 +192,12 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right Column (50%): 3D Hologram Restrained Sizing */}
+        {/* Right Column (3D Hologram & Floating Pills) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="relative w-full h-[380px] sm:h-[420px] lg:h-[450px] flex items-center justify-center overflow-visible"
+          className="lg:col-span-6 xl:col-span-5 relative w-full h-[450px] lg:h-[500px] flex items-center justify-center overflow-visible"
         >
           <CyberHologram />
         </motion.div>
