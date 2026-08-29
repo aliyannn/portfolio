@@ -5,14 +5,14 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 'lucide-react';
 
-// Dynamically import the upgraded Live Telemetry Terminal with zero SSR hydration mismatch
-const Terminal = dynamic(() => import('@/components/Terminal'), {
+// Dynamically import the Cyber Node Hologram with zero SSR overhead
+const CyberHologram = dynamic(() => import('@/components/CyberHologram'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[380px] rounded-2xl bg-zinc-950/80 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3">
-      <div className="w-9 h-9 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
-      <span className="text-xs font-mono text-cyan-300 animate-pulse">
-        Initializing Client Telemetry Node...
+    <div className="w-full h-[460px] sm:h-[500px] rounded-3xl bg-zinc-950/40 border border-white/10 flex flex-col items-center justify-center p-6 space-y-3 backdrop-blur-xl">
+      <div className="w-10 h-10 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
+      <span className="text-xs font-mono text-cyan-300 animate-pulse tracking-wide">
+        Initializing 3D Cyber Hologram...
       </span>
     </div>
   ),
@@ -37,7 +37,7 @@ export const Hero: React.FC = () => {
   }, [roles.length]);
 
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#030712] transform-gpu">
+    <section className="relative w-full min-h-[88vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:28px_28px]" />
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -196,14 +196,14 @@ export const Hero: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Right Column (lg:col-span-5): Upgraded Live Client Diagnostic Terminal Card */}
+        {/* Right Column (lg:col-span-5): 3D Cyber Node Hologram & Live System Matrix */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="lg:col-span-5 flex justify-center lg:justify-end items-center w-full max-w-[560px] mx-auto lg:max-w-none pt-4 lg:pt-0"
         >
-          <Terminal />
+          <CyberHologram />
         </motion.div>
       </div>
     </section>
