@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="cyberIconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Obsidian Hexagon Base -->
+  <polygon
+    points="24,3 44,13.5 44,34.5 24,45 4,34.5 4,13.5"
+    fill="#08080C"
+    stroke="url(#cyberIconGrad)"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- AG Cyber Monogram Paths -->
+  <path
+    d="M14 32 L24 12 L34 32"
+    stroke="url(#cyberIconGrad)"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M17 25 H31"
+    stroke="#06B6D4"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+  <path
+    d="M31 25 V33 H22"
+    stroke="#10B981"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="24" cy="12" r="2.2" fill="#22D3EE" />
+</svg>
