@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight, FileDown } from 'lucide-react';
+import { Logo } from './Logo';
 
 const NAV_ITEMS = [
   { name: 'About', href: '#about' },
@@ -46,57 +47,24 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-4 pointer-events-none transition-all duration-300 transform-gpu">
       <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
-        {/* Brand Cyber Logo */}
+        {/* Brand Cyber Logo Button */}
         <motion.a
           href="#"
+          onClick={handleLogoClick}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
-          className="group flex items-center gap-3 px-3.5 py-2 rounded-2xl backdrop-blur-xl bg-zinc-950/80 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 shadow-xl"
+          className="group flex items-center px-3.5 py-2 rounded-2xl backdrop-blur-xl bg-zinc-950/80 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 shadow-xl"
         >
-          {/* Hexagonal Cyber SVG Logo */}
-          <div className="relative w-9 h-9 shrink-0 flex items-center justify-center">
-            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
-              <defs>
-                <linearGradient id="nav-ag-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#06b6d4" />
-                  <stop offset="50%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#a855f7" />
-                </linearGradient>
-              </defs>
-              <polygon
-                points="50,8 88,28 88,72 50,92 12,72 12,28"
-                fill="rgba(15,23,42,0.7)"
-                stroke="url(#nav-ag-grad)"
-                strokeWidth="4"
-              />
-              <text
-                x="50"
-                y="59"
-                fontFamily="system-ui, -apple-system, sans-serif"
-                fontWeight="900"
-                fontSize="32"
-                fill="url(#nav-ag-grad)"
-                textAnchor="middle"
-                letterSpacing="-1"
-              >
-                AG
-              </text>
-            </svg>
-          </div>
-
-          {/* Typography */}
-          <div className="flex flex-col text-left">
-            <span className="font-bold text-sm text-white tracking-wide group-hover:text-cyan-300 transition-colors">
-              Aliyan Gohar
-            </span>
-            <span className="text-[9px] font-mono text-zinc-400 tracking-wider uppercase font-semibold">
-              SYSTEMS &amp; FULL STACK
-            </span>
-          </div>
+          <Logo size="md" showText={true} />
         </motion.a>
 
         {/* Desktop Navigation Links Pill */}
