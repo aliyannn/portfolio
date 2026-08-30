@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     canonical: 'https://aliyannn.vercel.app',
   },
   icons: {
-    icon: '/icon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/icon.svg',
+    icon: '/icon.svg?v=3',
+    shortcut: '/icon.svg?v=3',
+    apple: '/icon.svg?v=3',
   },
   openGraph: {
     type: 'website',
@@ -145,6 +145,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark scroll-smooth ${jakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <link rel="icon" href="/icon.svg?v=3" type="image/svg+xml" sizes="any" />
+        <link rel="shortcut icon" href="/icon.svg?v=3" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg?v=3" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
