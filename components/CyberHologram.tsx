@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -129,7 +129,7 @@ interface HologramSceneProps {
   hoveredNode: string | null;
 }
 
-function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
+const HolographicCoreMesh: React.FC<HologramSceneProps> = React.memo(({ hoveredNode }) => {
   const coreGroupRef = useRef<THREE.Group>(null);
   const outerSphereRef = useRef<THREE.Mesh>(null);
   const innerOctaRef = useRef<THREE.Mesh>(null);
@@ -138,7 +138,7 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
   const pointsRef = useRef<THREE.Points>(null);
 
   // Particle cloud orbiting core
-  const particleCount = 75;
+  const particleCount = 65;
   const positions = useMemo(() => {
     const arr = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
@@ -150,7 +150,7 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
       arr[i + 2] = radius * Math.sin(theta) * Math.cos(phi);
     }
     return arr;
-  }, []);
+  }, [particleCount]);
 
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime();
@@ -231,7 +231,7 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
 
       {/* Orbital Holographic Cyber Ring 1 (Cyan) */}
       <mesh ref={ring1Ref}>
-        <torusGeometry args={[1.75, 0.02, 16, 80]} />
+        <torusGeometry args={[1.75, 0.02, 12, 64]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive="#06b6d4"
@@ -243,7 +243,7 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
 
       {/* Orbital Holographic Cyber Ring 2 (Indigo/Violet) */}
       <mesh ref={ring2Ref}>
-        <torusGeometry args={[2.08, 0.018, 16, 90]} />
+        <torusGeometry args={[2.08, 0.018, 12, 64]} />
         <meshStandardMaterial
           color="#8b5cf6"
           emissive="#8b5cf6"
@@ -271,13 +271,16 @@ function HolographicCoreMesh({ hoveredNode }: HologramSceneProps) {
       </points>
     </group>
   );
-}
+});
+
+HolographicCoreMesh.displayName = 'HolographicCoreMesh';
 
 // ======================================================================
 // 3. Main CyberHologram Interactive Assembly
 // ======================================================================
 export const CyberHologram: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   // Client telemetry
@@ -288,61 +291,85 @@ export const CyberHologram: React.FC = () => {
     gpuName: 'WebGL Graphics Core',
   });
 
-  // Dynamic live ping jitter (22ms - 34ms)
+  // Dynamic live ping jitter
   const [pingMs, setPingMs] = useState<number>(24);
   const [rxSpeed, setRxSpeed] = useState<string>('1.4 MB/s');
   const [txSpeed, setTxSpeed] = useState<string>('840 KB/s');
 
+  // Intersection Observer to pause Canvas rendering when off-screen
   useEffect(() => {
     setTelemetry(parseClientTelemetry());
 
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+
     const interval = setInterval(() => {
+      if (document.hidden) return;
       setPingMs(Math.floor(22 + Math.random() * 12));
       setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
       setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
-    }, 1400);
+    }, 1800);
 
-    return () => clearInterval(interval);
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
   // Framer Motion 3D Tilt Spring Physics
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
-    stiffness: 160,
-    damping: 22,
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [7, -7]), {
+    stiffness: 140,
+    damping: 24,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
-    stiffness: 160,
-    damping: 22,
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-9, 9]), {
+    stiffness: 140,
+    damping: 24,
   });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const rafMoveId = useRef<number | null>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const xPct = (e.clientX - rect.left) / rect.width - 0.5;
     const yPct = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(xPct);
-    mouseY.set(yPct);
-  };
 
-  const handleMouseLeave = () => {
+    if (rafMoveId.current) cancelAnimationFrame(rafMoveId.current);
+    rafMoveId.current = requestAnimationFrame(() => {
+      mouseX.set(xPct);
+      mouseY.set(yPct);
+    });
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafMoveId.current) cancelAnimationFrame(rafMoveId.current);
     mouseX.set(0);
     mouseY.set(0);
     setHoveredNode(null);
-  };
+  }, [mouseX, mouseY]);
 
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full h-[380px] sm:h-[420px] lg:h-[450px] flex items-center justify-center perspective-1000 select-none overflow-visible"
+      className="relative w-full h-[380px] sm:h-[420px] lg:h-[450px] flex items-center justify-center perspective-1000 select-none overflow-visible will-change-transform"
     >
       {/* Ambient Horizon Glow Beams Behind Hologram */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] bg-cyan-500/16 rounded-full blur-[80px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] bg-purple-600/16 rounded-full blur-[90px] pointer-events-none animate-pulse-slow [animation-delay:2s]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[360px] sm:h-[360px] bg-cyan-500/15 rounded-full blur-[80px] pointer-events-none transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] bg-purple-600/15 rounded-full blur-[90px] pointer-events-none transform-gpu" />
 
       {/* 3D Parallax Assembly Container */}
       <motion.div
@@ -362,12 +389,15 @@ export const CyberHologram: React.FC = () => {
         >
           <WebGLErrorBoundary fallbackTitle="Holographic Core Offline">
             <Canvas
+              frameloop={isVisible ? 'always' : 'never'}
               camera={{ position: [0, 0, 7.2], fov: 44 }}
               dpr={[1, 1.5]}
               gl={{
                 antialias: true,
                 alpha: true,
                 powerPreference: 'high-performance',
+                depth: true,
+                stencil: false,
               }}
               className="w-full h-full overflow-visible"
             >
@@ -480,7 +510,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node1')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-2 right-1 sm:right-3 z-20 transition-all duration-300 ${
+          className={`absolute top-2 right-1 sm:right-3 z-20 transition-all duration-300 will-change-transform ${
             hoveredNode === 'node1' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(36px)' }}
@@ -522,7 +552,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node2')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-[42%] left-0 sm:left-1 z-20 transition-all duration-300 ${
+          className={`absolute top-[42%] left-0 sm:left-1 z-20 transition-all duration-300 will-change-transform ${
             hoveredNode === 'node2' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(40px)' }}
@@ -560,7 +590,7 @@ export const CyberHologram: React.FC = () => {
         <motion.div
           onMouseEnter={() => setHoveredNode('node3')}
           onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute bottom-2 right-1 sm:right-3 z-20 transition-all duration-300 ${
+          className={`absolute bottom-2 right-1 sm:right-3 z-20 transition-all duration-300 will-change-transform ${
             hoveredNode === 'node3' ? 'scale-105' : 'scale-100'
           }`}
           style={{ transform: 'translateZ(34px)' }}

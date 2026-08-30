@@ -212,8 +212,8 @@ const CubieMesh: React.FC<CubieProps> = React.memo(({
     groupRef.current.quaternion.copy(baseQuat);
 
     // Subtle hover scale expansion
-    const targetScale = isHovered ? 1.05 : 1.0;
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), delta * 12);
+    const targetScale = isHovered ? 1.04 : 1.0;
+    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), delta * 10);
   });
 
   const emissiveIntensityMultiplier = isHovered ? 1.4 + Math.sin(pulseRef.current) * 0.4 : 0.6;
@@ -234,8 +234,8 @@ const CubieMesh: React.FC<CubieProps> = React.memo(({
       {/* Dark Titanium Cubie Body */}
       <RoundedBox
         args={[CUBIE_SIZE, CUBIE_SIZE, CUBIE_SIZE]}
-        radius={0.06}
-        smoothness={4}
+        radius={0.05}
+        smoothness={3}
         castShadow
         receiveShadow
       >
@@ -243,7 +243,7 @@ const CubieMesh: React.FC<CubieProps> = React.memo(({
           color="#0d0d12"
           roughness={0.35}
           metalness={0.85}
-          envMapIntensity={1.2}
+          envMapIntensity={1.0}
         />
       </RoundedBox>
 
@@ -266,7 +266,7 @@ const CubieMesh: React.FC<CubieProps> = React.memo(({
 
           {/* Center Tech Core Dot */}
           <mesh position={[0, 0, 0.001]}>
-            <circleGeometry args={[0.12, 16]} />
+            <circleGeometry args={[0.11, 12]} />
             <meshBasicMaterial
               color="#ffffff"
               toneMapped={false}
@@ -345,7 +345,6 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
     setHoveredCubieId((prev) => (prev === cubie.id ? prev : cubie.id));
     if (hoveredFaceSetter && e.face && e.face.normal) {
       try {
-        // Estimate face standard orientation
         const normal = e.face.normal.clone().applyQuaternion(cubie.quaternion);
         if (normal.x > 0.5) hoveredFaceSetter(TECH_FACES.right.name);
         else if (normal.x < -0.5) hoveredFaceSetter(TECH_FACES.left.name);
@@ -365,7 +364,6 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
   }, [hoveredFaceSetter]);
 
   const handleClick = useCallback((cubie: CubieData) => {
-    // Twist a layer based on clicked cubie's current position
     const pos = cubie.currentPos;
     const axes: ('x' | 'y' | 'z')[] = ['x', 'y', 'z'];
     const randAxis = axes[Math.floor(Math.random() * axes.length)];
@@ -378,7 +376,7 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
     // 1. Auto Layer Twist Timer
     if (autoRotateLayer && !animatingSlice) {
       autoTwistTimer.current += delta;
-      if (autoTwistTimer.current > 3.5) {
+      if (autoTwistTimer.current > 3.8) {
         autoTwistTimer.current = 0;
         triggerTwist();
       }
@@ -386,13 +384,12 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
 
     // 2. Animate Current Slice
     if (animatingSlice) {
-      const speed = 3.2; // Twist animation speed
+      const speed = 3.2;
       const newProgress = Math.min(1, animatingSlice.progress + delta * speed);
       const targetTotalAngle = (Math.PI / 2) * animatingSlice.direction;
       const currentAngle = targetTotalAngle * newProgress;
 
       if (newProgress >= 1) {
-        // Finalize discrete matrix rotation on cubies in slice
         const { axis, sliceIndex, direction } = animatingSlice;
         const sliceAngle = (Math.PI / 2) * direction;
 
@@ -409,7 +406,6 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
             const coord = Math.round(c.currentPos[axis]);
             if (coord === sliceIndex) {
               const newPos = c.currentPos.clone().applyQuaternion(sliceQuat);
-              // Round position to eliminate numerical floating-point drift
               newPos.x = Math.round(newPos.x);
               newPos.y = Math.round(newPos.y);
               newPos.z = Math.round(newPos.z);
@@ -438,7 +434,6 @@ export const RubiksCubeScene: React.FC<RubiksCubeSceneProps> = ({
 
   return (
     <group>
-      {/* 27 Interactive Cubies */}
       {cubies.map((c) => (
         <CubieMesh
           key={c.id}
@@ -466,17 +461,45 @@ export const RubiksCube: React.FC<RubiksCubeProps> = ({
   className = '',
   autoRotate = true,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const [autoRotateLayer, setAutoRotateLayer] = useState<boolean>(autoRotate);
   const [hoveredFace, setHoveredFace] = useState<string | null>(null);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`relative w-full h-full min-h-[380px] sm:min-h-[440px] ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative w-full h-full min-h-[380px] sm:min-h-[440px] ${className}`}
+    >
       <WebGLErrorBoundary fallbackTitle="3D Rubik's Cube Scene Unavailable">
-        {/* WebGL Canvas */}
+        {/* WebGL Canvas with dynamic frameloop to pause rendering when off-screen */}
         <Canvas
+          frameloop={isVisible ? 'always' : 'never'}
           camera={{ position: [4.5, 4.0, 5.5], fov: 45 }}
           dpr={[1, 1.5]}
-          gl={{ antialias: true, alpha: true }}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+            depth: true,
+            stencil: false,
+          }}
         >
           {/* Soft Ambient & Directional Lighting */}
           <ambientLight intensity={0.7} />
@@ -495,8 +518,8 @@ export const RubiksCube: React.FC<RubiksCubeProps> = ({
           {/* Cyber Shadow Reflection */}
           <ContactShadows
             position={[0, -2.4, 0]}
-            opacity={0.65}
-            scale={9}
+            opacity={0.6}
+            scale={8}
             blur={2.4}
             far={4}
             color="#00f3ff"

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ExternalLink, Github, Eye, ArrowUpRight } from 'lucide-react';
 import { Project } from '../data/projects';
@@ -10,31 +10,37 @@ interface ProjectCardProps {
   onSelect: (p: Project) => void;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
-  // 3D Tilt calculation based on mouse position relative to card center
+export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onSelect }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(y, [-100, 100], [12, -12]), { stiffness: 300, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-12, 12]), { stiffness: 300, damping: 20 });
+  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { stiffness: 220, damping: 24 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { stiffness: 220, damping: 24 });
 
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+  const rafId = useRef<number | null>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
     const mouseX = e.clientX - rect.left - width / 2;
     const mouseY = e.clientY - rect.top - height / 2;
-    x.set(mouseX);
-    y.set(mouseY);
-  }
 
-  function handleMouseLeave() {
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      x.set(mouseX);
+      y.set(mouseY);
+    });
+  }, [x, y]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafId.current) cancelAnimationFrame(rafId.current);
     x.set(0);
     y.set(0);
-  }
+  }, [x, y]);
 
   return (
-    <div className="perspective-1000 transform-gpu">
+    <div className="perspective-1000 transform-gpu [contain:paint]">
       <motion.div
         style={{
           rotateX,
@@ -43,10 +49,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) =
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="group relative rounded-2xl bg-neutral-900/30 border border-white/10 backdrop-blur-xl hover:border-indigo-500/40 transition-all duration-500 overflow-hidden flex flex-col justify-between shadow-2xl cursor-pointer"
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.4 }}
+        className="group relative rounded-2xl bg-neutral-900/30 border border-white/10 backdrop-blur-xl hover:border-indigo-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-2xl cursor-pointer will-change-transform"
         onClick={() => onSelect(project)}
       >
         {/* Project Preview Banner with Hover Zoom */}
@@ -54,7 +61,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) =
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100 transform-gpu"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
 
@@ -134,6 +143,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) =
       </motion.div>
     </div>
   );
-};
+});
+
+ProjectCard.displayName = 'ProjectCard';
 
 export default ProjectCard;

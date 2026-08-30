@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Code2,
@@ -40,14 +40,13 @@ export const BentoGrid: React.FC = () => {
   }, []);
 
   return (
-    <section id="about" className="relative py-20 overflow-hidden bg-[#030712]">
+    <section id="about" className="relative py-20 overflow-hidden bg-[#030712] transform-gpu">
       {/* Ambient background glows */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none transform-gpu" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[140px] pointer-events-none transform-gpu" />
 
       {/* Main Outer Responsive Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <motion.div
@@ -86,7 +85,6 @@ export const BentoGrid: React.FC = () => {
 
         {/* Balanced 3-Column Bento Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto w-full">
-
           {/* ====================================================================== */}
           {/* ROW 1 LEFT: Card 1 (Bio & Philosophy): md:col-span-2 */}
           {/* ====================================================================== */}
@@ -94,8 +92,8 @@ export const BentoGrid: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full"
+            transition={{ duration: 0.4 }}
+            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-cyan-500/30 transition-all duration-300 group h-full [contain:paint]"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -115,7 +113,7 @@ export const BentoGrid: React.FC = () => {
                 {PORTFOLIO_DATA.personalInfo.bio}
               </p>
 
-              {/* 🌟 Active Engineering Focus / Core Pillars Micro-Grid (Fills Row 1 Void) */}
+              {/* Active Engineering Focus / Core Pillars Micro-Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 my-4">
                 <div className="p-3 rounded-xl bg-zinc-950/50 border border-white/[0.06] hover:border-cyan-500/30 transition-all flex flex-col justify-center">
                   <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-300 mb-1">
@@ -173,8 +171,8 @@ export const BentoGrid: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-purple-500/30 transition-all duration-300 group h-full"
+            transition={{ duration: 0.4, delay: 0.08 }}
+            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-purple-500/30 transition-all duration-300 group h-full [contain:paint]"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -254,8 +252,8 @@ export const BentoGrid: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-emerald-500/30 transition-all duration-300 group h-full"
+            transition={{ duration: 0.4, delay: 0.12 }}
+            className="md:col-span-1 p-6 rounded-2xl bg-zinc-900/40 border border-white/10 flex flex-col justify-between backdrop-blur-xl shadow-xl hover:border-emerald-500/30 transition-all duration-300 group h-full [contain:paint]"
           >
             <div>
               {/* Header Row */}
@@ -291,7 +289,7 @@ export const BentoGrid: React.FC = () => {
                 </span>
               </div>
 
-              {/* 🌟 Compact 3-Column Overlap Grid */}
+              {/* Compact 3-Column Overlap Grid */}
               <div className="mb-2">
                 <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block mb-1.5 font-semibold text-center sm:text-left">
                   GLOBAL TIMEZONE OVERLAP
@@ -327,8 +325,8 @@ export const BentoGrid: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-amber-500/20 backdrop-blur-md flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-xl group h-full"
+            transition={{ duration: 0.4, delay: 0.16 }}
+            className="md:col-span-2 p-6 sm:p-7 rounded-2xl bg-zinc-900/40 border border-amber-500/20 backdrop-blur-md flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-xl group h-full [contain:paint]"
           >
             <div>
               {/* Header Row */}
@@ -351,7 +349,7 @@ export const BentoGrid: React.FC = () => {
                 </span>
               </div>
 
-              {/* 🌟 Vertically Centered Tall Metric Boxes */}
+              {/* Vertically Centered Tall Metric Boxes */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-auto py-3">
                 <div className="py-6 px-3 rounded-xl bg-zinc-950/60 border border-white/[0.06] text-center flex flex-col justify-center">
                   <span className="text-2xl sm:text-3xl font-bold font-mono text-amber-400 block mb-1">
@@ -401,7 +399,7 @@ export const BentoGrid: React.FC = () => {
           {/* ====================================================================== */}
           {/* ROW 3: Interactive 3D Rubik's Cube Bento Feature Card: md:col-span-3 */}
           {/* ====================================================================== */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 [contain:paint]">
             <RubiksCubeCard />
           </div>
         </div>

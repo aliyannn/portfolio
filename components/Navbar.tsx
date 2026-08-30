@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight, FileDown, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowUpRight, FileDown } from 'lucide-react';
 
 const NAV_ITEMS = [
   { name: 'About', href: '#about' },
@@ -12,44 +12,49 @@ const NAV_ITEMS = [
 ];
 
 export const Navbar: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
+  const rafScrollId = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      if (rafScrollId.current) return;
 
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1));
-      const scrollPos = window.scrollY + 200;
+      rafScrollId.current = requestAnimationFrame(() => {
+        const sections = NAV_ITEMS.map((item) => item.href.substring(1));
+        const scrollPos = window.scrollY + 220;
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
+        for (const section of sections) {
+          const el = document.getElementById(section);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPos >= top && scrollPos < top + height) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
-      }
+        rafScrollId.current = null;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafScrollId.current) cancelAnimationFrame(rafScrollId.current);
+    };
   }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-4 pointer-events-none transition-all duration-300 transform-gpu">
       <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
-        
         {/* Brand Cyber Logo */}
         <motion.a
           href="#"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           className="group flex items-center gap-3 px-3.5 py-2 rounded-2xl backdrop-blur-xl bg-zinc-950/80 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 shadow-xl"
         >
           {/* Hexagonal Cyber SVG Logo */}
@@ -98,7 +103,7 @@ export const Navbar: React.FC = () => {
         <motion.nav
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.4, delay: 0.08 }}
           className="hidden md:flex items-center gap-1 px-4 py-2 rounded-full backdrop-blur-xl bg-zinc-950/80 border border-white/10 shadow-2xl"
         >
           {NAV_ITEMS.map((item) => {
@@ -128,7 +133,7 @@ export const Navbar: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           className="hidden md:flex items-center gap-3"
         >
           <a
