@@ -24,9 +24,13 @@ export async function POST(req: Request) {
       );
     }
 
+    // Sanitize display name for email headers
+    const sanitizedName = name.replace(/[\r\n<>"]/g, '').trim() || 'Visitor';
+
+    // Subject line formatting
     const emailSubject = subject?.trim()
-      ? `New Portfolio Message: ${subject} (from ${name})`
-      : `New Portfolio Message from ${name}`;
+      ? `[Portfolio] ${subject.trim()} - from ${sanitizedName}`
+      : `[Portfolio Inquiry] from ${sanitizedName}`;
 
     const timestamp = new Date().toLocaleString('en-US', {
       timeZone: 'Asia/Karachi',
@@ -34,13 +38,13 @@ export async function POST(req: Request) {
       timeStyle: 'medium',
     });
 
-    // 3. Send email using Resend SDK
+    // 3. Send email using Resend SDK with dynamic display name & direct replyTo
     const { data, error } = await resend.emails.send({
-      from: 'Portfolio Visitor <onboarding@resend.dev>', // Resend verified/onboarding sender
-      to: ['aliyangohar00@outlook.com'],                 // Destination inbox
-      replyTo: email,                                     // Direct reply to visitor
+      from: `${sanitizedName} (via Portfolio) <onboarding@resend.dev>`, // Dynamic visitor name
+      to: ['aliyangohar00@outlook.com'],                               // Your destination inbox
+      replyTo: email,                                                   // Direct reply to visitor in Outlook
       subject: emailSubject,
-      text: `Sender Name: ${name}\nSender Email: ${email}\nTimestamp: ${timestamp} (PKT)\n\nMessage:\n${message}`,
+      text: `Sender Name: ${name}\nSender Email: ${email}\nSubject: ${subject || 'General Inquiry'}\nTimestamp: ${timestamp} (PKT)\n\nMessage:\n${message}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -62,16 +66,20 @@ export async function POST(req: Request) {
           <body>
             <div class="container">
               <div class="badge">★ Portfolio Direct Message</div>
-              <h1>Inquiry from ${name}</h1>
+              <h1>Inquiry from ${sanitizedName}</h1>
               
               <table class="meta-table">
                 <tr>
                   <td class="meta-label">FROM:</td>
-                  <td class="meta-value">${name}</td>
+                  <td class="meta-value">${sanitizedName}</td>
                 </tr>
                 <tr>
                   <td class="meta-label">EMAIL:</td>
                   <td class="meta-value"><a href="mailto:${email}" style="color:#38bdf8; text-decoration:none;">${email}</a></td>
+                </tr>
+                <tr>
+                  <td class="meta-label">SUBJECT:</td>
+                  <td class="meta-value">${subject || 'General Inquiry'}</td>
                 </tr>
                 <tr>
                   <td class="meta-label">TIME:</td>
