@@ -18,63 +18,64 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#030712',
+          background: '#070709',
+          border: '1.5px solid rgba(6, 182, 212, 0.4)',
           borderRadius: '8px',
         }}
       >
         <svg
           viewBox="0 0 100 100"
-          width="28"
-          height="28"
+          width="26"
+          height="26"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id="icon-brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#06b6d4" />
-              <stop offset="50%" stopColor="#6366f1" />
-              <stop offset="100%" stopColor="#10b981" />
+            <linearGradient id="fav-brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#06B6D4" />
+              <stop offset="50%" stopColor="#3B82F6" />
+              <stop offset="100%" stopColor="#10B981" />
             </linearGradient>
           </defs>
 
-          {/* Hexagon Frame */}
+          {/* Hexagon Outer Frame */}
           <polygon
-            points="50,7 90,28 90,72 50,93 10,72 10,28"
-            fill="#090d16"
-            stroke="url(#icon-brand-grad)"
-            strokeWidth="6"
+            points="50,6 91,28 91,72 50,94 9,72 9,28"
+            fill="#030712"
+            stroke="url(#fav-brand-grad)"
+            strokeWidth="7"
             strokeLinejoin="round"
           />
 
-          {/* 'A' Vector Monogram */}
+          {/* 'A' Monogram Circuit */}
           <path
-            d="M 32 70 L 50 24 L 68 70"
-            stroke="url(#icon-brand-grad)"
-            strokeWidth="7"
+            d="M 31 71 L 50 22 L 69 71"
+            stroke="url(#fav-brand-grad)"
+            strokeWidth="8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
           {/* 'A' Bridge */}
           <path
-            d="M 39 52 L 61 52"
-            stroke="#38bdf8"
-            strokeWidth="5"
+            d="M 38 52 L 62 52"
+            stroke="#38BDF8"
+            strokeWidth="6"
             strokeLinecap="round"
           />
 
-          {/* 'G' Integration */}
+          {/* 'G' Interlocking Loop */}
           <path
-            d="M 64 42 L 72 46 L 72 68 L 50 78 L 36 71"
-            stroke="url(#icon-brand-grad)"
-            strokeWidth="4"
+            d="M 65 41 L 74 46 L 74 68 L 50 79 L 35 71"
+            stroke="url(#fav-brand-grad)"
+            strokeWidth="5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M 52 64 L 65 64"
-            stroke="#10b981"
-            strokeWidth="4"
+            d="M 52 64 L 67 64"
+            stroke="#10B981"
+            strokeWidth="5"
             strokeLinecap="round"
           />
         </svg>

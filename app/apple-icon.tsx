@@ -18,72 +18,75 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #030712 0%, #090d16 100%)',
+          background: '#070709',
+          border: '4px solid rgba(6, 182, 212, 0.4)',
           borderRadius: '40px',
         }}
       >
         <svg
           viewBox="0 0 100 100"
-          width="130"
-          height="130"
+          width="135"
+          height="135"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
             <linearGradient id="apple-brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#06b6d4" />
-              <stop offset="50%" stopColor="#6366f1" />
-              <stop offset="100%" stopColor="#10b981" />
+              <stop offset="0%" stopColor="#06B6D4" />
+              <stop offset="50%" stopColor="#3B82F6" />
+              <stop offset="100%" stopColor="#10B981" />
             </linearGradient>
           </defs>
 
-          {/* Hexagon Frame */}
+          {/* Hexagon Outer Frame */}
           <polygon
-            points="50,7 90,28 90,72 50,93 10,72 10,28"
+            points="50,6 91,28 91,72 50,94 9,72 9,28"
             fill="#030712"
             stroke="url(#apple-brand-grad)"
-            strokeWidth="4"
+            strokeWidth="5"
             strokeLinejoin="round"
           />
 
-          {/* Precision 'A' Monogram Circuit Track */}
+          {/* 'A' Monogram Circuit */}
           <path
-            d="M 32 70 L 50 24 L 68 70"
+            d="M 31 71 L 50 22 L 69 71"
             stroke="url(#apple-brand-grad)"
-            strokeWidth="5"
+            strokeWidth="6"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
           {/* 'A' Bridge */}
           <path
-            d="M 39 52 L 61 52"
-            stroke="#38bdf8"
-            strokeWidth="4"
+            d="M 38 52 L 62 52"
+            stroke="#38BDF8"
+            strokeWidth="4.5"
             strokeLinecap="round"
           />
 
-          {/* 'G' Integration */}
+          {/* 'G' Interlocking Loop */}
           <path
-            d="M 64 42 L 72 46 L 72 68 L 50 78 L 36 71"
+            d="M 65 41 L 74 46 L 74 68 L 50 79 L 35 71"
             stroke="url(#apple-brand-grad)"
-            strokeWidth="3.5"
+            strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M 52 64 L 65 64"
-            stroke="#10b981"
-            strokeWidth="3.5"
+            d="M 52 64 L 67 64"
+            stroke="#10B981"
+            strokeWidth="4"
             strokeLinecap="round"
           />
 
           {/* Glowing Vertex Nodes */}
-          <circle cx="50" cy="7" r="3" fill="#06b6d4" />
-          <circle cx="90" cy="28" r="3" fill="#6366f1" />
-          <circle cx="90" cy="72" r="3" fill="#10b981" />
-          <circle cx="10" cy="28" r="3" fill="#06b6d4" />
-          <circle cx="50" cy="24" r="2.5" fill="#ffffff" />
+          <circle cx="50" cy="6" r="3" fill="#06B6D4" />
+          <circle cx="91" cy="28" r="3" fill="#3B82F6" />
+          <circle cx="91" cy="72" r="3" fill="#10B981" />
+          <circle cx="50" cy="94" r="3" fill="#10B981" />
+          <circle cx="9" cy="72" r="3" fill="#3B82F6" />
+          <circle cx="9" cy="28" r="3" fill="#06B6D4" />
+          <circle cx="50" cy="22" r="2.5" fill="#ffffff" />
         </svg>
       </div>
     ),

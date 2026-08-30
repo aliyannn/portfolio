@@ -55,16 +55,17 @@ export const Navbar: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-4 pointer-events-none transition-all duration-300 transform-gpu">
       <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
-        {/* Brand Cyber Logo Button */}
+        {/* Standalone Brand Cyber Logo Button */}
         <motion.a
           href="#"
           onClick={handleLogoClick}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
-          className="group flex items-center px-3.5 py-2 rounded-2xl backdrop-blur-xl bg-zinc-950/80 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 shadow-xl"
+          aria-label="Aliyan Gohar Home"
+          className="group flex items-center justify-center p-2 rounded-2xl backdrop-blur-xl bg-zinc-950/80 border border-white/10 hover:border-cyan-500/50 transition-all duration-300 shadow-xl hover:shadow-cyan-500/20"
         >
-          <Logo size="md" showText={true} />
+          <Logo className="w-11 h-11 sm:w-12 sm:h-12" />
         </motion.a>
 
         {/* Desktop Navigation Links Pill */}
