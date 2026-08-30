@@ -1,9 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, FileDown, ShieldCheck, Cpu, Sparkles, MessageCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import {
+  ArrowRight,
+  FileDown,
+  ShieldCheck,
+  Cpu,
+  Sparkles,
+  MessageCircle,
+  Globe,
+} from 'lucide-react';
 
 // Dynamically import the Cyber Node Hologram with zero SSR overhead
 const CyberHologram = dynamic(() => import('@/components/CyberHologram'), {
@@ -19,23 +27,6 @@ const CyberHologram = dynamic(() => import('@/components/CyberHologram'), {
 });
 
 export const Hero: React.FC = () => {
-  const [roleIndex, setRoleIndex] = useState(0);
-
-  const roles = [
-    'React & Three.js Engineer',
-    'IT Systems & Network Specialist',
-    'Fortinet Firewall Architect',
-    'AI Agent & Vibe Coding Specialist',
-    'Full Stack Cloud Integrator',
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [roles.length]);
-
   return (
     <section className="relative w-full min-h-[85vh] flex items-center pt-28 pb-16 overflow-visible bg-[#030712] transform-gpu">
       {/* Background Cyber Grid */}
@@ -47,107 +38,74 @@ export const Hero: React.FC = () => {
       <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Standardized Max-Width Container (Aligned with Bento Grid and other sections) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center overflow-visible z-10">
-
-        {/* Left Column (Aligned precisely with Bento Grid left axis) */}
-        <div className="lg:col-span-6 xl:col-span-7 space-y-5 text-left flex flex-col items-start w-full">
-          {/* Status & Intro Badges */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center overflow-visible z-10">
+        
+        {/* Left Column: Prominent Identity, Value Proposition & CTAs */}
+        <div className="lg:col-span-6 xl:col-span-7 space-y-6 text-left flex flex-col items-start w-full">
+          
+          {/* Status Badge */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
             className="flex flex-wrap items-center gap-2"
           >
-            {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-emerald-500/40 backdrop-blur-md shadow-md shadow-emerald-950/20">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-emerald-500/40 backdrop-blur-md shadow-md shadow-emerald-950/20">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
-              <span className="text-[11px] font-mono font-medium text-emerald-300 tracking-wide">
-                Open for IT / Full Stack roles
-              </span>
-            </div>
-
-            {/* Intro Micro-Badge */}
-            <div className="text-xs font-mono py-1 px-3 bg-zinc-900/80 border border-cyan-500/20 text-cyan-400 rounded-full inline-flex items-center gap-1.5 shadow-sm">
-              <span className="font-bold text-cyan-400">&gt;</span>
-              <span className="text-zinc-300">Hi, I'm</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-300 font-bold">
-                Aliyan Gohar
+              <span className="text-xs font-mono font-semibold text-emerald-300 tracking-wide">
+                Available for High-Impact Roles &amp; Projects
               </span>
             </div>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Prominent Name & Role Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="text-2xl sm:text-[2rem] font-bold tracking-tight text-white leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15] text-white"
           >
-            Engineering Scalable Systems{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
-              &amp; High-Performance Web Applications
+            <span className="block text-white">
+              I'm <span className="text-white">Aliyan Gohar</span>
+            </span>
+            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 mt-1">
+              Systems &amp; Full-Stack Engineer
             </span>
           </motion.h1>
 
-          {/* Dynamic Role Transition */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="h-7 flex items-center gap-2 text-xs sm:text-sm font-mono text-zinc-300"
-          >
-            <span className="text-purple-400 font-bold">&gt;</span>
-            <span className="text-zinc-400">Spec:</span>
-            <div className="relative overflow-hidden h-6 flex items-center">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={roleIndex}
-                  initial={{ y: 15, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -15, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="font-semibold text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-500/30 text-xs"
-                >
-                  {roles[roleIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-          </motion.div>
-
-          {/* Subtitle Description */}
+          {/* Clear, High-Value Subtitle Paragraph */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.22 }}
-            className="text-sm sm:text-base text-neutral-400 leading-relaxed max-w-lg font-sans"
+            transition={{ duration: 0.5, delay: 0.16 }}
+            className="text-sm sm:text-base text-neutral-300 leading-relaxed max-w-xl font-sans"
           >
-            Bridging high-performance{' '}
-            <span className="text-cyan-300 font-medium">
-              React &amp; Three.js frontend architectures
-            </span>{' '}
-            with robust enterprise{' '}
-            <span className="text-purple-300 font-medium">Fortinet network security</span>, cloud
-            automation, and AI agent workflows.
+            Full-Stack &amp; Systems Engineer specializing in high-performance{' '}
+            <span className="text-cyan-300 font-medium">Next.js/React architectures</span>, custom enterprise systems, and automated cloud workflows. Bridging modern creative{' '}
+            <span className="text-teal-300 font-medium">3D WebGL frontends</span> with robust, scalable backend engineering.
           </motion.p>
 
-          {/* Skill Badges */}
+          {/* Spec Badges & Quick Proof */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.28 }}
-            className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-zinc-400"
+            transition={{ duration: 0.5, delay: 0.24 }}
+            className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-zinc-400 pt-1"
           >
-            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <Cpu className="w-3 h-3 text-cyan-400" /> React 18 &amp; R3F
+            <span className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300 hover:border-cyan-500/40 transition-colors">
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" /> Next.js 14 / React 18
             </span>
-            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <ShieldCheck className="w-3 h-3 text-purple-400" /> FortiGate 40F Security
+            <span className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300 hover:border-teal-500/40 transition-colors">
+              <Sparkles className="w-3.5 h-3.5 text-teal-400" /> Three.js &amp; 3D WebGL
             </span>
-            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300">
-              <Sparkles className="w-3 h-3 text-amber-400" /> Vibe Coding &amp; AI
+            <span className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300 hover:border-blue-500/40 transition-colors">
+              <Globe className="w-3.5 h-3.5 text-blue-400" /> WordPress &amp; Custom CMS
+            </span>
+            <span className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-white/10 flex items-center gap-1.5 text-zinc-300 hover:border-purple-500/40 transition-colors">
+              <ShieldCheck className="w-3.5 h-3.5 text-purple-400" /> Network Infrastructure &amp; Cloud
             </span>
           </motion.div>
 
@@ -155,8 +113,8 @@ export const Hero: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex flex-wrap items-center gap-3 pt-1"
+            transition={{ duration: 0.5, delay: 0.32 }}
+            className="flex flex-wrap items-center gap-3 pt-2"
           >
             <a
               href="#projects"
