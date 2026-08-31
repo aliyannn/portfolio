@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, Sparkles, CheckCircle2, Cpu } from 'lucide-react';
+import { X, ExternalLink, Github, Sparkles, CheckCircle2, Cpu, Globe, Layout } from 'lucide-react';
 import { Project } from '../../data/projects';
 
 interface ProjectModalProps {
@@ -11,11 +11,16 @@ interface ProjectModalProps {
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     if (project) {
+      setImageLoaded(false);
+      setImageError(false);
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     }
@@ -45,24 +50,45 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-4xl rounded-3xl glass-card border border-white/15 overflow-hidden shadow-2xl z-10 my-8"
+          className="relative w-full max-w-4xl rounded-3xl glass-card border border-white/15 overflow-hidden shadow-2xl z-10 my-8 bg-zinc-950"
         >
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-900/80 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-900/80 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors shadow-lg"
             aria-label="Close modal"
           >
             <X className="w-5 h-5 text-cyan-400" />
           </button>
 
-          {/* Top Banner Image */}
-          <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-slate-950">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover opacity-80"
-            />
+          {/* Top Banner Image with Live Screenshot */}
+          <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
+            {!imageLoaded && !imageError && (
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 animate-pulse flex items-center justify-center">
+                <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+                  <span>Loading live screenshot...</span>
+                </div>
+              </div>
+            )}
+
+            {imageError ? (
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-8 flex flex-col justify-end">
+                <Layout className="w-8 h-8 text-cyan-400 mb-2" />
+                <span className="text-xs font-mono text-cyan-400">{project.domainName}</span>
+              </div>
+            ) : (
+              <img
+                src={project.image}
+                alt={project.title}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+                className={`w-full h-full object-cover object-top transition-opacity duration-300 ${
+                  imageLoaded ? 'opacity-85' : 'opacity-0'
+                }`}
+              />
+            )}
+
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090B] via-[#09090B]/60 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4">
               <div>
@@ -118,9 +144,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   href={project.demoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-semibold text-sm shadow-cyan-glow hover:shadow-violet-glow flex items-center gap-2 transition-all duration-300"
+                  className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 via-teal-500 to-indigo-600 text-zinc-950 font-bold text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 flex items-center gap-2 transition-all duration-300"
                 >
-                  <Sparkles className="w-4 h-4" /> Live Demo
+                  <span>Visit Live Site</span>
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}
@@ -141,3 +167,5 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
     </AnimatePresence>
   );
 };
+
+export default ProjectModal;

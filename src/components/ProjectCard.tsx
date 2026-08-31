@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ExternalLink, Github, Eye, ArrowUpRight, Globe, CheckCircle2 } from 'lucide-react';
+import { ExternalLink, Github, Eye, ArrowUpRight, Globe, CheckCircle2, Layout, Sparkles } from 'lucide-react';
 import { Project } from '../data/projects';
 
 interface ProjectCardProps {
@@ -11,6 +11,9 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onSelect }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -40,7 +43,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
   }, [x, y]);
 
   return (
-    <div className="perspective-1000 transform-gpu [contain:paint]">
+    <div className="perspective-1000 transform-gpu [contain:paint] h-full">
       <motion.div
         style={{
           rotateX,
@@ -53,7 +56,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.4 }}
-        className="group relative rounded-2xl bg-zinc-950/70 border border-white/10 backdrop-blur-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-2xl cursor-pointer will-change-transform h-full hover:shadow-cyan-500/10"
+        className="group relative rounded-2xl bg-zinc-950/75 border border-white/10 backdrop-blur-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-2xl cursor-pointer will-change-transform h-full hover:shadow-cyan-500/15"
         onClick={() => onSelect(project)}
       >
         {/* Card Header & Mockup Frame */}
@@ -79,16 +82,48 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
             </span>
           </div>
 
-          {/* Project Preview Banner */}
-          <div className="relative h-48 w-full overflow-hidden bg-zinc-950">
-            <img
-              src={project.image}
-              alt={project.title}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-70 group-hover:opacity-90 transform-gpu"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+          {/* Screenshot Banner with Shimmer Loading & Fallback */}
+          <div className="relative aspect-video w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
+            
+            {/* Skeleton Shimmer while loading */}
+            {!imageLoaded && !imageError && (
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 animate-pulse flex items-center justify-center">
+                <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+                  <span>Fetching live preview...</span>
+                </div>
+              </div>
+            )}
+
+            {/* Clean Gradient Fallback if screenshot fails */}
+            {imageError ? (
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-6 flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+                    <Layout className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Live System</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-base tracking-tight">{project.title}</h4>
+                  <p className="text-xs text-cyan-400/80 font-mono mt-0.5">{project.domainName}</p>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={project.image}
+                alt={`${project.title} live screenshot`}
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+                className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 transform-gpu ${
+                  imageLoaded ? 'opacity-85 group-hover:opacity-100' : 'opacity-0'
+                }`}
+              />
+            )}
+
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
 
             {/* Status / Metric Indicator */}
             {project.metrics && project.metrics.length > 0 && (

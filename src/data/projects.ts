@@ -18,6 +18,9 @@ export interface Project {
   domainName: string;
 }
 
+export const getScreenshotUrl = (url: string) =>
+  `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+
 export const PROJECTS: Project[] = [
   {
     id: 'it-vision-networks',
@@ -27,9 +30,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'A comprehensive enterprise IT platform designed for client service delivery, network hardware management, and high-performance business onboarding. Optimized with high-speed CDN delivery, responsive architecture, and secure client communication pipelines.',
     category: 'Full Stack & Frontend',
     tags: ['React / Next.js', 'Tailwind CSS', 'Enterprise Networks', 'Cloud Infrastructure'],
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://itvisionnetworks.com/',
     domainName: 'itvisionnetworks.com',
+    image: getScreenshotUrl('https://itvisionnetworks.com/'),
     accentColor: '#06B6D4',
     featured: true,
     metrics: [
@@ -46,10 +49,10 @@ export const PROJECTS: Project[] = [
     category: 'Vibe Coding & 3D',
     secondaryCategory: 'Full Stack & Frontend',
     tags: ['Next.js 14', 'Three.js / R3F', 'Tailwind CSS', 'Resend API'],
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://aliyannn.vercel.app/',
     githubUrl: 'https://github.com/aliyannn/portfolio',
     domainName: 'aliyannn.vercel.app',
+    image: getScreenshotUrl('https://aliyannn.vercel.app/'),
     accentColor: '#38BDF8',
     featured: true,
     metrics: [
@@ -65,9 +68,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'Custom-architected digital agency website delivering high-converting landing pages, tailored media presentation, dynamic client inquiry systems, and automated email notifications.',
     category: 'WordPress & CMS',
     tags: ['WordPress', 'Custom CMS', 'PHP', 'Performance Tuning'],
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://calibremedia.co/',
     domainName: 'calibremedia.co',
+    image: getScreenshotUrl('https://calibremedia.co/'),
     accentColor: '#8B5CF6',
     featured: true,
     metrics: [
@@ -83,9 +86,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'A high-performance digital marketing agency platform featuring custom Elementor architectures, advanced SEO metadata structuring, conversion funnels, and enterprise client onboarding.',
     category: 'WordPress & CMS',
     tags: ['WordPress', 'Elementor / Custom CSS', 'SEO Architecture', 'Lead Gen'],
-    image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://digi-links.com/',
     domainName: 'digi-links.com',
+    image: getScreenshotUrl('https://digi-links.com/'),
     accentColor: '#10B981',
     featured: true,
     metrics: [
@@ -101,9 +104,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'Enterprise IT hardware and technology infrastructure portal serving the UAE and Middle East region. Engineered for scalable B2B service catalogs, quotation requests, and fast cloud hosting delivery.',
     category: 'WordPress & CMS',
     tags: ['WordPress', 'Custom Architecture', 'B2B UI', 'Cloud Delivery'],
-    image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://systechware.ae/',
     domainName: 'systechware.ae',
+    image: getScreenshotUrl('https://systechware.ae/'),
     accentColor: '#3B82F6',
     featured: true,
     metrics: [
@@ -119,9 +122,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'High-traffic digital media and event publication hub built for immersive editorial reading, lightning-fast content caching, high-resolution media rendering, and social distribution.',
     category: 'WordPress & CMS',
     tags: ['WordPress', 'Custom Theming', 'Responsive UI', 'Content Engine'],
-    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://xpovibes.com/',
     domainName: 'xpovibes.com',
+    image: getScreenshotUrl('https://xpovibes.com/'),
     accentColor: '#F59E0B',
     featured: false,
     metrics: [
@@ -137,9 +140,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'Comprehensive digital commerce and consulting hub equipped with WooCommerce capabilities, custom booking funnels, global payment integrations, and responsive performance tuning.',
     category: 'WordPress & CMS',
     tags: ['WordPress CMS', 'WooCommerce Engine', 'Payment Gateways', 'Speed Optimized'],
-    image: 'https://images.unsplash.com/photo-1556742049-0a67e55722c0?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://ecom-technologies.com/',
     domainName: 'ecom-technologies.com',
+    image: getScreenshotUrl('https://ecom-technologies.com/'),
     accentColor: '#EC4899',
     featured: false,
     metrics: [
@@ -155,9 +158,9 @@ export const PROJECTS: Project[] = [
     longDescription: 'A sleek, minimalist developer portfolio designed for crisp typography, smooth page transitions, and structured presentation of full-stack client deliverables and software experiments.',
     category: 'Full Stack & Frontend',
     tags: ['React', 'Tailwind CSS', 'Vercel Deployment', 'Framer Motion'],
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
     demoUrl: 'https://aliyannn-portfolio.vercel.app/',
     domainName: 'aliyannn-portfolio.vercel.app',
+    image: getScreenshotUrl('https://aliyannn-portfolio.vercel.app/'),
     accentColor: '#6366F1',
     featured: false,
     metrics: [
