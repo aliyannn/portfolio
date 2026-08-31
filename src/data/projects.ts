@@ -10,6 +10,7 @@ export interface Project {
   secondaryCategory?: string;
   tags: string[];
   image: string;
+  images: string[];
   demoUrl: string;
   githubUrl?: string;
   featured: boolean;
@@ -32,7 +33,12 @@ export const PROJECTS: Project[] = [
     tags: ['React / Next.js', 'Tailwind CSS', 'Enterprise Networks', 'Cloud Infrastructure'],
     demoUrl: 'https://itvisionnetworks.com/',
     domainName: 'itvisionnetworks.com',
-    image: getScreenshotUrl('https://itvisionnetworks.com/'),
+    image: getScreenshotUrl('https://itvisionnetworks.com/', 800, 500),
+    images: [
+      getScreenshotUrl('https://itvisionnetworks.com/', 800, 500),
+      getScreenshotUrl('https://itvisionnetworks.com/', 1200, 750),
+      getScreenshotUrl('https://itvisionnetworks.com/', 1024, 640),
+    ],
     accentColor: '#06B6D4',
     featured: true,
     metrics: [
@@ -52,7 +58,12 @@ export const PROJECTS: Project[] = [
     demoUrl: 'https://aliyannn.vercel.app/',
     githubUrl: 'https://github.com/aliyannn/portfolio',
     domainName: 'aliyannn.vercel.app',
-    image: getScreenshotUrl('https://aliyannn.vercel.app/'),
+    image: getScreenshotUrl('https://aliyannn.vercel.app/', 800, 500),
+    images: [
+      getScreenshotUrl('https://aliyannn.vercel.app/', 800, 500),
+      getScreenshotUrl('https://aliyannn.vercel.app/', 1200, 750),
+      getScreenshotUrl('https://aliyannn.vercel.app/', 1024, 640),
+    ],
     accentColor: '#38BDF8',
     featured: true,
     metrics: [
@@ -70,7 +81,12 @@ export const PROJECTS: Project[] = [
     tags: ['WordPress', 'Custom CMS', 'PHP', 'Performance Tuning'],
     demoUrl: 'https://calibremedia.co/',
     domainName: 'calibremedia.co',
-    image: getScreenshotUrl('https://calibremedia.co/'),
+    image: getScreenshotUrl('https://calibremedia.co/', 800, 500),
+    images: [
+      getScreenshotUrl('https://calibremedia.co/', 800, 500),
+      getScreenshotUrl('https://calibremedia.co/', 1200, 750),
+      getScreenshotUrl('https://calibremedia.co/', 1024, 640),
+    ],
     accentColor: '#8B5CF6',
     featured: true,
     metrics: [
@@ -88,7 +104,12 @@ export const PROJECTS: Project[] = [
     tags: ['WordPress', 'Elementor / Custom CSS', 'SEO Architecture', 'Lead Gen'],
     demoUrl: 'https://digi-links.com/',
     domainName: 'digi-links.com',
-    image: getScreenshotUrl('https://digi-links.com/'),
+    image: getScreenshotUrl('https://digi-links.com/', 800, 500),
+    images: [
+      getScreenshotUrl('https://digi-links.com/', 800, 500),
+      getScreenshotUrl('https://digi-links.com/', 1200, 750),
+      getScreenshotUrl('https://digi-links.com/', 1024, 640),
+    ],
     accentColor: '#10B981',
     featured: true,
     metrics: [
@@ -106,7 +127,12 @@ export const PROJECTS: Project[] = [
     tags: ['WordPress', 'Custom Architecture', 'B2B UI', 'Cloud Delivery'],
     demoUrl: 'https://systechware.ae/',
     domainName: 'systechware.ae',
-    image: getScreenshotUrl('https://systechware.ae/'),
+    image: getScreenshotUrl('https://systechware.ae/', 800, 500),
+    images: [
+      getScreenshotUrl('https://systechware.ae/', 800, 500),
+      getScreenshotUrl('https://systechware.ae/', 1200, 750),
+      getScreenshotUrl('https://systechware.ae/', 1024, 640),
+    ],
     accentColor: '#3B82F6',
     featured: true,
     metrics: [
@@ -124,7 +150,12 @@ export const PROJECTS: Project[] = [
     tags: ['WordPress', 'Custom Theming', 'Responsive UI', 'Content Engine'],
     demoUrl: 'https://xpovibes.com/',
     domainName: 'xpovibes.com',
-    image: getScreenshotUrl('https://xpovibes.com/'),
+    image: getScreenshotUrl('https://xpovibes.com/', 800, 500),
+    images: [
+      getScreenshotUrl('https://xpovibes.com/', 800, 500),
+      getScreenshotUrl('https://xpovibes.com/', 1200, 750),
+      getScreenshotUrl('https://xpovibes.com/', 1024, 640),
+    ],
     accentColor: '#F59E0B',
     featured: false,
     metrics: [
@@ -142,7 +173,12 @@ export const PROJECTS: Project[] = [
     tags: ['WordPress CMS', 'WooCommerce Engine', 'Payment Gateways', 'Speed Optimized'],
     demoUrl: 'https://ecom-technologies.com/',
     domainName: 'ecom-technologies.com',
-    image: getScreenshotUrl('https://ecom-technologies.com/'),
+    image: getScreenshotUrl('https://ecom-technologies.com/', 800, 500),
+    images: [
+      getScreenshotUrl('https://ecom-technologies.com/', 800, 500),
+      getScreenshotUrl('https://ecom-technologies.com/', 1200, 750),
+      getScreenshotUrl('https://ecom-technologies.com/', 1024, 640),
+    ],
     accentColor: '#EC4899',
     featured: false,
     metrics: [
@@ -160,7 +196,12 @@ export const PROJECTS: Project[] = [
     tags: ['React', 'Tailwind CSS', 'Vercel Deployment', 'Framer Motion'],
     demoUrl: 'https://aliyannn-portfolio.vercel.app/',
     domainName: 'aliyannn-portfolio.vercel.app',
-    image: getScreenshotUrl('https://aliyannn-portfolio.vercel.app/'),
+    image: getScreenshotUrl('https://aliyannn-portfolio.vercel.app/', 800, 500),
+    images: [
+      getScreenshotUrl('https://aliyannn-portfolio.vercel.app/', 800, 500),
+      getScreenshotUrl('https://aliyannn-portfolio.vercel.app/', 1200, 750),
+      getScreenshotUrl('https://aliyannn-portfolio.vercel.app/', 1024, 640),
+    ],
     accentColor: '#6366F1',
     featured: false,
     metrics: [

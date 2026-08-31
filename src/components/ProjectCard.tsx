@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ExternalLink, Github, ArrowUpRight, Globe, CheckCircle2, Layout } from 'lucide-react';
 import { Project } from '../data/projects';
@@ -11,7 +11,18 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onSelect }) => {
+  const [activeImage, setActiveImage] = useState<string>(
+    project.images && project.images.length > 0 ? project.images[0] : project.image
+  );
   const [imageError, setImageError] = useState(false);
+
+  // Dynamic Random Picker on Mount so every load offers varied perspectives
+  useEffect(() => {
+    if (project.images && project.images.length > 1) {
+      const randomIndex = Math.floor(Math.random() * project.images.length);
+      setActiveImage(project.images[randomIndex]);
+    }
+  }, [project.images]);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -40,6 +51,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
     x.set(0);
     y.set(0);
   }, [x, y]);
+
+  // Fallback handler: Attempt fetching direct Open Graph image if available
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <div className="perspective-1000 transform-gpu [contain:paint] h-full">
@@ -81,7 +97,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
             </span>
           </div>
 
-          {/* Screenshot Banner (Instant mShots Loading + Fallback) */}
+          {/* Screenshot Banner with Random Image Rotation */}
           <div className="relative aspect-video max-h-44 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
             {imageError ? (
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-4 flex flex-col justify-between">
@@ -98,11 +114,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
               </div>
             ) : (
               <img
-                src={project.image}
+                src={activeImage}
                 alt={`${project.title} live screenshot`}
                 loading="lazy"
                 decoding="async"
-                onError={() => setImageError(true)}
+                onError={handleImageError}
                 className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100 transform-gpu"
               />
             )}
