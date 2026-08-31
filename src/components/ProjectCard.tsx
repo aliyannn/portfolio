@@ -2,7 +2,7 @@
 
 import React, { useRef, useCallback, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ExternalLink, Github, Eye, ArrowUpRight, Globe, CheckCircle2, Layout, Sparkles } from 'lucide-react';
+import { ExternalLink, Github, Eye, ArrowUpRight, Globe, CheckCircle2, Layout, Sparkles, ArrowRight } from 'lucide-react';
 import { Project } from '../data/projects';
 
 interface ProjectCardProps {
@@ -136,9 +136,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
             )}
 
             {/* Quick Action Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-xs">
-              <span className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-xl shadow-cyan-500/30 transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                <Eye className="w-3.5 h-3.5 text-zinc-950" /> View Details
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/45 backdrop-blur-xs">
+              <span className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-xl shadow-cyan-500/30 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                <span>View Case Study →</span>
               </span>
             </div>
           </div>
@@ -175,30 +175,42 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
               )}
             </div>
 
-            {/* Live External Link CTA */}
-            <div className="flex items-center justify-between pt-0.5" onClick={(e) => e.stopPropagation()}>
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 hover:underline font-semibold"
+            {/* Live External Link & Case Study Trigger CTA */}
+            <div className="flex items-center justify-between pt-0.5">
+              <button
+                type="button"
+                onClick={() => onSelect(project)}
+                className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 font-semibold transition-colors group-hover:underline"
               >
-                <span>Visit Live Site</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
+                <span>View Case Study →</span>
+              </button>
 
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-white transition-colors"
-                  aria-label="GitHub Repository"
-                  title="Source Code"
-                >
-                  <Github className="w-3 h-3" />
-                </a>
-              )}
+              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-cyan-300 transition-colors"
+                    aria-label="Visit Live Site"
+                    title="Visit Live Site"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-white transition-colors"
+                    aria-label="GitHub Repository"
+                    title="Source Code"
+                  >
+                    <Github className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
