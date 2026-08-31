@@ -3,9 +3,8 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Layers, ChevronDown, ChevronUp, Cpu, Globe, Rocket } from 'lucide-react';
-import { PROJECTS, Project } from '../src/data/projects';
+import { PROJECTS } from '../src/data/projects';
 import { ProjectCard } from '../src/components/ProjectCard';
-import { ProjectModal } from '../src/components/ui/ProjectModal';
 
 const INITIAL_VISIBLE_COUNT = 6;
 
@@ -19,9 +18,8 @@ const CATEGORIES = [
 export const Projects: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_VISIBLE_COUNT);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Optimized in-memory filtering with useMemo to eliminate redundant iterations
+  // Optimized in-memory filtering with useMemo
   const filteredProjects = useMemo(() => {
     if (activeCategory === 'All') return PROJECTS;
     return PROJECTS.filter(
@@ -53,14 +51,6 @@ export const Projects: React.FC = () => {
       setVisibleCount((prev) => Math.min(prev + 6, filteredProjects.length));
     }
   }, [visibleCount, filteredProjects.length]);
-
-  const handleSelectProject = useCallback((p: Project) => {
-    setSelectedProject(p);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setSelectedProject(null);
-  }, []);
 
   const hasMore = visibleCount < filteredProjects.length;
 
@@ -144,10 +134,10 @@ export const Projects: React.FC = () => {
         </div>
       </div>
 
-      {/* Compact 3-Column Responsive Grid on Desktop */}
+      {/* Streamlined 3-Column Responsive Grid on Desktop */}
       <motion.div
         layout
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 [contain:layout]"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 [contain:layout]"
       >
         <AnimatePresence mode="popLayout">
           {visibleProjects.map((project) => (
@@ -160,10 +150,7 @@ export const Projects: React.FC = () => {
               transition={{ duration: 0.3 }}
               className="h-full"
             >
-              <ProjectCard
-                project={project}
-                onSelect={handleSelectProject}
-              />
+              <ProjectCard project={project} />
             </motion.div>
           ))}
         </AnimatePresence>
@@ -194,12 +181,6 @@ export const Projects: React.FC = () => {
           </button>
         </motion.div>
       )}
-
-      {/* Case Study Detail Modal with Smooth Scroll Fix */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={handleCloseModal}
-      />
     </section>
   );
 };

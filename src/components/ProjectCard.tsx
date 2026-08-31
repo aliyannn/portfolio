@@ -2,21 +2,20 @@
 
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, Globe, CheckCircle2, Layout } from 'lucide-react';
+import { ExternalLink, Github, Globe, Layout, CheckCircle2 } from 'lucide-react';
 import { Project } from '../data/projects';
 
 interface ProjectCardProps {
   project: Project;
-  onSelect: (p: Project) => void;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onSelect }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project }) => {
   const [activeImage, setActiveImage] = useState<string>(
     project.images && project.images.length > 0 ? project.images[0] : project.image
   );
   const [imageError, setImageError] = useState(false);
 
-  // Dynamic Random Picker on Mount so every load offers varied perspectives
+  // Dynamic Random Picker on Mount for varied screenshot angles
   useEffect(() => {
     if (project.images && project.images.length > 1) {
       const randomIndex = Math.floor(Math.random() * project.images.length);
@@ -27,8 +26,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(y, [-100, 100], [6, -6]), { stiffness: 240, damping: 26 });
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-6, 6]), { stiffness: 240, damping: 26 });
+  const rotateX = useSpring(useTransform(y, [-100, 100], [5, -5]), { stiffness: 260, damping: 28 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-5, 5]), { stiffness: 260, damping: 28 });
 
   const rafId = useRef<number | null>(null);
 
@@ -52,10 +51,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
     y.set(0);
   }, [x, y]);
 
-  // Fallback handler: Attempt fetching direct Open Graph image if available
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  const displayDomain = project.domainName || project.demoUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   return (
     <div className="perspective-1000 transform-gpu [contain:paint] h-full">
@@ -71,146 +67,112 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.35 }}
-        className="group relative rounded-2xl bg-zinc-950/80 border border-white/10 backdrop-blur-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-xl cursor-pointer will-change-transform h-full hover:shadow-cyan-500/15"
-        onClick={() => onSelect(project)}
+        className="group relative rounded-2xl bg-zinc-950/85 border border-white/10 backdrop-blur-xl hover:border-cyan-500/40 transition-all duration-300 overflow-hidden flex flex-col justify-between shadow-xl will-change-transform h-full hover:shadow-[0_0_25px_rgba(6,182,212,0.15)]"
       >
-        {/* Card Header & Mockup Frame */}
-        <div className="relative w-full overflow-hidden bg-zinc-950/90 border-b border-white/10">
-          
-          {/* Browser Window Header Bar */}
-          <div className="px-3 py-2 bg-zinc-900/90 border-b border-white/5 flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-red-500/70" />
-              <span className="w-2 h-2 rounded-full bg-amber-500/70" />
-              <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
-            </div>
-            
-            {/* Domain Address Bar */}
-            <div className="px-2 py-0.5 rounded-md bg-zinc-950/80 border border-white/10 text-[9.5px] font-mono text-zinc-400 flex items-center gap-1 max-w-[140px] truncate">
-              <Globe className="w-2.5 h-2.5 text-cyan-400 shrink-0" />
-              <span className="truncate">{project.domainName}</span>
-            </div>
-
-            {/* Category Tag */}
-            <span className="text-[9px] font-mono text-cyan-400 font-semibold px-1.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/20">
-              {project.category.replace(' & ', '/')}
+        {/* Card Header / Browser Mockup Bar */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 bg-zinc-900/90 border-b border-white/10 shrink-0">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">
+              {project.category}
+            </span>
+            <span className="text-[11px] font-mono text-neutral-400 truncate max-w-[130px] sm:max-w-[160px]">
+              • {displayDomain}
             </span>
           </div>
 
-          {/* Screenshot Banner with Random Image Rotation */}
-          <div className="relative aspect-video max-h-44 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
-            {imageError ? (
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-4 flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                    <Layout className="w-3.5 h-3.5 text-cyan-400" />
-                  </div>
-                  <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider">Live System</span>
-                </div>
-                <div>
-                  <h4 className="font-bold text-white text-sm tracking-tight">{project.title}</h4>
-                  <p className="text-[10px] text-cyan-400/80 font-mono mt-0.5">{project.domainName}</p>
-                </div>
-              </div>
-            ) : (
-              <img
-                src={activeImage}
-                alt={`${project.title} live screenshot`}
-                loading="lazy"
-                decoding="async"
-                onError={handleImageError}
-                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100 transform-gpu"
-              />
-            )}
-
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
-
-            {/* Status / Metric Indicator */}
-            {project.metrics && project.metrics.length > 0 && (
-              <div className="absolute bottom-2.5 left-2.5 z-10">
-                <span className="px-2 py-0.5 rounded-full text-[9.5px] font-mono font-medium bg-zinc-900/90 backdrop-blur-md border border-emerald-500/30 text-emerald-300 flex items-center gap-1 shadow-sm">
-                  <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
-                  {project.metrics[0].value}
-                </span>
-              </div>
-            )}
-
-            {/* Quick Action Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/45 backdrop-blur-xs">
-              <span className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-xl shadow-cyan-500/30 transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                <span>View Case Study →</span>
-              </span>
-            </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-red-500/70" />
+            <span className="w-2 h-2 rounded-full bg-amber-500/70" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
           </div>
         </div>
 
-        {/* Card Body */}
-        <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <h3 className="font-display text-base font-bold text-white group-hover:text-cyan-300 transition-colors truncate pr-2">
-                {project.title}
-              </h3>
-              <ArrowUpRight className="w-4 h-4 text-zinc-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+        {/* Visual Preview (Screenshot Frame) */}
+        <div className="relative aspect-video max-h-48 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
+          {imageError ? (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-4 flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+                  <Layout className="w-3.5 h-3.5 text-cyan-400" />
+                </div>
+                <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider">Live System</span>
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm tracking-tight">{project.title}</h4>
+                <p className="text-[10px] text-cyan-400/80 font-mono mt-0.5">{displayDomain}</p>
+              </div>
             </div>
-            <p className="text-[10.5px] font-mono text-cyan-400/80 truncate">{project.subtitle}</p>
-            <p className="text-zinc-400 text-xs line-clamp-2 leading-relaxed pt-0.5">{project.description}</p>
+          ) : (
+            <img
+              src={activeImage}
+              alt={`${project.title} live screenshot`}
+              loading="lazy"
+              decoding="async"
+              onError={() => setImageError(true)}
+              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100 transform-gpu"
+            />
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent pointer-events-none" />
+
+          {/* Status Metric Badge */}
+          {project.metrics && project.metrics.length > 0 && (
+            <div className="absolute bottom-2.5 left-2.5 z-10 pointer-events-none">
+              <span className="px-2 py-0.5 rounded-full text-[9.5px] font-mono font-medium bg-zinc-900/90 backdrop-blur-md border border-emerald-500/30 text-emerald-300 flex items-center gap-1 shadow-sm">
+                <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                {project.metrics[0].value}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Core Information Section */}
+        <div className="p-4 sm:p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+              {project.title}
+            </h3>
+            <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
+              {project.description}
+            </p>
           </div>
 
-          {/* Tech Badges & Actions */}
-          <div className="pt-2.5 border-t border-white/5 flex flex-col gap-2.5">
-            <div className="flex flex-wrap gap-1">
-              {project.tags.slice(0, 3).map((tag) => (
+          {/* Prominent Tech Stack Badges */}
+          <div className="space-y-3 pt-1 border-t border-white/5">
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((t) => (
                 <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded text-[9.5px] font-mono bg-zinc-900 border border-white/10 text-zinc-300"
+                  key={t}
+                  className="px-2 py-0.5 rounded-md bg-zinc-900/90 border border-white/10 text-[10px] font-mono text-cyan-300"
                 >
-                  {tag}
+                  {t}
                 </span>
               ))}
-              {project.tags.length > 3 && (
-                <span className="px-1.5 py-0.5 rounded text-[9.5px] font-mono bg-zinc-900/60 text-zinc-500">
-                  +{project.tags.length - 3}
-                </span>
-              )}
             </div>
 
-            {/* Live External Link & Case Study Trigger CTA */}
-            <div className="flex items-center justify-between pt-0.5">
-              <button
-                type="button"
-                onClick={() => onSelect(project)}
-                className="inline-flex items-center gap-1 text-[11px] font-mono text-cyan-400 hover:text-cyan-300 font-semibold transition-colors group-hover:underline"
+            {/* Direct Actions: Visit Live Website & Source Code */}
+            <div className="flex items-center gap-2 pt-1">
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs transition-all shadow-[0_0_15px_rgba(6,182,212,0.25)] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]"
               >
-                <span>View Case Study →</span>
-              </button>
+                <span>Visit Live Website ↗</span>
+              </a>
 
-              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                {project.demoUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-cyan-300 transition-colors"
-                    aria-label="Visit Live Site"
-                    title="Visit Live Site"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-white transition-colors"
-                    aria-label="GitHub Repository"
-                    title="Source Code"
-                  >
-                    <Github className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-white transition-colors flex items-center justify-center shrink-0"
+                  aria-label="GitHub Repository"
+                  title="View Source Code"
+                >
+                  <Github className="w-4 h-4" />
+                </a>
+              )}
             </div>
           </div>
         </div>
