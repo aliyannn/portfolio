@@ -2,7 +2,7 @@
 
 import React, { useRef, useCallback, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { ExternalLink, Github, Eye, ArrowUpRight, Globe, CheckCircle2, Layout, Sparkles, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, Globe, CheckCircle2, Layout } from 'lucide-react';
 import { Project } from '../data/projects';
 
 interface ProjectCardProps {
@@ -11,7 +11,6 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onSelect }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const x = useMotionValue(0);
@@ -82,20 +81,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
             </span>
           </div>
 
-          {/* Screenshot Banner with Shimmer Loading & Fallback */}
+          {/* Screenshot Banner (Instant mShots Loading + Fallback) */}
           <div className="relative aspect-video max-h-44 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
-            
-            {/* Skeleton Shimmer while loading */}
-            {!imageLoaded && !imageError && (
-              <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 animate-pulse flex items-center justify-center">
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-zinc-500">
-                  <Sparkles className="w-3 h-3 text-cyan-400 animate-spin" />
-                  <span>Loading preview...</span>
-                </div>
-              </div>
-            )}
-
-            {/* Clean Gradient Fallback if screenshot fails */}
             {imageError ? (
               <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-4 flex flex-col justify-between">
                 <div className="flex items-center justify-between">
@@ -115,11 +102,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
                 alt={`${project.title} live screenshot`}
                 loading="lazy"
                 decoding="async"
-                onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
-                className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 transform-gpu ${
-                  imageLoaded ? 'opacity-85 group-hover:opacity-100' : 'opacity-0'
-                }`}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-85 group-hover:opacity-100 transform-gpu"
               />
             )}
 

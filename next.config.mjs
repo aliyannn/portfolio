@@ -7,6 +7,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 's0.wp.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.microlink.io',
       },
       {

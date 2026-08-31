@@ -18,8 +18,8 @@ export interface Project {
   domainName: string;
 }
 
-export const getScreenshotUrl = (url: string) =>
-  `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+export const getScreenshotUrl = (url: string, width = 800, height = 500) =>
+  `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=${width}&h=${height}`;
 
 export const PROJECTS: Project[] = [
   {
