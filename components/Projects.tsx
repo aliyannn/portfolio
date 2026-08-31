@@ -7,7 +7,7 @@ import { PROJECTS, Project } from '../src/data/projects';
 import { ProjectCard } from '../src/components/ProjectCard';
 import { ProjectModal } from '../src/components/ui/ProjectModal';
 
-const INITIAL_VISIBLE_COUNT = 4;
+const INITIAL_VISIBLE_COUNT = 6;
 
 const CATEGORIES = [
   { id: 'All', label: 'All Projects', icon: Layers },
@@ -45,13 +45,12 @@ export const Projects: React.FC = () => {
   const handleToggleVisible = useCallback(() => {
     if (visibleCount >= filteredProjects.length) {
       setVisibleCount(INITIAL_VISIBLE_COUNT);
-      // Optional subtle scroll back to top of projects section
       const section = document.getElementById('projects');
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      setVisibleCount((prev) => Math.min(prev + 4, filteredProjects.length));
+      setVisibleCount((prev) => Math.min(prev + 6, filteredProjects.length));
     }
   }, [visibleCount, filteredProjects.length]);
 
@@ -64,15 +63,14 @@ export const Projects: React.FC = () => {
   }, []);
 
   const hasMore = visibleCount < filteredProjects.length;
-  const isExpanded = visibleCount >= filteredProjects.length && filteredProjects.length > INITIAL_VISIBLE_COUNT;
 
   return (
-    <section id="projects" className="relative py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-visible transform-gpu">
+    <section id="projects" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-visible transform-gpu">
       {/* Ambient Cyber Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-600/5 rounded-full blur-[170px] pointer-events-none" />
 
       {/* Standardized Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-12">
+      <div className="text-center max-w-3xl mx-auto mb-10">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -101,13 +99,13 @@ export const Projects: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.16 }}
-          className="text-zinc-400 text-sm sm:text-base mt-3 leading-relaxed"
+          className="text-zinc-400 text-sm sm:text-base mt-2.5 leading-relaxed"
         >
           Explore live web applications, client portals, enterprise CMS architectures, and 3D WebGL interfaces built for scale and high conversion.
         </motion.p>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mt-8">
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.id;
             const Icon = cat.icon;
@@ -123,7 +121,7 @@ export const Projects: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`relative px-4 sm:px-5 py-2 rounded-full text-xs font-mono transition-all duration-300 flex items-center gap-2 ${
+                className={`relative px-4 py-1.5 rounded-full text-xs font-mono transition-all duration-300 flex items-center gap-1.5 ${
                   isActive
                     ? 'bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-500 text-zinc-950 font-bold shadow-lg shadow-cyan-500/25 scale-105'
                     : 'bg-zinc-900/80 border border-white/10 text-zinc-400 hover:text-white hover:border-cyan-500/30'
@@ -146,10 +144,10 @@ export const Projects: React.FC = () => {
         </div>
       </div>
 
-      {/* Compact 2-Column Responsive Grid with Smooth Layout Animations */}
+      {/* Compact 3-Column Responsive Grid on Desktop */}
       <motion.div
         layout
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 [contain:layout]"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 [contain:layout]"
       >
         <AnimatePresence mode="popLayout">
           {visibleProjects.map((project) => (
@@ -177,11 +175,11 @@ export const Projects: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="mt-12 flex justify-center items-center"
+          className="mt-10 flex justify-center items-center"
         >
           <button
             onClick={handleToggleVisible}
-            className="group relative px-6 py-3 rounded-2xl bg-zinc-900/90 border border-cyan-500/30 hover:border-cyan-400 backdrop-blur-xl text-xs sm:text-sm font-mono text-zinc-200 hover:text-white flex items-center gap-2.5 transition-all duration-300 shadow-lg shadow-cyan-950/30 hover:shadow-cyan-500/20 hover:scale-105"
+            className="group relative px-6 py-2.5 rounded-2xl bg-zinc-900/90 border border-cyan-500/30 hover:border-cyan-400 backdrop-blur-xl text-xs sm:text-sm font-mono text-zinc-200 hover:text-white flex items-center gap-2 transition-all duration-300 shadow-lg shadow-cyan-950/30 hover:shadow-cyan-500/20 hover:scale-105"
           >
             <span className="font-semibold">
               {hasMore
@@ -197,7 +195,7 @@ export const Projects: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Case Study Detail Modal */}
+      {/* Case Study Detail Modal with Smooth Scroll Fix */}
       <ProjectModal
         project={selectedProject}
         onClose={handleCloseModal}
