@@ -110,6 +110,11 @@ const CUBIE_HALF = CUBIE_SIZE / 2;
 const STICKER_OFFSET = CUBIE_HALF + 0.003;
 const STICKER_SIZE = 0.78;
 
+const _tempPos = new THREE.Vector3();
+const _tempQuat = new THREE.Quaternion();
+const _sliceQuat = new THREE.Quaternion();
+const _axisVec = new THREE.Vector3();
+
 const CubieMesh: React.FC<CubieProps> = React.memo(({
   cubie,
   isHovered,
@@ -178,42 +183,40 @@ const CubieMesh: React.FC<CubieProps> = React.memo(({
     return list;
   }, [cubie.initialPos]);
 
-  // Compute visual transform for current frame (including live slice animation)
-  useFrame((state, delta) => {
+  // Compute visual transform for current frame (zero heap allocations)
+  useFrame((_, delta) => {
     if (!groupRef.current) return;
 
     pulseRef.current += delta * 4;
 
-    const basePos = cubie.currentPos.clone();
-    const baseQuat = cubie.quaternion.clone();
+    _tempPos.copy(cubie.currentPos);
+    _tempQuat.copy(cubie.quaternion);
 
     // Check if this cubie is currently in an active slice rotation
     if (animatingSlice) {
       const { axis, sliceIndex, angle } = animatingSlice;
-      const coord = Math.round(basePos[axis]);
+      const coord = Math.round(_tempPos[axis]);
 
       if (coord === sliceIndex) {
-        const sliceQuat = new THREE.Quaternion();
-        const axisVec = new THREE.Vector3();
-        if (axis === 'x') axisVec.set(1, 0, 0);
-        if (axis === 'y') axisVec.set(0, 1, 0);
-        if (axis === 'z') axisVec.set(0, 0, 1);
+        if (axis === 'x') _axisVec.set(1, 0, 0);
+        else if (axis === 'y') _axisVec.set(0, 1, 0);
+        else _axisVec.set(0, 0, 1);
 
-        sliceQuat.setFromAxisAngle(axisVec, angle);
-
-        // Apply slice rotation around origin (0,0,0)
-        basePos.applyQuaternion(sliceQuat);
-        baseQuat.premultiply(sliceQuat);
+        _sliceQuat.setFromAxisAngle(_axisVec, angle);
+        _tempPos.applyQuaternion(_sliceQuat);
+        _tempQuat.premultiply(_sliceQuat);
       }
     }
 
     // Set position and quaternion
-    groupRef.current.position.copy(basePos);
-    groupRef.current.quaternion.copy(baseQuat);
+    groupRef.current.position.copy(_tempPos);
+    groupRef.current.quaternion.copy(_tempQuat);
 
-    // Subtle hover scale expansion
+    // Smooth scalar hover scale interpolation without object creation
     const targetScale = isHovered ? 1.04 : 1.0;
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), delta * 10);
+    const currentScale = groupRef.current.scale.x;
+    const nextScale = THREE.MathUtils.lerp(currentScale, targetScale, Math.min(1, delta * 10));
+    groupRef.current.scale.setScalar(nextScale);
   });
 
   const emissiveIntensityMultiplier = isHovered ? 1.4 + Math.sin(pulseRef.current) * 0.4 : 0.6;

@@ -103,6 +103,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project }) 
               </div>
             </div>
           ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={activeImage}
               alt={`${project.title} live screenshot`}

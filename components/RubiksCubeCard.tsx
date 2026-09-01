@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { Sparkles, Layers, RefreshCw, Move3d, Shield, Code2, Globe, Cpu, Zap } from 'lucide-react';
+import { RefreshCw, Move3d } from 'lucide-react';
 import { TECH_FACES } from './3d/RubiksCube';
 
-// Dynamic import with SSR false and skeleton fallback
 const RubiksCube = dynamic(() => import('./3d/RubiksCube'), {
   ssr: false,
   loading: () => (

@@ -276,7 +276,72 @@ const HolographicCoreMesh: React.FC<HologramSceneProps> = React.memo(({ hoveredN
 HolographicCoreMesh.displayName = 'HolographicCoreMesh';
 
 // ======================================================================
-// 3. Main CyberHologram Interactive Assembly
+// 3. Isolated Memoized Satellite HUD Cards
+// ======================================================================
+const LiveNetworkNode: React.FC<{
+  hovered: boolean;
+  onHover: (hovered: boolean) => void;
+}> = React.memo(({ hovered, onHover }) => {
+  const [pingMs, setPingMs] = useState<number>(24);
+  const [rxSpeed, setRxSpeed] = useState<string>('1.4 MB/s');
+  const [txSpeed, setTxSpeed] = useState<string>('840 KB/s');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (document.hidden) return;
+      setPingMs(Math.floor(22 + Math.random() * 12));
+      setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
+      setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
+    }, 1800);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      className={`absolute top-2 right-1 sm:right-3 z-20 transition-all duration-300 will-change-transform ${
+        hovered ? 'scale-105' : 'scale-100'
+      }`}
+      style={{ transform: 'translateZ(36px)' }}
+    >
+      <div className="relative group p-[1px] rounded-xl bg-gradient-to-r from-cyan-500/40 via-white/10 to-teal-500/30 backdrop-blur-xl shadow-[0_8px_24px_-6px_rgba(6,182,212,0.3)] hover:shadow-[0_12px_32px_-4px_rgba(6,182,212,0.45)]">
+        <div className="px-3 py-2 rounded-xl bg-zinc-950/85 border border-white/10 flex flex-col gap-0.5 font-mono text-xs">
+          <div className="flex items-center justify-between gap-2.5 text-[9.5px] text-zinc-400">
+            <span className="flex items-center gap-1 font-bold uppercase tracking-wider text-cyan-300">
+              <Radio className="w-2.5 h-2.5 text-cyan-400 animate-pulse" />
+              Live Network Node
+            </span>
+            <span className="flex items-center gap-1 px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-[8.5px]">
+              <ShieldCheck className="w-2 h-2" /> FORTINET ACTIVE
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between gap-2.5 pt-0.5">
+            <div className="flex items-center gap-1 text-emerald-300 font-bold text-[11px] sm:text-xs">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+              </span>
+              <span>{pingMs}ms Latency</span>
+            </div>
+
+            <div className="text-[9.5px] text-zinc-400 flex items-center gap-1">
+              <span className="text-cyan-300">{rxSpeed}</span>
+              <span className="text-zinc-500">⇄</span>
+              <span className="text-emerald-300">{txSpeed}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+LiveNetworkNode.displayName = 'LiveNetworkNode';
+
+// ======================================================================
+// 4. Main CyberHologram Interactive Assembly
 // ======================================================================
 export const CyberHologram: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -290,11 +355,6 @@ export const CyberHologram: React.FC = () => {
     osName: 'Detecting OS...',
     gpuName: 'WebGL Graphics Core',
   });
-
-  // Dynamic live ping jitter
-  const [pingMs, setPingMs] = useState<number>(24);
-  const [rxSpeed, setRxSpeed] = useState<string>('1.4 MB/s');
-  const [txSpeed, setTxSpeed] = useState<string>('840 KB/s');
 
   // Intersection Observer to pause Canvas rendering when off-screen
   useEffect(() => {
@@ -312,17 +372,7 @@ export const CyberHologram: React.FC = () => {
 
     observer.observe(el);
 
-    const interval = setInterval(() => {
-      if (document.hidden) return;
-      setPingMs(Math.floor(22 + Math.random() * 12));
-      setRxSpeed(`${(1.2 + Math.random() * 0.6).toFixed(1)} MB/s`);
-      setTxSpeed(`${Math.floor(750 + Math.random() * 220)} KB/s`);
-    }, 1800);
-
-    return () => {
-      observer.disconnect();
-      clearInterval(interval);
-    };
+    return () => observer.disconnect();
   }, []);
 
   // Framer Motion 3D Tilt Spring Physics
@@ -507,44 +557,10 @@ export const CyberHologram: React.FC = () => {
         {/* ------------------------------------------------------------- */}
         {/* Satellite Node 1 (Top-Right): "Live Network Node" */}
         {/* ------------------------------------------------------------- */}
-        <motion.div
-          onMouseEnter={() => setHoveredNode('node1')}
-          onMouseLeave={() => setHoveredNode(null)}
-          className={`absolute top-2 right-1 sm:right-3 z-20 transition-all duration-300 will-change-transform ${
-            hoveredNode === 'node1' ? 'scale-105' : 'scale-100'
-          }`}
-          style={{ transform: 'translateZ(36px)' }}
-        >
-          <div className="relative group p-[1px] rounded-xl bg-gradient-to-r from-cyan-500/40 via-white/10 to-teal-500/30 backdrop-blur-xl shadow-[0_8px_24px_-6px_rgba(6,182,212,0.3)] hover:shadow-[0_12px_32px_-4px_rgba(6,182,212,0.45)]">
-            <div className="px-3 py-2 rounded-xl bg-zinc-950/85 border border-white/10 flex flex-col gap-0.5 font-mono text-xs">
-              <div className="flex items-center justify-between gap-2.5 text-[9.5px] text-zinc-400">
-                <span className="flex items-center gap-1 font-bold uppercase tracking-wider text-cyan-300">
-                  <Radio className="w-2.5 h-2.5 text-cyan-400 animate-pulse" />
-                  Live Network Node
-                </span>
-                <span className="flex items-center gap-1 px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-[8.5px]">
-                  <ShieldCheck className="w-2 h-2" /> FORTINET ACTIVE
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between gap-2.5 pt-0.5">
-                <div className="flex items-center gap-1 text-emerald-300 font-bold text-[11px] sm:text-xs">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-                  </span>
-                  <span>{pingMs}ms Latency</span>
-                </div>
-
-                <div className="text-[9.5px] text-zinc-400 flex items-center gap-1">
-                  <span className="text-cyan-300">{rxSpeed}</span>
-                  <span className="text-zinc-500">⇄</span>
-                  <span className="text-emerald-300">{txSpeed}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        <LiveNetworkNode
+          hovered={hoveredNode === 'node1'}
+          onHover={(isHovered) => setHoveredNode(isHovered ? 'node1' : null)}
+        />
 
         {/* ------------------------------------------------------------- */}
         {/* Satellite Node 2 (Left): "Device Telemetry" */}

@@ -326,7 +326,7 @@ export const Testimonials: React.FC = () => {
 
                 {/* Card Middle: Review Quote */}
                 <p className="text-sm text-neutral-300 leading-relaxed mb-6 font-sans italic">
-                  "{rev.content}"
+                  &ldquo;{rev.content}&rdquo;
                 </p>
               </div>
 

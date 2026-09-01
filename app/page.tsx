@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
-import { BentoGrid as BentoAbout } from '@/components/BentoGrid';
+import { BentoGrid } from '@/components/BentoGrid';
 import { Projects } from '@/components/Projects';
-import { Experience as ExperienceSkills } from '@/components/Experience';
+import { Experience } from '@/components/Experience';
 import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/src/components/sections/Contact';
 import { Footer } from '@/src/components/layout/Footer';
@@ -21,9 +21,9 @@ export default function HomePage() {
       {/* Main Portfolio Sections */}
       <main>
         <Hero />
-        <BentoAbout />
+        <BentoGrid />
         <Projects />
-        <ExperienceSkills />
+        <Experience />
         <Testimonials />
         <Contact />
       </main>

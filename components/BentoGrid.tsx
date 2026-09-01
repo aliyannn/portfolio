@@ -18,7 +18,7 @@ import {
 import { PORTFOLIO_DATA } from '../src/data/portfolioData';
 import RubiksCubeCard from './RubiksCubeCard';
 
-export const BentoGrid: React.FC = () => {
+const LivePktClock: React.FC = React.memo(() => {
   const [pktTime, setPktTime] = useState<string>('');
 
   useEffect(() => {
@@ -38,6 +38,16 @@ export const BentoGrid: React.FC = () => {
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  return (
+    <span className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tracking-wider block drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+      {pktTime || '00:00:00 PM'}
+    </span>
+  );
+});
+LivePktClock.displayName = 'LivePktClock';
+
+export const BentoGrid: React.FC = () => {
 
   return (
     <section id="about" className="relative py-20 overflow-hidden bg-[#030712] transform-gpu">
@@ -284,9 +294,7 @@ export const BentoGrid: React.FC = () => {
                 <span className="text-[9px] font-mono text-zinc-400 block mb-0.5 uppercase tracking-widest font-semibold">
                   CURRENT LOCAL TIME (PKT)
                 </span>
-                <span className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tracking-wider block drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
-                  {pktTime || '00:00:00 PM'}
-                </span>
+                <LivePktClock />
               </div>
 
               {/* Compact 3-Column Overlap Grid */}

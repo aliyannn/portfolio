@@ -69,7 +69,7 @@ export const Hero: React.FC = () => {
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15] text-white"
           >
             <span className="block text-white">
-              I'm <span className="text-white">Aliyan Gohar</span>
+              I&apos;m <span className="text-white">Aliyan Gohar</span>
             </span>
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 mt-1">
               Systems &amp; Full-Stack Engineer
@@ -134,7 +134,7 @@ export const Hero: React.FC = () => {
               className="group px-4 py-2.5 rounded-xl bg-emerald-950/70 border border-emerald-500/40 hover:border-emerald-400/80 backdrop-blur-xl text-emerald-300 hover:text-white font-medium text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-emerald-500/20"
             >
               <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="font-mono">Let's Connect</span>
+              <span className="font-mono">Let&apos;s Connect</span>
             </a>
 
             <a

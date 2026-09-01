@@ -315,7 +315,7 @@ export default function AdminReviewsPage() {
                         </span>
                       </div>
 
-                      <p className="text-xs text-zinc-300 italic font-sans">"{rev.content}"</p>
+                      <p className="text-xs text-zinc-300 italic font-sans">&ldquo;{rev.content}&rdquo;</p>
                       <span className="text-[10px] font-mono text-zinc-500 block">{rev.date}</span>
                     </div>
 

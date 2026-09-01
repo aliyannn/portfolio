@@ -85,7 +85,7 @@ export const Contact: React.FC = () => {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-sm"
         >
           <Mail className="w-3.5 h-3.5 text-cyan-400" />
-          <span>LET'S CONNECT</span>
+          <span>LET&apos;S CONNECT</span>
         </motion.div>
 
         <motion.h2
@@ -97,7 +97,7 @@ export const Contact: React.FC = () => {
         >
           Have a Project or Role in Mind? <br className="hidden sm:block" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
-            Let's Build Together
+            Let&apos;s Build Together
           </span>
         </motion.h2>
 

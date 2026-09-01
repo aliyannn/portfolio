@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUp, Github, Linkedin, Mail, Heart, Sparkles, FileText } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Heart, FileText } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../../data/portfolioData';
 
 export const Footer: React.FC = () => {
