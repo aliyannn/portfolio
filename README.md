@@ -1,33 +1,32 @@
-# ⚡ Aliyan Portfolio
+# ⚡ Aliyan Gohar Portfolio (v2)
 
-A modern, high-performance developer portfolio website built with **React 18**, **TypeScript**, **Vite**, **Tailwind CSS**, **Framer Motion**, and **Three.js / React Three Fiber**.
+A modern, high-performance developer portfolio built with **Next.js 14 (App Router)**, **React 18**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Three.js / React Three Fiber**.
 
-Features interactive 3D elements, smooth momentum scrolling, a dynamic Bento grid layout, custom interactive project modals, and interactive UI micro-animations.
-
----
-
-## ✨ Features
-
-- 🎨 **Modern Dark Aesthetics**: Deep space palette (`#030712`) with vibrant glowing accents, glassmorphism, and background noise textures.
-- ⚡ **Lightning Fast Performance**: Built with Vite and React 18 for instant HMR and optimized production builds.
-- 📜 **Smooth Scrolling**: Powered by `@studio-freight/lenis` (Lenis) for fluid, physics-based momentum scrolling.
-- 🧊 **Interactive 3D Visuals**: Powered by `@react-three/fiber` and `@react-three/drei`.
-- 🍱 **Bento Grid Layout**: Sleek, responsive layout showcasing experience, bio, and key statistics.
-- 💼 **Interactive Projects Showcase**: Detailed project modal popups with tags, feature lists, live links, and demo triggers.
-- 🛠️ **Skills & Experience**: Interactive technology pills, categorized skill matrix, and career timeline.
-- 📬 **Interactive Contact Section**: Functional form interface with interactive animations and celebratory feedback effects (canvas-confetti).
-- 🖱️ **Dynamic Cursor Spotlight**: Custom ambient spotlight tracking mouse position across the screen.
+Engineered for 60 FPS WebGL rendering, sub-second hydration, zero garbage collection frame drops, and clean full-stack API architecture.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Key Architectural Highlights
 
-- **Core**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS, PostCSS, Autoprefixer, Lucide Icons
+- 🎨 **Obsidian Cyber Aesthetics**: Deep dark-mode palette (`#030712`) with vibrant glowing accents, glassmorphism, and responsive noise grid overlays.
+- 🧊 **Optimized 3D WebGL Hologram & Rubik's Cube**: Powered by `@react-three/fiber` and `@react-three/drei` with pre-allocated vector math, clamped DPR (`[1, 1.5]`), and IntersectionObserver viewport auto-pausing.
+- ⚡ **Zero-Lag React Architecture**: Dynamic client telemetry and isolated 1-second clock updates to eliminate cascading re-renders across the main page.
+- 🍱 **Responsive Bento Grid & Project Matrix**: Showcasing enterprise deployments, verifiable benchmarks, live uptime, and categorized filter tabs.
+- 📬 **Full-Stack Resend Email Engine**: Server-side Next.js API route (`/api/send`) powered by Resend for instant lead delivery with direct reply headers.
+- 🛡️ **Admin Reviews Management**: Dedicated PIN-authenticated admin dashboard (`/admin/reviews`) with dynamic status toggle and live moderation.
+- 🖱️ **Zero-Overhead Cursor Spotlight**: RAF-throttled desktop ambient spotlight with automatic mobile/touch disabling.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: Next.js 14 (App Router, Server & Client Components)
+- **Core**: React 18, TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS, PostCSS, Lucide Icons
 - **Animations**: Framer Motion
 - **3D Graphics**: Three.js, React Three Fiber (`@react-three/fiber`), Drei (`@react-three/drei`)
-- **Smooth Scroll**: Lenis (`lenis`)
-- **Utilities**: `clsx`, `tailwind-merge`, `canvas-confetti`
+- **Email & Delivery**: Resend SDK (`resend`), Canvas Confetti (`canvas-confetti`)
+- **Linting & Code Quality**: ESLint (`eslint-config-next`)
 
 ---
 
@@ -35,17 +34,19 @@ Features interactive 3D elements, smooth momentum scrolling, a dynamic Bento gri
 
 ### Prerequisites
 
-Ensure you have Node.js (v18.0.0 or higher) and npm installed on your machine.
+Ensure you have Node.js (v18.17.0 or higher) and npm installed.
 
-- Node.js: `node -v`
-- npm: `npm -v`
+```bash
+node -v
+npm -v
+```
 
 ### Installation
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/aliyan-portfolio.git
-   cd aliyan-portfolio
+   git clone https://github.com/aliyannn/portfolio.git
+   cd portfolio
    ```
 
 2. **Install dependencies**:
@@ -53,49 +54,72 @@ Ensure you have Node.js (v18.0.0 or higher) and npm installed on your machine.
    npm install
    ```
 
-3. **Start the development server**:
+3. **Configure Environment Variables** (Optional for live email dispatch):
+   Create a `.env.local` file:
+   ```env
+   RESEND_API_KEY=your_resend_api_key
+   NEXT_PUBLIC_ADMIN_PIN=your_admin_pin
+   ```
+
+4. **Start the development server**:
    ```bash
    npm run dev
    ```
-   Open `http://localhost:5173` in your browser to view the application.
+   Open `http://localhost:3000` in your browser.
 
 ---
 
 ## 📜 Available Scripts
 
-In the project directory, you can run:
-
 | Command | Description |
 | :--- | :--- |
-| `npm run dev` | Runs the app in development mode with HMR. |
-| `npm run build` | Compiles TypeScript & builds the app for production in `dist/`. |
-| `npm run lint` | Runs TypeScript type checking without emitting files. |
-| `npm run preview` | Locally previews the production build. |
+| `npm run dev` | Starts the Next.js development server at `http://localhost:3000`. |
+| `npm run build` | Compiles an optimized production build (`.next/`). |
+| `npm run start` | Runs the production build locally. |
+| `npm run lint` | Runs ESLint and TypeScript validation with strict hygiene. |
 
 ---
 
-## 📁 Directory Structure
+## 📁 Repository Structure
 
 ```text
-aliyan-portfolio/
-├── public/                 # Static public assets
+portfolio/
+├── app/
+│   ├── admin/reviews/      # PIN-protected reviews management panel
+│   ├── api/
+│   │   ├── og/             # Open Graph metadata preview handler
+│   │   ├── reviews/        # Public & admin reviews API endpoint
+│   │   └── send/           # Resend email dispatch route
+│   ├── globals.css         # Global design system & utility classes
+│   ├── layout.tsx          # Root layout with fonts, JSON-LD Schema & metadata
+│   ├── page.tsx            # Main single-page portfolio view
+│   ├── robots.ts           # Dynamic robots.txt metadata generator
+│   └── sitemap.ts          # Dynamic sitemap.xml metadata generator
+├── components/
+│   ├── 3d/
+│   │   ├── 3DErrorBoundary.tsx  # WebGL hardware acceleration fallback
+│   │   └── RubiksCube.tsx       # Zero-GC interactive 3D Rubik's Cube
+│   ├── BentoGrid.tsx            # Systems overview & engineering metrics
+│   ├── CyberHologram.tsx        # Geodesic core & telemetry satellite HUD
+│   ├── Experience.tsx           # Work history & education timeline
+│   ├── Hero.tsx                 # High-impact identity header & CTAs
+│   ├── Logo.tsx                 # Custom SVG geometric monogram
+│   ├── Navbar.tsx               # Floating glassmorphic navigation header
+│   ├── Projects.tsx             # Filterable production projects showcase
+│   ├── RubiksCubeCard.tsx       # 3D interactive stack card container
+│   └── Testimonials.tsx         # Verified reviews feed & submission modal
+├── public/                      # Static assets & PDF resume
 ├── src/
 │   ├── components/
-│   │   ├── 3d/             # 3D Fiber canvases & geometries
-│   │   ├── layout/         # Navbar, Footer, CursorSpotlight
-│   │   ├── sections/       # Hero, BentoAbout, Projects, ExperienceSkills, Contact
-│   │   └── ui/             # Reusable UI components & modals
-│   ├── data/               # Portfolio data (projects, skills, experience)
-│   ├── hooks/              # Custom React hooks (useLenis, useMousePosition)
-│   ├── App.tsx             # Root application component
-│   ├── index.css           # Global CSS, Tailwind directives & noise background
-│   └── main.tsx            # Entry point
-├── index.html              # Main HTML file
-├── package.json            # Project dependencies & scripts
-├── postcss.config.js       # PostCSS configuration
-├── tailwind.config.js      # Tailwind CSS configuration
-├── tsconfig.json           # TypeScript configuration
-└── vite.config.ts          # Vite build configuration
+│   │   ├── layout/              # CursorSpotlight, Footer
+│   │   ├── sections/            # Contact section
+│   │   └── ProjectCard.tsx      # Individual project card with 3D tilt
+│   └── data/
+│       ├── portfolioData.ts     # Core bio, experience, skills data
+│       └── projects.ts          # Production project registry & screenshots
+├── package.json
+├── tailwind.config.js
+└── tsconfig.json
 ```
 
 ---
