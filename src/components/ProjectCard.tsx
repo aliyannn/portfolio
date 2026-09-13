@@ -146,16 +146,32 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project }) 
           {/* Visual Preview (Screenshot Frame) */}
           <div className="relative aspect-video max-h-48 w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
             {imageError ? (
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-4 flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                    <Layout className="w-3.5 h-3.5 text-cyan-400" />
-                  </div>
-                  <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider">Live System</span>
-                </div>
-                <div>
-                  <h4 className="font-bold text-white text-sm tracking-tight">{project.title}</h4>
-                  <p className="text-[10px] text-cyan-400/80 font-mono mt-0.5">{displayDomain}</p>
+              /* Rendered when picture fails to load: Custom Personal Logo Fallback */
+              <div className="relative w-full h-full bg-gradient-to-br from-zinc-950 via-zinc-900 to-cyan-950/40 p-6 flex flex-col items-center justify-center text-center select-none overflow-hidden group/fallback">
+                {/* Soft Ambient Neon Glow Behind Emblem */}
+                <div className="absolute w-28 h-28 rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/15 to-emerald-500/20 blur-xl pointer-events-none" />
+
+                {/* Custom Personal Logo */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/logo.png"
+                  alt="Aliyan Gohar Logo"
+                  className="relative w-16 h-16 object-contain mb-2.5 opacity-85 group-hover/fallback:opacity-100 group-hover/fallback:scale-105 transition-all duration-300 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.indexOf('/images/logo.png') !== -1) {
+                      target.src = '/logo.png';
+                    }
+                  }}
+                />
+
+                <div className="relative z-10">
+                  <h4 className="font-bold text-white text-xs sm:text-sm tracking-tight font-mono">
+                    {project.title}
+                  </h4>
+                  <p className="text-[10px] text-cyan-400/80 font-mono mt-0.5">
+                    {displayDomain}
+                  </p>
                 </div>
               </div>
             ) : (
