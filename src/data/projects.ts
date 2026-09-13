@@ -1,5 +1,10 @@
 export type ProjectCategory = 'Full Stack & Frontend' | 'WordPress & CMS' | 'Vibe Coding & 3D';
 
+export interface ProjectHighlight {
+  title: string;
+  description: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -17,12 +22,66 @@ export interface Project {
   metrics?: { label: string; value: string }[];
   accentColor?: string;
   domainName: string;
+  highlights?: ProjectHighlight[];
+  liveDemoLabel?: string;
 }
 
 export const getScreenshotUrl = (url: string, width = 800, height = 500) =>
   `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=${width}&h=${height}`;
 
 export const PROJECTS: Project[] = [
+  {
+    id: '3d-automotive-bike-configurator',
+    title: '3D Automotive & Bike Configurator Studio',
+    subtitle: 'High-performance interactive 3D WebGL showroom built for custom vehicle specification and color rendering.',
+    description: 'Interactive 3D WebGL showroom with real-time PBR material customization, Draco WebAssembly mesh streaming, and contact shadow studio lighting.',
+    longDescription: 'Production-grade 3D WebGL configurator studio engineered for real-time automotive and bike customization. Built with Next.js, React Three Fiber, Three.js, and WebAssembly Draco compression, featuring dynamic hierarchical mesh traversal, sub-2-second GLTF/GLB asset streaming, realistic contact shadows, and crash-proof WebGL canvas lifecycle management.',
+    category: 'Vibe Coding & 3D',
+    secondaryCategory: 'Full Stack & Frontend',
+    tags: [
+      'Next.js',
+      'Three.js',
+      'React Three Fiber',
+      'WebGL',
+      'Tailwind CSS',
+      '@react-three/drei',
+      'WebAssembly (Draco Compression)',
+      'Vercel',
+    ],
+    demoUrl: 'https://aliyan-3d-configurator.vercel.app/',
+    domainName: 'aliyan-3d-configurator.vercel.app',
+    image: getScreenshotUrl('https://aliyan-3d-configurator.vercel.app/', 800, 500),
+    images: [
+      getScreenshotUrl('https://aliyan-3d-configurator.vercel.app/', 800, 500),
+      getScreenshotUrl('https://aliyan-3d-configurator.vercel.app/', 1200, 750),
+      getScreenshotUrl('https://aliyan-3d-configurator.vercel.app/', 1024, 640),
+    ],
+    accentColor: '#06B6D4',
+    featured: true,
+    liveDemoLabel: 'Launch 3D Studio ↗',
+    metrics: [
+      { label: 'Graphics Pipeline', value: 'WebGL & R3F' },
+      { label: 'Asset Compression', value: 'Draco Wasm' },
+    ],
+    highlights: [
+      {
+        title: 'Interactive 3D Customization',
+        description: 'Dynamic mesh traversal and real-time material/color swapping across individual vehicle components (fuel tank, seats, rims, engine).',
+      },
+      {
+        title: 'WebGL Performance Optimization',
+        description: 'Implemented Draco WebAssembly multi-threaded mesh decoding, WebP texture compression, and aggressive HTTP edge caching to deliver sub-2-second streaming for complex 3D GLTF/GLB models.',
+      },
+      {
+        title: 'Realistic Studio Environment',
+        description: 'Custom photographic studio backdrop featuring physical contact shadows, ambient lighting controls, and auto-centering bounds.',
+      },
+      {
+        title: 'Responsive & Crash-Proof Architecture',
+        description: 'Non-blocking UI dock with smooth component fallbacks and memory-managed WebGL canvas lifecycles.',
+      },
+    ],
+  },
   {
     id: 'it-vision-networks',
     title: 'IT Vision Networks',
